@@ -1,0 +1,22 @@
+[
+  {"query":"Process Tarun's To Obsidian playlist and add only the YouTube videos I don't have in my vault.","should_trigger":true},
+  {"query":"Refresh my Tarun YouTube notes from the playlist.","should_trigger":true},
+  {"query":"Can you import the new videos from that To Obsidian playlist into Obsidian?","should_trigger":true},
+  {"query":"Add the latest Tarun playlist videos as concise Obsidian notes.","should_trigger":true},
+  {"query":"Please check the fixed PLfkZJsUFkayU playlist and turn new transcripts into notes.","should_trigger":true},
+  {"query":"Process any newly added YouTube videos in Tarun Sabbineni's playlist.","should_trigger":true},
+  {"query":"I want my YouTube resource notes refreshed from Tarun's To Obsidian list.","should_trigger":true},
+  {"query":"Find videos missing from my Taivault YouTube folder and summarize them from Tarun's playlist.","should_trigger":true},
+  {"query":"Skip anything with an existing source URL, then import the rest of the playlist.","should_trigger":true},
+  {"query":"Turn Tarun's latest playlist additions into linked notes with tags and icons.","should_trigger":true},
+  {"query":"Summarize this single YouTube video into an Obsidian note.","should_trigger":false},
+  {"query":"Refresh my entire YouTube folder from every playlist I follow.","should_trigger":false},
+  {"query":"Create a note from a YouTube transcript I pasted below.","should_trigger":false},
+  {"query":"Add a new source note to my Obsidian YouTube folder for this URL.","should_trigger":false},
+  {"query":"Find me the newest videos on YouTube about Obsidian.","should_trigger":false},
+  {"query":"Update my Obsidian Base view to show YouTube resources.","should_trigger":false},
+  {"query":"Summarize Tarun's latest video even if it is not in the To Obsidian playlist.","should_trigger":false},
+  {"query":"Clean up duplicate YouTube notes across my whole vault.","should_trigger":false},
+  {"query":"Write a generic workflow for converting YouTube transcripts into Markdown.","should_trigger":false},
+  {"query":"Process my YouTube watch history and import anything interesting into Obsidian.","should_trigger":false}
+]

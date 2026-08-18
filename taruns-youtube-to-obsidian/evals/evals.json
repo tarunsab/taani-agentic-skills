@@ -1,0 +1,35 @@
+{
+  "skill_name": "taruns-youtube-to-obsidian",
+  "evals": [
+    {
+      "id": "no-new-videos",
+      "prompt": "Refresh Tarun's To Obsidian playlist, but only add videos I don't already have in Obsidian.",
+      "expected_output": "Reports the playlist count, creates no duplicate notes, and verifies that every playlist ID is classified as existing or failed."
+    },
+    {
+      "id": "mixed-new-existing-failed",
+      "prompt": "Process the latest videos in Tarun's playlist. One new transcript endpoint is rate-limited, so do not create a note for that video.",
+      "expected_output": "Processes other new videos, records the rate-limited ID explicitly, stops further transcript requests, and reports verification passed with a transcript failure when structural invariants hold."
+    },
+    {
+      "id": "alternate-source-forms",
+      "prompt": "Add new playlist videos, but treat existing notes with watch URLs, youtu.be URLs, and Shorts URLs as already processed even when filenames differ.",
+      "expected_output": "Normalizes all three URL forms to IDs and skips matching notes without creating duplicates."
+    },
+    {
+      "id": "caption-repetition",
+      "prompt": "Import the new videos. The transcript response contains repeated auto-caption spans and provider metadata.",
+      "expected_output": "Cleans repeated caption text and excludes timestamps, API metadata, music markers, sponsors, and filler from the note."
+    },
+    {
+      "id": "filename-collision",
+      "prompt": "Import a video whose title produces the same safe filename as an existing note with a different source ID.",
+      "expected_output": "Preserves the original title as H1 and appends the video ID only to the colliding filename."
+    },
+    {
+      "id": "contract-regression",
+      "prompt": "Refresh the playlist and verify the notes, icon mappings, Related Topics links, and YouTube Base without changing unrelated vault files.",
+      "expected_output": "Checks the exact frontmatter contract, required sections, valid links, ordinary-note emoji icons, no stale playlist file, and the Base folder filter."
+    }
+  ]
+}
