@@ -88,6 +88,7 @@ The entries below describe the canonical, top-level skills in this repository.
 - [`atomic-habits-skill`](atomic-habits-skill/SKILL.md) — Apply James Clear’s habit-change framework. Use to build, break, diagnose, track, or sustain habits; shape an environment; recover from lapses; or turn goals into repeatable systems.
 - [`i-will-teach-you-to-be-rich-second-edition-skill`](i-will-teach-you-to-be-rich-second-edition-skill/SKILL.md) — Apply Ramit Sethi’s personal-finance frameworks. Use for conscious spending, automation, debt, investing, negotiation, and designing a Rich Life.
 - [`ikigai-the-japanese-secret-to-a-long-and-happy-life-skill`](ikigai-the-japanese-secret-to-a-long-and-happy-life-skill/SKILL.md) — Apply the Ikigai framework to purpose, meaningful activity, flow, healthy practices, community, resilience, and long-term engagement. Use when reflecting on life direction or sustainable wellbeing.
+- [`the-mountain-is-you-skill`](the-mountain-is-you-skill/SKILL.md) — Apply Brianna Wiest’s framework for self-sabotage, emotional processing, self-mastery, inner peace, purpose, and aligned action. Use when turning triggers, unmet needs, and recurring patterns into deliberate change.
 - [`rich-dad-poor-dad-skill`](rich-dad-poor-dad-skill/SKILL.md) — Apply Robert Kiyosaki’s financial-education framework. Use for cash-flow thinking, assets and liabilities, financial intelligence, investing mindset, and behavioral obstacles to financial progress.
 - [`the-courage-to-be-disliked-skill`](the-courage-to-be-disliked-skill/SKILL.md) — Apply the Adlerian framework from The Courage to Be Disliked. Use for personal responsibility, interpersonal boundaries, contribution, encouragement, and present-focused action.
 
@@ -101,3 +102,4 @@ top-level copies remain the directly discoverable installed skills.
 - [`books/i-will-teach-you-to-be-rich-second-edition-skill`](books/i-will-teach-you-to-be-rich-second-edition-skill/SKILL.md)
 - [`books/ikigai-the-japanese-secret-to-a-long-and-happy-life-skill`](books/ikigai-the-japanese-secret-to-a-long-and-happy-life-skill/SKILL.md)
 - [`books/rich-dad-poor-dad-skill`](books/rich-dad-poor-dad-skill/SKILL.md)
+- [`books/the-mountain-is-you-skill`](books/the-mountain-is-you-skill/SKILL.md)
