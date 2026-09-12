@@ -1,0 +1,35 @@
+# Glossary
+
+- **13th/14th monthly salary** — Extra public-sector payments in Greece that effectively extended the calendar to preserve compensation (Ch 2).
+- **Bank guarantee** — A government promise to cover bank liabilities, including private creditors, transferring private losses to the public balance sheet (Ch 3).
+- **Carry trade** — Borrowing in a low-interest currency and investing in a higher-yielding currency; the apparent spread can reverse when exchange rates move (Ch 1).
+- **CDO** — Collateralized debt obligation: a structured security backed by pools of loans or other debt claims (Ch 4).
+- **CDS** — Credit-default swap: a contract that pays on default of a specified borrower or bond and can be used to short debt without owning it (Ch 0).
+- **Celtic Tiger** — Ireland’s rapid rise from poverty to unusually high measured prosperity before the property bust (Ch 3).
+- **Confidence spiral** — The feedback loop in which doubt raises borrowing costs, which worsens debt, which creates more doubt (Ch 0, Ch 4).
+- **Contingent public debt** — Private liabilities likely to become public when a state cannot allow a major bank or institution to fail (Ch 0, Ch 3).
+- **Conduit** — An offshore or off-balance-sheet vehicle that borrows short and invests in longer-term assets (Ch 4).
+- **Debt-to-revenue ratio** — A measure of public obligations against the recurring tax stream available to service them (Ch 0).
+- **False boom** — Apparent growth driven mainly by borrowing that cannot be repaid from underlying income (Ch 0, Ch 1).
+- **False future** — Leverage-funded prosperity that imports present consumption before the corresponding productive income exists (Ch 1).
+- **Fiscal integration** — Sharing tax resources, spending, and losses across countries using a common currency (Ch 4).
+- **Form over substance** — Mistaking compliant appearance, ratings, or precise categories for understanding the underlying exposure (Ch 4).
+- **Ghost estate** — An unfinished or mostly empty housing development built on demand assumptions that failed (Ch 3).
+- **Hit bottom** — The point at which environmental pain, bankruptcy, or deprivation becomes the effective regulator of behavior (Ch 5).
+- **Iceland as a hedge fund** — Lewis’s description of a banking system so large that the country became the vehicle bearing its risk (Ch 1).
+- **Iron law of house prices** — Morgan Kelly’s rule that larger price increases relative to income and rents imply larger subsequent falls (Ch 3).
+- **Landesbank** — A German state-linked bank, many of which became customers for foreign structured products (Ch 4).
+- **Leverage** — Using borrowed money to enlarge an asset position, amplifying both apparent wealth and eventual loss (Ch 0, Ch 1).
+- **Lizard core** — Peter Whybrow’s description of ancient reward pathways that favor immediate acquisition over long-term restraint amid abundance (Ch 5).
+- **Maastricht criteria** — Fiscal and inflation targets associated with entry into the euro area (Ch 2).
+- **NAMA** — Ireland’s National Asset Management Agency, created to take troubled commercial-property loans from banks (Ch 3).
+- **Objective value** — A formula-based property value used for Greek taxation that could diverge radically from the real transaction price (Ch 2).
+- **Privatized quota** — Iceland’s transferable percentage of an annually science-limited fish catch, which could also be pledged as collateral (Ch 1).
+- **Riskless asset** — A misleading category implying that a rating can remove the risk that a return is meant to compensate for (Ch 4).
+- **Rhineland Funding** — IKB’s conduit for issuing commercial paper and buying U.S. consumer-loan-backed structured securities (Ch 4).
+- **Safe-haven effect** — A flight to a borrower viewed as safer than alternatives, potentially lowering its borrowing cost during a wider panic (Ch 5).
+- **Soft landing** — The claim that a rising property market can slow without a sharp price and credit collapse (Ch 3).
+- **Structural reform** — The euro-crisis demand that debtor countries change labor, tax, spending, and productivity institutions (Ch 4).
+- **Vicious cycle of contempt** — California’s loop in which institutional vetoes prevent action, producing public disgust that reinforces the same paralysis (Ch 5).
+- **Waste–theft continuum** — The way normalized waste masks and enables theft when enforcement and records are weak (Ch 2).
+

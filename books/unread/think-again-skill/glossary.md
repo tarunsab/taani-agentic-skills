@@ -1,0 +1,104 @@
+# Glossary
+
+**Active learning** — Learning through solving, discussing, simulating, or teaching rather than only receiving a lecture (Ch 9).
+
+**Arbitrariness reflection** — Noticing that a belief or rivalry could have been different under another birthplace, family, or culture (Ch 6).
+
+**Armchair quarterback syndrome** — Confidence exceeds competence, leaving a person blind to weak knowledge (Ch 2).
+
+**Autonomy support** — Respecting a person’s freedom to choose so information is not experienced as control (Ch 7).
+
+**Binary bias** — Reducing a complex continuum to two opposing categories (Ch 8).
+
+**Challenge network** — Trusted critics who expose blind spots and activate rethinking (Ch 4, Ch 10).
+
+**Change talk** — Language expressing desire, ability, need, or commitment to change (Ch 7).
+
+**Confident humility** — Confidence in the capacity to learn combined with humility about present methods and knowledge (Ch 2).
+
+**Confirmation bias** — Seeing and favoring evidence that supports existing expectations (Ch 1, Ch 3).
+
+**Constructive conflict** — Vigorous disagreement about work bounded by respect and a shared goal (Ch 4).
+
+**Counterfactual thinking** — Imagining how different circumstances would produce different beliefs or outcomes (Ch 6).
+
+**Desirability bias** — Allowing preferred outcomes to distort judgments about what is true or probable (Ch 1, Ch 3).
+
+**Disagree and commit** — Run a worthwhile, bounded bet despite unresolved disagreement, then review it (Ch 10).
+
+**Dunning–Kruger effect** — Low competence can impair recognition of low competence and produce overconfidence (Ch 2).
+
+**Emotional complexity** — Holding and revising a varied set of feelings instead of reducing a charged issue to one emotion (Ch 8).
+
+**Escalation of commitment** — Investing further in a failing path to justify prior choices and protect identity (Ch 11).
+
+**Equifinality** — Multiple routes can lead to the same end (Ch 11).
+
+**Escape fire** — A cleared patch Dodge created by burning fuel ahead of himself to survive the Mann Gulch fire (Prologue).
+
+**First-instinct fallacy** — The belief that changing a first answer usually hurts, despite evidence that revisions often improve accuracy (Prologue, Ch 1).
+
+**Grit** — Passion and perseverance, which can help long goals but can also become stubbornness (Ch 11).
+
+**Group polarization** — Like-minded discussion pushes group attitudes toward greater extremity (Ch 6).
+
+**HIPPO** — The Highest Paid Person’s Opinion, which can silence lower-status dissent (Ch 4).
+
+**Identity foreclosure** — Prematurely settling on a self-definition without enough exploration (Ch 11).
+
+**Illusion of explanatory depth** — Overestimating how well one understands a mechanism until asked to explain it (Ch 4).
+
+**Intergroup contact** — Interaction across group boundaries that can reduce prejudice (Ch 6).
+
+**Job crafting** — Reshaping daily tasks and relationships to fit values, interests, and skills (Ch 11).
+
+**Learning culture** — An environment where growth, questioning, experimentation, and revision are routine (Ch 10).
+
+**Learning zone** — The combination of psychological safety and accountability for rigorous improvement (Ch 10).
+
+**Mental fitness** — The ability to rethink and unlearn as well as to think and learn (Prologue).
+
+**Motivational interviewing** — A collaborative method that elicits a person’s own reasons and plan for change (Ch 7).
+
+**Mount Stupid** — The early-experience point where confidence rises faster than competence (Ch 2).
+
+**Multifinality** — The same starting point can lead to different ends (Ch 11).
+
+**Overview effect** — Astronauts’ reported shift toward a global identity after seeing Earth from space (Ch 6).
+
+**Perspective-seeking** — Learning another person’s actual view by asking and listening rather than guessing (Ch 8).
+
+**Performance culture** — A culture centered on execution, outcomes, and established procedures (Ch 10).
+
+**Possible selves** — Alternative future identities explored as hypotheses rather than fixed commitments (Ch 11).
+
+**Process accountability** — Evaluating the depth of reasoning and alternatives, not only the outcome (Ch 10).
+
+**Psychological safety** — Freedom to raise concerns and admit mistakes without fear of reprisal (Ch 10).
+
+**Relationship conflict** — Personal, emotional friction that usually undermines collaboration (Ch 4).
+
+**Righting reflex** — The impulse to fix, correct, advise, or supply an answer immediately (Ch 7).
+
+**Rethinking cycle** — Humility opens doubt; doubt creates curiosity; curiosity produces discovery and renewed humility (Ch 1).
+
+**Rethinking scorecard** — A record that evaluates decision process alongside results (Ch 10, Actions).
+
+**Scientist mode** — Treating beliefs and strategies as testable hypotheses and updating them with evidence (Ch 1).
+
+**Seizing and freezing** — Grabbing a view and settling it because conviction is more comfortable than doubt (Prologue).
+
+**Self-persuasion** — Change generated by reasons the listener identifies and owns (Ch 5, Ch 7).
+
+**Steel man** — The strongest credible version of an opposing argument (Ch 5).
+
+**Stereotype** — A generalized belief that compresses variation among group members (Ch 6).
+
+**Sustain talk** — Language favoring maintenance of the current state (Ch 7).
+
+**Task conflict** — Disagreement about ideas, methods, priorities, or decisions (Ch 4).
+
+**Totalitarian ego** — A protective mental process that blocks information threatening identity or worldview (Ch 3).
+
+**Values-based identity** — Defining the self by principles that can be pursued through revisable methods (Ch 1, Ch 3).
+

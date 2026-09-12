@@ -94,8 +94,16 @@ The book converters can optionally run a second stage after conversion: turn the
 
 ## Book-derived personal knowledge skills
 
-Each book-derived skill appears exactly once under `books/`; these are the
-canonical repository copies and are not duplicated at the repo root.
+Each book-derived skill appears exactly once under `books/`; read-book skills
+are direct children, while book skills awaiting reading are grouped under
+`books/unread/`. These are the canonical repository copies and are not
+duplicated at the repo root.
+
+The `books/unread/` group contains the latest generated book skills. Their
+iCloud companion folders use an `unread-` prefix, and their duplicate
+Obsidian folders are kept out of the vault until the books have been read.
+Interrupted conversions may remain in this group as partial drafts; check for
+the presence of `SKILL.md` before invoking one.
 
 - [`atomic-habits-skill`](books/atomic-habits-skill/SKILL.md) — Apply James Clear’s habit-change framework. Use to build, break, diagnose, track, or sustain habits; shape an environment; recover from lapses; or turn goals into repeatable systems.
 - [`i-will-teach-you-to-be-rich-second-edition-skill`](books/i-will-teach-you-to-be-rich-second-edition-skill/SKILL.md) — Apply Ramit Sethi’s personal-finance frameworks. Use for conscious spending, automation, debt, investing, negotiation, and designing a Rich Life.
