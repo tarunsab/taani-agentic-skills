@@ -2,7 +2,7 @@
   <img src="docs/assets/banner.webp" alt="Booklin, the book-to-skill wizard, holding an open book whose pages scatter into sparkles that settle into an ordered grid" width="100%">
 </p>
 
-<h1 align="center">book-to-skill</h1>
+<h1 align="center">book-to-skill-with-depth</h1>
 
 <p align="center">
   <a href="README.md"><strong>English</strong></a> ·
@@ -10,8 +10,10 @@
 </p>
 
 <p align="center">
-  <strong>Turn any technical book, document folder, or collection of sources into a unified agent skill — ready to study, reference, and use while you work in GitHub Copilot CLI, Amp, or Claude Code.</strong>
+  <strong>Turn any technical book, document folder, or collection of sources into a unified agent skill with self-contained, source-grounded chapter notes — ready to study, reference, and use while you work in GitHub Copilot CLI, Amp, or Claude Code.</strong>
 </p>
+
+> This is the `book-to-skill-with-depth` fork of the upstream converter. It keeps the same extraction and on-demand structure while requiring substantive chapter explanations to carry the useful reasoning, mechanisms, applications, examples, and limitations supported by the source. It does not pad short source treatments or invent detail.
 
 <p align="center">
   <a href="https://github.com/virgiliojr94/book-to-skill/releases"><img src="https://img.shields.io/github/v/release/virgiliojr94/book-to-skill?style=for-the-badge&color=blueviolet" alt="Latest release"></a>
@@ -45,8 +47,8 @@
 
 **How it works, in 3 steps:**
 
-1. **Point** it at a file, folder, or glob — `/book-to-skill ./my-book.pdf`
-2. **It distills** the book into a skill — frameworks, decision rules, anti-patterns, and per-chapter files. Structure, not a summary.
+1. **Point** it at a file, folder, or glob — `/book-to-skill-with-depth ./my-book.pdf`
+2. **It distills** the book into a skill — frameworks, decision rules, anti-patterns, and self-contained per-chapter files. Structure and usable study depth, not a thin summary.
 3. **Your agent loads it on demand** — ask `/my-book replication` and it reads the right chapter and answers from the real content, no hallucination.
 
 ---
@@ -62,7 +64,7 @@ The usual workarounds don't help:
 - 🧠 "I'll ask the agent about this book" → it either hallucinates or says it doesn't have the content
 - 📝 "I'll take notes as I read" → you end up with a 200-line doc you never open again
 
-**book-to-skill solves this by turning the book into a structured skill your agent loads on demand.**
+**book-to-skill-with-depth solves this by turning the book into a structured skill your agent loads on demand.**
 
 Once installed, you just type `/your-book-slug replication` and the agent reads the right chapter and answers from the actual content. No hallucination. No digging through PDFs. The book becomes part of your workflow.
 
@@ -72,12 +74,12 @@ Works with any host that supports the open [Agent Skills](https://github.com/age
 
 ## 📦 What it generates
 
-Running `/book-to-skill your-book.pdf` (or a folder, glob, or list of files) creates a full skill in your agent's skills directory (`~/.copilot/skills/<slug>/` for Copilot CLI, `~/.agents/skills/<slug>/` for Amp or cross-agent, `~/.claude/skills/<slug>/` for Claude Code):
+Running `/book-to-skill-with-depth your-book.pdf` (or a folder, glob, or list of files) creates a full skill in your agent's skills directory (`~/.copilot/skills/<slug>/` for Copilot CLI, `~/.agents/skills/<slug>/` for Amp or cross-agent, `~/.claude/skills/<slug>/` for Claude Code):
 
 | File | Purpose | Size |
 |------|---------|------|
 | `SKILL.md` | Core mental models + chapter index | ~4,000 tokens |
-| `chapters/ch01-*.md` … | One file per chapter, loaded on-demand | ~1,000 tokens each |
+| `chapters/ch01-*.md` … | One self-contained file per chapter, loaded on-demand | ~1,000–1,800 tokens each for study-depth conversion |
 | `glossary.md` | Every key term, alphabetically sorted with chapter refs | ~1,500 tokens |
 | `patterns.md` | All techniques, algorithms, and design patterns | ~2,000 tokens |
 | `cheatsheet.md` | Decision tables and quick-reference rules | ~1,000 tokens |
@@ -118,7 +120,7 @@ Two halves: a deterministic Python **extractor** (document → clean text + meta
 
 ## 🚀 Usage
 
-`/book-to-skill <path|folder|glob> [skill-name]` — plus analyze-only, generate-from-analysis, and update/fold-in modes. After a conversion, the converter can publish the skill to GitHub (private by default) so any host installs it with `npx skills add`.
+`/book-to-skill-with-depth <path|folder|glob> [skill-name]` — plus analyze-only, generate-from-analysis, and update/fold-in modes. After a conversion, the converter can publish the skill to GitHub (private by default) so any host installs it with `npx skills add`.
 
 ▶️ **All modes and examples → [docs/usage.md](docs/usage.md)**
 

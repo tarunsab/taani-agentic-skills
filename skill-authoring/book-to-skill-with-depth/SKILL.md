@@ -34,7 +34,9 @@ Books contain crystallized expertise: frameworks, principles, and techniques tha
 
 **Layer depth appropriately.** Simple books → simple skills. Complex books with 10+ frameworks → skills with reference files and on-demand chapters.
 
-**Use source-grounded explanatory depth in generated notes.** For each substantive prose section, write as much as the source warrants—often a compact 4–8 sentence paragraph for a developed concept, but shorter is correct when the source is brief or simple. Ground every sentence in the extracted book content and use the author's own distinctions, mechanisms, examples, and limits when they are present. Do not invent examples, mechanisms, implications, exceptions, terminology, or counterarguments, and never expand a one-sentence source treatment merely to hit a sentence count. Keep the prose dense: do not pad, repeat, or restate the same point. Preserve compact formats for metadata, headings, tables, checklists, and glossary lookup entries; the depth guidance applies to explanatory prose, not to every list row.
+**Use source-grounded explanatory depth in generated notes.** Chapter files are the primary study layer: a reader should be able to understand the chapter's thesis, reasoning, named frameworks, mechanisms, application, examples, distinctions, and limitations from the chapter file without being sent back to the book for the central content. For each substantive prose section, normally write a compact 4–8 sentence explanation. If a section would be only 1–2 sentences, reread the corresponding passage and add source-supported mechanism, application, example, contrast, boundary, or failure mode when present. Allow fewer than four sentences only when the source genuinely treats the idea briefly or simply, or when the content is intentionally a compact lookup format. Ground every sentence in the extracted book content and use the author's own distinctions, mechanisms, examples, and limits when they are present. Do not invent examples, mechanisms, implications, exceptions, terminology, or counterarguments. Keep the prose dense: do not pad, repeat, or restate the same point. Preserve compact formats for metadata, headings, tables, checklists, and glossary lookup entries; the depth guidance applies to explanatory prose, not to every list row. Sentence count is a quality signal, not permission to manufacture detail.
+
+**Self-contained chapter standard.** Do not use a chapter section as a teaser or pointer to the full book. Include the useful substance needed for understanding and applying the chapter: the author's claim, how it works, what to do, and the relevant source-supported nuance. A chapter may be concise when the source is concise, but it must not be thin because the generator stopped after naming the idea.
 
 ---
 
@@ -347,11 +349,11 @@ The per-chapter budget scales with `BOOK_TYPE` and `DEPTH`. Technical chapters n
 | `BOOK_TYPE=text` | 800–1,200 tokens | 1,000–1,800 tokens |
 | `BOOK_TYPE=technical` | 1,200–1,800 tokens | 2,000–3,000 tokens |
 
-- These are per-file targets, not hard caps — a dense chapter may run over, a thin one under. Density still beats length (Quality Rule #3): never pad to hit a number.
+- These are per-file capacity targets, not chapter-size minimums or hard caps. A dense chapter may run over and a genuinely thin chapter may run under. They never justify truncating useful source material or padding a thin passage.
 - Files are loaded on-demand, so a larger chapter only costs tokens when that chapter is actually read.
 - When in doubt between two cells (e.g. mixed-content book), use the lower budget and let depth come from precision, not volume.
 
-**`DEPTH=study` is earned with source content, not a bigger number.** The standard section template (Core Idea → Connects To) naturally lands a dense prose chapter around 700–900 tokens. To reach the study budget *honestly* — not by padding — add concrete material only when the source supplies it:
+**`DEPTH=study` is earned with source content, not a bigger number.** Use the section template as a coverage check, not as a reason to produce uniform chapter sizes. To make a study chapter self-contained, add concrete material only when the source supplies it:
 - **Reproduce one worked example or artifact** from the chapter (e.g. the example press release, a sample dialogue, a filled-in template, a decision the author walks through) under a `## Worked Example` section. Reconstruct it faithfully; do not invent an example when the chapter has none.
 - **Expand the "How" of each framework** into explicit steps or criteria only when the author provides or clearly supports them.
 - **Add a short "Why it works / failure mode" note** to the top 1–2 frameworks only when the chapter explains that reasoning or failure mode.
@@ -362,7 +364,7 @@ For EACH chapter/major section identified in Step 3:
 
 Read the corresponding section of the extracted `full_text.txt` (use character offsets or grep for chapter headings).
 
-**Source-grounded depth gate (mandatory):** Before moving on, check every explanatory section you write against the corresponding book passage. Develop a section into a useful 4–8 sentence paragraph when the source develops the concept enough to support that treatment; if the source is brief or simple, preserve that brevity. Cover the idea, why or how it works, how to use it, and a relevant boundary, example, contrast, or failure mode only when the book provides or supports those details. Never manufacture content to reach 4–8 sentences, and never let a length target override fidelity. Keep lists, tables, and index rows compact when they serve a lookup function, but do not let that format replace needed explanation.
+**Source-grounded depth gate (mandatory):** Before moving on, check every explanatory section against the corresponding book passage. Substantive explanatory sections should normally contain 4–8 source-grounded sentences. If a section is only 1–2 sentences, reread the passage and look specifically for the chapter's reasoning, mechanism, application, concrete example, distinction, boundary, or failure mode. Add the missing dimensions when the source supports them; if the source does not support them, preserve the shorter treatment rather than inventing material. Never let a sentence target override fidelity, but never use fidelity as an excuse to stop before extracting the useful substance that is actually present. Keep lists, tables, and index rows compact when they serve a lookup function, but do not let that format replace needed explanation.
 
 Create `$SKILLS_HOME/<skill_name>/chapters/ch<NN>-<slug>.md` using the structure below.
 
@@ -374,7 +376,7 @@ Create `$SKILLS_HOME/<skill_name>/chapters/ch<NN>-<slug>.md` using the structure
 # Chapter N: <Full Title>
 
 ## Core Idea
-<Usually a 4–8 sentence paragraph when the source develops the idea; otherwise a concise, faithful explanation of what the chapter teaches, why it matters, how it works, and when it applies or fails>
+<Normally a 4–8 sentence, self-contained explanation of what the chapter teaches, why it matters, how it works, and when it applies or fails. Use fewer sentences only when the source genuinely provides less substance.>
 
 ## Frameworks Introduced
 - **<Framework Name>**: <exact formulation — preserve the author's naming>
@@ -433,7 +435,7 @@ Create `$SKILLS_HOME/<skill_name>/glossary.md`:
 Create `$SKILLS_HOME/<skill_name>/patterns.md`:
 - All concrete techniques, design patterns, algorithms from the book
 - Format: `## Pattern Name\n**When to use**: ...\n**How**: ...\n**Trade-offs**: ...`
-- For each non-obvious pattern, add a source-grounded explanation after the lookup fields covering its mechanism, application, and limits when the source supports them. Use 4–8 sentences when warranted; keep genuinely mechanical fields and lookup rows concise, and do not pad short source treatments.
+- For each non-obvious pattern, add a source-grounded explanation after the lookup fields covering its mechanism, application, and limits when the source supports them. Normally make that explanatory treatment 4–8 sentences; keep genuinely mechanical fields and lookup rows concise, and allow a shorter explanation only when the source is genuinely brief. Do not pad short source treatments.
 - Max 2,000 tokens
 
 ### cheatsheet.md
@@ -492,7 +494,7 @@ the relevant chapter file before answering.
 
 <generate 2,000 tokens of the most critical frameworks and insights here>
 
-For each major framework or principle, use a compact paragraph—often 4–8 sentences when the source develops it—that explains the mechanism, application, and a useful distinction or failure condition when the source supports them. Do not invent elaboration to meet a sentence count. Keep the chapter index, topic index, and supporting-file list as compact lookup structures.
+For each major framework or principle, use a self-contained compact paragraph—normally 4–8 sentences when it is a substantive concept—that explains the mechanism, application, and a useful distinction or failure condition when the source supports them. If the explanation is only 1–2 sentences, check the source again before accepting it. Do not invent elaboration to meet a sentence count. Keep the chapter index, topic index, and supporting-file list as compact lookup structures.
 
 ---
 
@@ -532,7 +534,7 @@ or ask the agent directly.
 
 Before reporting success, loading the skill in another session, or publishing it, run the advisory security scan:
 
-Also perform a source-fidelity depth check: identify substantive explanatory sections that are too terse to represent the relevant book passage, then expand them only with source-supported details. Leave a section brief when the book treats it briefly; do not rewrite a one-sentence source treatment into 4–8 sentences merely to satisfy a count. Do not add filler to tables, checklists, glossary entries, or other intentionally compact lookup formats.
+Also perform a source-fidelity depth check: identify every substantive explanatory section under four sentences and compare it with the relevant book passage. Expand it when the passage contains useful reasoning, mechanism, application, example, distinction, boundary, or failure mode that is missing. Leave it brief only when the source genuinely treats it briefly or simply. Do not rewrite a short source treatment into 4–8 sentences merely to satisfy a count, and do not use that exception to avoid extracting material that is present. Do not add filler to tables, checklists, glossary entries, or other intentionally compact lookup formats.
 
 ```bash
 SKILL_CONVERTER_ROOT="$(cd "$(dirname "$SCRIPT_PATH")/.." && pwd)"
@@ -704,7 +706,7 @@ Once the files are successfully written and merged, run **Step 9.5**, then proce
 
 1. **Extract structure, not summaries** — capture named frameworks, exact formulations, anti-patterns; not chapter recaps
 2. **Preserve the author's precision** — "The 5 Whys" ≠ "ask why multiple times"; keep exact naming
-3. **Density over completeness** — a 1,000-token summary beats a 10,000-token excerpt
+3. **Useful source-grounded depth over artificial completeness** — include the substance needed to understand and apply the chapter, but never pad, repeat, or inflate a short source treatment
 4. **Practitioner voice** — write "Use X when Y", not "The book explains X"
 5. **Front-load SKILL.md** — compaction keeps the first 5,000 tokens; most important content comes first
 6. **Chapter files are on-demand** — they don't count against skill budget until loaded
