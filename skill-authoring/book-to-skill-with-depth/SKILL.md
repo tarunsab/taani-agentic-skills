@@ -38,11 +38,13 @@ Books contain crystallized expertise: frameworks, principles, and techniques tha
 
 **Self-contained chapter standard.** Do not use a chapter section as a teaser or pointer to the full book. Include the useful substance needed for understanding and applying the chapter: the author's claim, how it works, what to do, and the relevant source-supported nuance. A chapter may be concise when the source is concise, but it must not be thin because the generator stopped after naming the idea.
 
+**Source coverage is a required quality phase.** A generated chapter must preserve the source's central argument, reasoning, mechanisms, examples or evidence, distinctions, limitations, and practical implications. Use the existing chapter layout as a coverage contract, not as a reason to produce uniform prose or artificial length.
+
 ---
 
 ## Modes of Operation
 
-Four paths available. Route based on what the user asks:
+Four conversion paths plus one optional Stage 2 export path are available. Route based on what the user asks:
 
 ### 1. Full Conversion (Default)
 **Trigger:** User provides one or more document/directory/glob paths without special instructions
@@ -63,6 +65,11 @@ Four paths available. Route based on what the user asks:
 **Trigger:** User provides one or more new source paths and indicates they want to update an existing skill (either by pointing to the existing skill folder, providing a skill slug that already exists in `SKILLS_HOME`, or explicitly requesting an update).
 **Action:** Run Step 0 (out-of-scope check), Step 1 (validate inputs), Step 1.5 (identify book type), and Step 2 (extract new files). Then skip to Step 5 (identify/detect existing skill path) and run the **Update / Fold-in Workflow** to merge the new content into the existing skill files.
 **Output:** Updated existing skill with new/revised chapter summaries and merged indexes/glossaries.
+
+### 5. Anki Export (Stage 2)
+**Trigger:** User asks to turn an existing generated book skill into Anki, flashcards, a deck, or spaced-repetition cards.
+**Action:** Keep the generated skill as Stage 1, then run the separate Stage 2 workflow below against its chapter and supporting files.
+**Output:** `anki/<book-slug>.tsv` plus `anki/import.md`; Stage 1 files are not replaced.
 
 ---
 
@@ -92,6 +99,7 @@ Throughout the workflow:
 - Identify the input paths and the optional skill slug.
 - If the last argument is not a file, folder, or glob that exists or matches any files, and it looks like a skill slug (e.g. lowercase hyphens, alphanumeric), treat it as `SKILL_NAME`.
 - Treat all other arguments as the list of `INPUT_PATHS`.
+- If the user asks for Anki export and an input is an existing generated skill directory, route to Stage 2 rather than treating that directory as a new source or an Update/Fold-in target.
 - If any input path is an existing skill directory (contains `SKILL.md` and a `chapters/` sub-folder), or if `SKILL_NAME` matches an existing skill slug in `SKILLS_HOME`, flag this run as an **Update/Fold-in** operation (Mode 4).
 
 ---
@@ -364,6 +372,8 @@ For EACH chapter/major section identified in Step 3:
 
 Read the corresponding section of the extracted `full_text.txt` (use character offsets or grep for chapter headings).
 
+**Source-Coverage Pass:** Before drafting a chapter, make a temporary coverage ledger with one row for the thesis, each major framework or mechanism, the strongest source-specific example or evidence, important distinctions, limitations, practical use, and chapter connections. After drafting, compare the chapter against that ledger and the relevant source passage. Revise omissions before moving on. After all chapters are drafted, run a whole-book omission check against the table of contents and extraction notes so important chapters, through-lines, and caveats have not disappeared between files. This ledger is a generation aid and is not added to the generated skill. A shorter treatment is acceptable only when the source genuinely provides less substance; do not invent or pad content to complete a template.
+
 **Source-grounded depth gate (mandatory):** Before moving on, check every explanatory section against the corresponding book passage. Substantive explanatory sections should normally contain 4–8 source-grounded sentences. If a section is only 1–2 sentences, reread the passage and look specifically for the chapter's reasoning, mechanism, application, concrete example, distinction, boundary, or failure mode. Add the missing dimensions when the source supports them; if the source does not support them, preserve the shorter treatment rather than inventing material. Never let a sentence target override fidelity, but never use fidelity as an excuse to stop before extracting the useful substance that is actually present. Keep lists, tables, and index rows compact when they serve a lookup function, but do not let that format replace needed explanation.
 
 Create `$SKILLS_HOME/<skill_name>/chapters/ch<NN>-<slug>.md` using the structure below.
@@ -544,6 +554,18 @@ SKILL_CONVERTER_ROOT="$(cd "$(dirname "$SCRIPT_PATH")/.." && pwd)"
 If the scanner exits non-zero, stop and ask a human to review its file/line findings. Do not silently rewrite the generated files, and do not load or publish the skill until the findings are resolved or explicitly accepted.
 
 ---
+
+## Stage 2 — Turn a generated book skill into Anki
+
+Run this stage only when requested, after Stage 1 has produced a complete book skill. Read `docs/anki.md` for the full specification. The stage uses the Feynman method and the book-learning tutor pattern: cards should make the learner retrieve an idea, explain it plainly, expose the mechanism, apply it, and correct a tempting misunderstanding. Each card must test one idea per card and remain grounded in the generated skill.
+
+1. Resolve the existing generated skill directory from the user's path or slug.
+2. Read `SKILL.md`, every file under `chapters/`, and the supporting glossary, patterns, and cheatsheet.
+3. Create a UTF-8 TSV at `anki/<book-slug>.tsv` with exactly `Front`, `Back`, and `Tags` columns. Use adaptive card counts, source/chapter tags, concise self-contained answers, and `<br>` instead of physical line breaks.
+4. Create `anki/import.md` with Anki field mapping, import instructions, card counts by chapter/type, and any omitted or uncertain source areas.
+5. Run `python tools/validate_anki_tsv.py anki/<book-slug>.tsv`. Fix duplicates, blank fields, malformed rows, and unsupported claims before reporting success.
+
+Do not create cards merely to hit a quota. Prefer concept, mechanism, contrast, procedure, application, failure-mode, worked-example, and synthesis cards when the source supports them. Do not add general knowledge, fabricated examples, or long quotations.
 
 ## Step 10 — Cleanup and report
 

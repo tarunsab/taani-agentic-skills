@@ -2,7 +2,7 @@
 
 ## Employment is not ownership
 
-The chapter distinguishes a person's profession or job from the business they own. Someone can be an excellent employee, teacher, engineer, or manager while still having no growing asset column outside the employer's business. “Mind your own business” means keep the job if it serves you, but use some of the resulting surplus to acquire assets. The point is to create an ownership track alongside the income track.
+The chapter distinguishes a person's profession or job from the business they own. Someone can be an excellent employee, teacher, engineer, or manager while still having no growing asset column outside the employer's business. “Mind your own business” means keep the job if it serves you, but use some of the resulting surplus to acquire assets. The point is to create an ownership track alongside the income track. The chapter makes the distinction concrete through Ray Kroc's description of McDonald's: the visible business was hamburgers, but the strategic value he emphasized was the real estate beneath the franchises. Use the example as a question about what underlying asset, location, system, or audience a business actually controls; do not assume the anecdote proves that every owner should pursue real estate.
 
 ## The asset column
 

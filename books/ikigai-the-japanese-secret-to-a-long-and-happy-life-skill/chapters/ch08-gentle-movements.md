@@ -11,10 +11,10 @@ The movement chapter favors accessible, regular activity that keeps the body in 
   - **How**: Follow a simple sequence and use group timing where available.
 - **Yoga**: Movement and attention practices described through balance of body, mind, and breath.
   - **When to use**: When flexibility, calm, and bodily awareness are useful goals.
-  - **How**: Practice within ability and learn an appropriate form.
+  - **How**: Practice within ability and learn an appropriate form; the chapter uses the twelve-movement Sun Salutation as a concrete sequence rather than as a prescription for everyone.
 - **Tai chi and qigong**: Slow movement linked with breath, balance, and attention.
   - **When to use**: When the user needs gentle, coordinated movement.
-  - **How**: Learn the sequence, move without force, and repeat with attention.
+  - **How**: Learn the sequence, move without force, and repeat with attention; tai chi emphasizes control through stillness and finesse over strength, while qigong coordinates movement, breath, and attention.
 
 ## Key Concepts
 

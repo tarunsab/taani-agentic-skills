@@ -8,7 +8,7 @@ This chapter places ikigai beside Viktor Frankl's logotherapy, a meaning-centere
 
 - **Logotherapy**: Help a person discover meaning and a reason to continue living.
   - **When to use**: When someone feels empty, frustrated, anxious, or disconnected from purpose.
-  - **How**: Explore meaningful work, relationships, experiences, and the attitude available toward unavoidable conditions.
+  - **How**: Follow the chapter's five-step progression: identify emptiness or anxiety, make the desire for a meaningful life visible, discover a purpose for the current point in life, freely accept or reject that direction, and let the resulting commitment support action through obstacles.
 - **Morita therapy**: Allow feelings to exist while progressing through observation, rest, simple work, and purposeful activity.
   - **When to use**: When trying to eliminate every uncomfortable feeling has become the main project.
   - **How**: Notice reality, reduce compulsive analysis, and act on the meaningful task in front of you.
@@ -38,7 +38,7 @@ This chapter places ikigai beside Viktor Frankl's logotherapy, a meaning-centere
 
 ## Worked Example
 
-The chapter recounts cases used to illustrate meaning-centered change, including a grief-stricken doctor who is helped to see a different relationship to his loss. The point is not that grief disappears or that one interpretation fits everyone. The therapeutic move is to identify what the person's situation asks of him and how love or responsibility can continue. Use such examples as illustrations of a meaning question, not as a substitute for professional therapy.
+The chapter recounts cases used to illustrate meaning-centered change, including a grief-stricken doctor who is helped to see a different relationship to his loss. The point is not that grief disappears or that one interpretation fits everyone. The therapeutic move is to identify what the person's situation asks of him and how love or responsibility can continue. Use such examples as illustrations of a meaning question, not as a substitute for professional therapy. The book also presents existential frustration as potentially catalytic rather than automatically pathological, but that is the authors' account and should not be used to dismiss severe distress or clinical symptoms.
 
 ## Key Takeaways
 

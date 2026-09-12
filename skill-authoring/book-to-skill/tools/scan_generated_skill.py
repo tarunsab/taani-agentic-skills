@@ -15,7 +15,12 @@ from typing import Iterable, Sequence
 MAX_SKILL_FILES = 1_000
 MAX_FILE_BYTES = 2 * 1024 * 1024
 MAX_TOTAL_BYTES = 20 * 1024 * 1024
-SUPPORTING_FILENAMES = ("glossary.md", "patterns.md", "cheatsheet.md")
+SUPPORTING_FILENAMES = (
+    "glossary.md",
+    "patterns.md",
+    "cheatsheet.md",
+    "anki/import.md",
+)
 
 # Reuse the extractor's invisible-code-point set instead of duplicating it, so
 # the two injection defenses cannot drift apart. They previously did: the
@@ -149,7 +154,7 @@ def unscanned_markdown(path: Path) -> list[str]:
     """Markdown files present in the skill directory but outside the scan scope.
 
     The scope is deliberately bounded to what book-to-skill generates (SKILL.md,
-    the supporting files, and ``chapters/``), so unrelated notes in the directory
+    the supporting files, optional ``anki/import.md``, and ``chapters/``), so unrelated notes in the directory
     are not scanned and cannot raise false findings. The risk is the *reporting*:
     printing "scan passed" while files the agent will happily read went unopened
     is a false assurance. Listing them keeps the bounded scope honest.
@@ -328,7 +333,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         for relative in skipped:
             print(f"  SKIP {_terminal_safe(relative)}")
         print(
-            "  Scope is SKILL.md, glossary/patterns/cheatsheet, and chapters/. "
+            "  Scope is SKILL.md, glossary/patterns/cheatsheet, optional anki/import.md, "
+            "and chapters/. "
             "Move generated content there to have it scanned."
         )
 

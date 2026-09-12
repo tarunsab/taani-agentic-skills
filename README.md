@@ -88,6 +88,9 @@ selected, explicitly name it or point the agent at its `SKILL.md`.
 - [`writing-great-skills`](skill-authoring/writing-great-skills/SKILL.md) — Apply the vocabulary and principles of predictable, effective skill writing. Use when reviewing the quality, scope, or trigger behavior of a skill.
 - [`book-to-skill`](skill-authoring/book-to-skill/SKILL.md) — Convert a book or document into a structured agent skill containing frameworks, mental models, principles, techniques, and anti-patterns. Use with EPUB, PDF, DOCX, HTML, Markdown, plain text, RTF, or Calibre-supported MOBI/AZW files.
 - [`book-to-skill-with-depth`](skill-authoring/book-to-skill-with-depth/SKILL.md) — Perform the same book-to-skill conversion with deliberately deeper, source-grounded sections instead of one-line summaries. Use when the generated skill should preserve more explanatory substance without padding or inventing content.
+- [`technical-book-to-skill`](skill-authoring/technical-book-to-skill/SKILL.md) — Convert technical books, papers, manuals, programming guides, and code-, table-, formula-, or diagram-heavy sources with technical extraction defaults, deeper chapter coverage, and the same optional Anki stage.
+
+The book converters can optionally run a second stage after conversion: turn the generated skill into a portable UTF-8 Anki TSV and import guide using Feynman-style explanation, tutor-style retrieval, and source-grounded application cards. The Anki stage is opt-in and does not alter the Stage 1 skill structure.
 
 ## Book-derived personal knowledge skills
 

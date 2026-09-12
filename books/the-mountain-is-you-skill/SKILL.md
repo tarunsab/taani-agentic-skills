@@ -6,7 +6,7 @@ description: "Knowledge base from The Mountain Is You by Brianna Wiest. Use when
 <!-- argument-hint: [topic, framework name, or chapter number] -->
 
 # The Mountain Is You
-**Author**: Brianna Wiest | **Pages**: ~17 EPUB spine items | **Chapters**: 7 | **Generated**: 2026-09-11
+**Author**: Brianna Wiest | **Pages**: ~16 EPUB spine items | **Chapters**: 7 | **Generated**: 2026-09-12
 
 ## How to Use This Skill
 
@@ -79,7 +79,8 @@ Self-mastery means recognizing that circumstances are not fully controllable whi
 ## Scope & Limits
 
 This skill covers Wiest’s book and preserves its distinctions as a practical
-framework. It does not replace clinical assessment, psychotherapy, medical care,
-or crisis support. The source makes broad psychological and neurological claims;
-use them as the author’s model and seek qualified advice for high-stakes mental
-health decisions.
+framework. It was rechecked against the valid 503 EPUB extraction; three embedded
+images were omitted because they contained no reliably extracted text. It does not
+replace clinical assessment, psychotherapy, medical care, or crisis support. The
+source makes broad psychological and neurological claims; use them as the author’s
+model and seek qualified advice for high-stakes mental-health decisions.

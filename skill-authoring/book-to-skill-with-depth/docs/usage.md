@@ -27,6 +27,14 @@ Supported document formats: PDF, EPUB, DOCX, TXT, Markdown, reStructuredText, As
 /book-to-skill ~/articles/new-paper.pdf ~/.claude/skills/project-knowledge
 ```
 
+### Stage 2 — Export a generated skill to Anki
+
+After Stage 1, ask the agent to turn the generated skill directory into Anki.
+The result is a portable `anki/<book-slug>.tsv` deck plus `anki/import.md`; the
+deck uses Feynman-style explanation and book-learning-tutor-style retrieval and
+application prompts. Validate it with `python tools/validate_anki_tsv.py
+anki/<book-slug>.tsv` before importing it into Anki.
+
 After the skill is created, use it like any other agent skill:
 
 ```bash

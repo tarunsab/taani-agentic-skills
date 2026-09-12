@@ -2,7 +2,7 @@
 
 ## Core Idea
 
-The final chapter asks how to face difficulty without allowing stress and worry to age or govern the person. It draws on Stoic distinctions between what can and cannot be controlled, Buddhist attention to the present, negative visualization, and Japanese acceptance of impermanence. Wabi-sabi values the imperfect and incomplete, while ichi-go ichi-e asks the person to appreciate an encounter that will not return. The chapter then adds antifragility: create redundancies, protect the core, take small risks, and remove sources of fragility so that some setbacks can produce learning or opportunity.
+The final chapter asks how to face difficulty without allowing stress and worry to age or govern the person. It draws on Stoic distinctions between what can and cannot be controlled, Buddhist attention to the present, negative visualization, and Japanese acceptance of impermanence. Wabi-sabi values the imperfect and incomplete, while ichi-go ichi-e asks the person to appreciate an encounter that will not return. The chapter then adds antifragility: create redundancies, protect the core, take small risks, and remove sources of fragility so that some setbacks can produce learning or opportunity. The chapter's discussion of Japanese architecture makes impermanence concrete: the Grand Shrine of Ise is periodically rebuilt, so the enduring value is placed in customs and practices rather than in preserving one unchanged physical structure. This is a cultural illustration of the same distinction used in personal resilience—protect what carries meaning while accepting that particular forms, circumstances, and possessions change. It does not mean that every loss is beneficial or that people should manufacture hardship.
 
 ## Frameworks Introduced
 

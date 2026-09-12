@@ -46,7 +46,7 @@
 **How it works, in 3 steps:**
 
 1. **Point** it at a file, folder, or glob — `/book-to-skill ./my-book.pdf`
-2. **It distills** the book into a skill — frameworks, decision rules, anti-patterns, and per-chapter files. Structure, not a summary.
+2. **It distills** the book into a skill — frameworks, decision rules, anti-patterns, and source-grounded per-chapter files.
 3. **Your agent loads it on demand** — ask `/my-book replication` and it reads the right chapter and answers from the real content, no hallucination.
 
 ---
@@ -81,6 +81,7 @@ Running `/book-to-skill your-book.pdf` (or a folder, glob, or list of files) cre
 | `glossary.md` | Every key term, alphabetically sorted with chapter refs | ~1,500 tokens |
 | `patterns.md` | All techniques, algorithms, and design patterns | ~2,000 tokens |
 | `cheatsheet.md` | Decision tables and quick-reference rules | ~1,000 tokens |
+| `anki/<book-slug>.tsv` *(optional Stage 2)* | Feynman-style retrieval and application cards | adaptive |
 
 **Chapter files are loaded on-demand** — they don't count against the skill budget until you ask about that topic.
 
@@ -118,7 +119,7 @@ Two halves: a deterministic Python **extractor** (document → clean text + meta
 
 ## 🚀 Usage
 
-`/book-to-skill <path|folder|glob> [skill-name]` — plus analyze-only, generate-from-analysis, and update/fold-in modes. After a conversion, the converter can publish the skill to GitHub (private by default) so any host installs it with `npx skills add`.
+`/book-to-skill <path|folder|glob> [skill-name]` — plus analyze-only, generate-from-analysis, update/fold-in, and optional Anki export modes. After a conversion, the converter can publish the skill to GitHub (private by default) so any host installs it with `npx skills add`.
 
 ▶️ **All modes and examples → [docs/usage.md](docs/usage.md)**
 

@@ -6,7 +6,7 @@ The chapter opens its practical advice with a reason stronger than a vague wish 
 
 ## Choose and learn formulas
 
-The book treats daily choices as votes for a financial direction and recommends mastering one formula before learning another. A formula is a repeatable way of handling money or evaluating an opportunity, not a guarantee of results. Start with a simple process that can be understood, practiced, and reviewed; then add complexity only when the foundation is working. This guards against collecting strategies without building competence.
+The book treats daily choices as votes for a financial direction and recommends mastering one formula before learning another. A formula is a repeatable way of handling money or evaluating an opportunity, not a guarantee of results. Start with a simple process that can be understood, practiced, and reviewed; then add complexity only when the foundation is working. This guards against collecting strategies without building competence. The chapter's ten-step list moves from a strong personal reason and daily choice through careful associations, mastering one formula before learning another, self-discipline, paying for advice, using assets for luxuries, choosing heroes, and teaching others. The list is best read as a learning sequence rather than a promise that any formula produces wealth.
 
 ## Choose associations carefully
 

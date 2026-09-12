@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <strong>Turn any technical book, document folder, or collection of sources into a unified agent skill with self-contained, source-grounded chapter notes — ready to study, reference, and use while you work in GitHub Copilot CLI, Amp, or Claude Code.</strong>
+  <strong>Turn any technical book, document folder, or collection of sources into a unified agent skill with self-contained, source-grounded chapter notes and optional Anki cards — ready to study, reference, and use while you work in GitHub Copilot CLI, Amp, or Claude Code.</strong>
 </p>
 
 > This is the `book-to-skill-with-depth` fork of the upstream converter. It keeps the same extraction and on-demand structure while requiring substantive chapter explanations to carry the useful reasoning, mechanisms, applications, examples, and limitations supported by the source. It does not pad short source treatments or invent detail.
@@ -83,6 +83,7 @@ Running `/book-to-skill-with-depth your-book.pdf` (or a folder, glob, or list of
 | `glossary.md` | Every key term, alphabetically sorted with chapter refs | ~1,500 tokens |
 | `patterns.md` | All techniques, algorithms, and design patterns | ~2,000 tokens |
 | `cheatsheet.md` | Decision tables and quick-reference rules | ~1,000 tokens |
+| `anki/<book-slug>.tsv` *(optional Stage 2)* | Feynman-style retrieval and application cards | adaptive |
 
 **Chapter files are loaded on-demand** — they don't count against the skill budget until you ask about that topic.
 
@@ -120,7 +121,7 @@ Two halves: a deterministic Python **extractor** (document → clean text + meta
 
 ## 🚀 Usage
 
-`/book-to-skill-with-depth <path|folder|glob> [skill-name]` — plus analyze-only, generate-from-analysis, and update/fold-in modes. After a conversion, the converter can publish the skill to GitHub (private by default) so any host installs it with `npx skills add`.
+`/book-to-skill-with-depth <path|folder|glob> [skill-name]` — plus analyze-only, generate-from-analysis, update/fold-in, and optional Anki export modes. After a conversion, the converter can publish the skill to GitHub (private by default) so any host installs it with `npx skills add`.
 
 ▶️ **All modes and examples → [docs/usage.md](docs/usage.md)**
 
