@@ -36,6 +36,28 @@ The deck is not a quiz about chapter numbers, anecdotes, quotations, names, or
 trivia. Optimise for principles, mechanisms, application, distinctions,
 procedures, failure modes, and reconstruction of the book's model.
 
+## Core teaching deck and optional application layer
+
+The default export is a **core teaching deck**. Its job is to let a learner
+reconstruct the book without reopening the skill: what each load-bearing term
+means, why each mechanism works, how the author's model fits together, and what
+each law, framework, or procedure contains. Put source examples, use conditions,
+and limitations in the Back of those cards. Do not require a situation prompt to
+teach a concept.
+
+Situation, application, trigger, and other transfer prompts form an **optional
+application layer**. They are useful after the core is familiar because they
+test conditional retrieval: recognising an idea in a new circumstance and
+choosing how to use it. They are not counted as core coverage, and they should
+be generated only when the user asks for application practice, an exhaustive
+companion deck, or a separate application export. A compact gateway deck may
+omit them entirely. If both layers are exported, label the application cards
+with an `application` or `situation` tag and report their count separately.
+
+This separation prevents a scenario from carrying the only explanation of a
+term. It also keeps examples and transfer practice from displacing the direct
+definition and mechanism cards that support book reconstruction.
+
 ## Forgotten-book assumption
 
 Assume that a learner may remember nothing when any card appears. Every
@@ -74,8 +96,10 @@ Use the answer shape that fits the target:
   practical decision it changes.
 - **Pattern or procedure:** give the trigger, the steps, and the reason the
   steps work; include a source example when it clarifies transfer.
-- **Situation or application:** name the relevant idea, explain the choice, and
-  state the limitation or tempting mistake that would change the decision.
+- **Situation or application (optional layer):** name the relevant idea,
+  explain the choice, and state the limitation or tempting mistake that would
+  change the decision. The card remains self-contained, but it does not replace
+  the corresponding core teaching card.
 
 Aim for three to eight clear sentences or a short labelled list in `Answer`;
 major frameworks may need one explanatory sentence per member. Keep `Re-teach`
@@ -137,14 +161,18 @@ valid ranges, never quotas. Prefer 85 excellent cards to 180 repetitions.
 
 The deck normally sits on top of the generated skill rather than replacing it.
 When `SKILL.md` has a cheatsheet, patterns, glossary, templates, or a default
-workflow, perform a companion coverage pass after the core concept ranking:
+workflow, perform a companion coverage pass after the core concept ranking.
+Fold load-bearing definitions, model relationships, and procedures into the
+core teaching deck. Put transfer-only prompts into the optional application
+layer:
 
 - add direct retrieval for the skill's model, workflow, response modes, and
   guardrails;
 - cover the cheatsheet's build/break procedures, diagnostic worksheet, failure
   modes, and review questions;
-- give each named reusable pattern a trigger, application, or failure card when
-  the source supports one;
+- give each named reusable pattern a direct teaching card in the core when it is
+  load-bearing; add a trigger, application, or failure card only in the optional
+  layer when transfer is requested;
 - give glossary terms a direct card or a meaningful contrast/application card,
   grouping only terms whose distinction is the actual learning target; and
 - keep source examples on the cards where they teach transfer, rather than
@@ -152,9 +180,9 @@ workflow, perform a companion coverage pass after the core concept ranking:
 
 Use a procedure overview plus smaller component cards for long checklists. Do
 not turn every bullet into a card or use duplicate definition fronts to meet a
-target. If the user requests an exhaustive companion deck or a card count such
-as 100, treat the count as a ceiling/floor constraint only after these source
-areas have direct coverage, and report any deliberately omitted material.
+target. If the user requests an exhaustive companion or application deck, treat
+the count as a ceiling/floor constraint only after the core has direct coverage,
+and report the core and application counts separately.
 
 ## Card types and retrieval networks
 
@@ -165,42 +193,46 @@ for self-help, psychology, and productivity books; the source controls the deck.
 |---|---|
 | Concept recall | What the idea means, with definition and significance |
 | Mechanism / why | Why the idea works and what causal link matters |
-| Situation → concept | Recognising an unnamed real-life situation and retrieving the relevant idea |
-| Concept → application | Using the idea in a specified situation, including a limitation |
-| Trigger | What observation should make the idea come to mind |
+| Situation → concept (optional) | Recognising an unnamed real-life situation and retrieving the relevant idea |
+| Concept → application (optional) | Using the idea in a specified situation, including a limitation |
+| Trigger (optional) | What observation should make the idea come to mind |
 | Contrast | A meaningful distinction and when it matters |
-| Failure mode | Mistake → consequence → correction |
+| Failure mode (core when load-bearing; otherwise optional) | Mistake → consequence → correction |
 | Procedure | A genuine process; use an overview plus small cards for difficult components |
 | Book-map / synthesis | The conceptual spine and relationships between ideas |
 | Worked example | What a source example illustrates, not incidental trivia |
 
-Typical shares are concept 20–25%, mechanism 15–20%, situation 20–25%,
-application 10–15%, trigger 5–10%, contrast 5–10%, failure 5–10%, and
-book-map/synthesis 5–10%. Treat these as diagnostics, not targets.
+Do not use a fixed mix for the core. Check that every load-bearing concept has a
+meaning/definition card, every important causal claim has a mechanism card, and
+the book's model and named lists can be reconstructed. Treat any mix of optional
+application cards as a separate diagnostic, never as a quota for the core.
 
 For a Tier 1 concept, build a retrieval network when the source supports it:
 
 ```text
-                    ┌── Why does it work?
+                    ┌── Why does it work?   (core)
                     │
-Situation ──→ CONCEPT ──→ How do I apply it?
+CONCEPT ──→ What does it mean? (core)
                     │
-                    ├── What should trigger it?
+                    ├── How do I apply it? (optional)
                     │
-                    └── What is it confused with?
+                    ├── What should trigger it? (optional)
+                    │
+                    └── What is it confused with? (core when needed)
 ```
 
-This is useful redundancy. “What is X?”, “Define X,” and “What does X mean?”
-are bad redundancy when they test the same recall route.
+The core routes teach and explain the book. Optional routes add transfer after
+the learner can already reconstruct the concept. “What is X?”, “Define X,” and
+“What does X mean?” are bad redundancy when they test the same recall route.
 
 ## Question and back design
 
 Each Front has one primary retrieval target and enough context to make sense
 after long forgetting. Context should disambiguate without revealing the
-answer. Prefer recall and realistic situations over recognition, yes/no, and
-multiple choice. Do not ask “What is the second law?” without naming the
-framework. Do not hide the answer in a scenario that asks the learner to
-identify the concept.
+answer. Prefer direct recall for core cards; use realistic situations only in
+the optional application layer. Avoid recognition, yes/no, and multiple choice.
+Do not ask “What is the second law?” without naming the framework. Do not hide
+the answer in a scenario that asks the learner to identify the concept.
 
 Every substantial card uses progressive disclosure:
 
@@ -328,7 +360,8 @@ Do not generate the final TSV in one pass. Follow this sequence:
 2. Extract concepts into `concepts.json`.
 3. Rank concepts by importance.
 4. Generate candidate concept, mechanism, contrast, procedure, and failure cards.
-5. Generate situation, application, and trigger cards for actionable Tier 1/2 ideas.
+5. If the optional application layer is requested, generate situation,
+   application, and trigger cards for actionable Tier 1/2 ideas.
 6. Add re-teaching explanations and source examples.
 7. Deduplicate and test atomicity.
 8. Audit book and supporting-file coverage and source fidelity.
@@ -337,28 +370,33 @@ Do not generate the final TSV in one pass. Follow this sequence:
 
 ## Required quality tests
 
-For each Tier 1 concept, ensure there is an understanding/reasoning card and,
-when a meaningful real-life cue exists, a situation, trigger, or application
-card. Tier 2 usually needs one or two cards. Before finalising, sample Tier 1
-and Tier 2 cards under the following forgotten-book test:
+For each Tier 1 concept, ensure there is an understanding/reasoning card in the
+core teaching deck. A situation, trigger, or application card is required only
+when the user requests the optional application layer. Tier 2 usually needs one
+or two core cards. Before finalising, sample Tier 1 and Tier 2 cards under the
+following forgotten-book test:
 
 1. Is the Front understandable without remembering the chapter?
 2. Does it require meaningful generation rather than recognition?
 3. If the learner says “I have no idea,” does the Back teach the concept?
 4. Does the learner understand why it matters afterward?
-5. Where appropriate, would the learner recognise a future situation where it applies?
+5. Does the core explain when the idea applies, without requiring a separate
+   scenario card?
 
 Then run a book-reconstruction test: after mastering the deck, could the learner
 explain the thesis, principles, frameworks, mechanisms, procedures, distinctions,
 failures, use conditions, and relationships? If the deck feels like unrelated
-facts, revise it. Run a real-life retrieval test for each major actionable idea:
-what observation should make it come to mind, and is that cue represented by a
-scenario, trigger, or application card?
+facts, revise it. If an optional application layer is requested, run a real-life
+retrieval test for each major actionable idea: what observation should make it
+come to mind, and is that cue represented by a scenario, trigger, or application
+card?
 
-For companion coverage, also verify that the learner can reconstruct the
-cheatsheet workflow, the named patterns and their triggers, the glossary's
-important distinctions, and the skill's practical templates without reopening
-the supporting files. Record source-area counts and omissions in `report.md`.
+For core companion coverage, verify that the learner can reconstruct the
+cheatsheet workflow, load-bearing named patterns, glossary distinctions, and
+the skill's practical templates without reopening the supporting files. If the
+optional application layer is enabled, also verify its pattern triggers and
+real-life transfer prompts. Record core and application counts and omissions in
+`report.md`.
 
 Per-card gate:
 
@@ -367,7 +405,9 @@ Per-card gate:
 - **Atomicity:** one primary test.
 - **Context:** the Front still makes sense in a year.
 - **Re-teaching:** the Back can recover the idea after complete forgetting.
-- **Transfer:** important actionable concepts have use-in-context practice.
+- **Transfer:** important actionable concepts have use-in-context practice when
+  the optional application layer is enabled; the core Back still states the use
+  condition.
 - **Fidelity:** every substantive claim is supported by the generated skill.
 - **Duplication:** another card does not test essentially the same route.
 
@@ -389,28 +429,33 @@ notes, or modify a live Anki collection without explicit scope.
 ## Default behaviour and routine
 
 For a normal request, discover and read the generated skill, build and save the
-concept model, rank concepts, generate complementary retrieval and
-re-teaching cards, run all quality tests, and export the files. Default to:
+concept model, rank concepts, generate core teaching and re-teaching cards, run
+all quality tests, and export the files. Default to a core teaching deck:
 
 ```yaml
 depth: standard
 reteach: true
-scenarios: true
-applications: true
-triggers: true
+scenarios: false
+applications: false
+triggers: false
 synthesis: true
 source_markers: true
 ```
 
+Enable the three optional application flags only when the user requests
+transfer practice or an exhaustive companion/application export, and report
+those cards separately from the core count.
+
 The learner should understand the chapter before introducing its cards. Start
 with core cards and a manageable number of new cards, retrieve before revealing,
 and use the Re-teach section after a miss. Once a week, explain a framework from
-a blank page and try a fresh situation. For actionable books, run one small real
-experiment and review what happened outside the graded deck. Inspect review
-time, repeated lapses, unaided explanation, and application; rewrite or suspend
+a blank page. If the optional layer is present, try a fresh situation and run one
+small real experiment outside the graded deck. Inspect review time, repeated
+lapses, unaided explanation, and (when enabled) application; rewrite or suspend
 low-value cards before adding more.
 
 Success means that spaced repetition preserves usable intellectual value. After
-six or twelve months, the learner should be able to recognise the situation,
-retrieve the important idea, explain why it works, and recover it from the card
-when forgotten.
+six or twelve months, the learner should be able to reconstruct the book's
+important ideas, explain why they work, and recover them from the cards when
+forgotten. If the optional application layer is present, the learner should also
+recognise situations where those ideas apply.

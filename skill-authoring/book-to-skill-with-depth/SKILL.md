@@ -564,14 +564,18 @@ book unless the user requests verification or a source check is needed to avoid
 a misleading card.
 
 Use Feynman-style explanation and the book-learning tutor pattern: retrieval
-should be followed by plain-language reconstruction and useful transfer practice.
+should be followed by plain-language reconstruction. Transfer practice belongs
+to a separately reported application layer when the user requests it.
 
 Build `anki/concepts.json` before cards. Rank concepts into tiers, then generate
-complementary concept, mechanism, situation, application, trigger, contrast,
-failure-mode, procedure, book-map, and synthesis cards where the source supports
-them. Every Tier 1/2 card must have a self-contained re-teaching back: one clear
-retrieval target, a direct Answer, and enough explanation to recover the idea
-after complete forgetting. one idea per card means one target, not one sentence.
+the core teaching deck first: concept/meaning, mechanism/why, framework or law,
+procedure, contrast when needed, book-map, and synthesis cards where the source
+supports them. Situation, application, and trigger cards are an optional
+application layer; generate them only when the user requests transfer practice,
+an exhaustive companion deck, or a separate application export. Every Tier 1/2
+card must have a self-contained re-teaching back: one clear retrieval target, a
+direct Answer, and enough explanation to recover the idea after complete
+forgetting. One idea per card means one target, not one sentence.
 
 The Front may be a simple quiz or glossary prompt; the Back must do the
 teaching. Make `Answer` itself self-contained: define the term, explain why it
@@ -587,16 +591,17 @@ Answer, with one explanatory sentence per member when a framework contains a
 list.
 
 When the generated skill includes `cheatsheet.md`, `patterns.md`, `glossary.md`,
-templates, or a default workflow, add a companion coverage pass. Directly test
-the skill model and workflow, cheatsheet procedures and diagnostics, named
-pattern triggers or applications, glossary distinctions, and source examples
-that teach transfer. Use procedure overviews plus component cards for long
-checklists, avoid duplicate definitions, and report supporting-file coverage
-and omissions. An explicit target such as 100 cards is applied after coverage,
-not by manufacturing repetition.
+templates, or a default workflow, add a companion coverage pass to the core for
+load-bearing definitions, model relationships, procedures, and glossary
+distinctions. Put trigger/application/situation prompts in the optional
+application layer. Use procedure overviews plus component cards for long
+checklists, avoid duplicate definitions, and report core and application
+coverage separately. An explicit target such as 100 cards is applied after core
+coverage, not by manufacturing repetition.
 
-Run the forgotten-book, book-reconstruction, real-life retrieval, source-fidelity,
-atomicity, and duplication checks before exporting. Create deterministic card
+Run the forgotten-book, book-reconstruction, source-fidelity, atomicity, and
+duplication checks before exporting. Run real-life retrieval checks only for an
+enabled application layer. Create deterministic card
 IDs, a portable `ID/Front/Back/Tags` TSV, `concepts.json`, `preview.md`,
 `report.md`, and `import.md`; use a header-safe import file when needed. For an
 existing deck, retain stable IDs, write `changes.md`, and flag obsolete cards
