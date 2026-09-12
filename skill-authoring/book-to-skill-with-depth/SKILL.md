@@ -67,9 +67,9 @@ Four conversion paths plus one optional Stage 2 export path are available. Route
 **Output:** Updated existing skill with new/revised chapter summaries and merged indexes/glossaries.
 
 ### 5. Anki Export (Stage 2)
-**Trigger:** User asks to turn an existing generated book skill into Anki, flashcards, a deck, or spaced-repetition cards.
+**Trigger:** User asks to create, review, or revise Anki flashcards or a spaced-repetition deck from a generated book skill.
 **Action:** Keep the generated skill as Stage 1, then run the separate Stage 2 workflow below against its chapter and supporting files.
-**Output:** `anki/<book-slug>.tsv` plus `anki/import.md`; Stage 1 files are not replaced.
+**Output:** Anki TSV and import file, import guide, coverage audit, and practice guide; for audit-only requests, findings and proposed changes. Stage 1 files are not replaced.
 
 ---
 
@@ -557,15 +557,38 @@ If the scanner exits non-zero, stop and ask a human to review its file/line find
 
 ## Stage 2 — Turn a generated book skill into Anki
 
-Run this stage only when requested, after Stage 1 has produced a complete book skill. Read `docs/anki.md` for the full specification. The stage uses the Feynman method and the book-learning tutor pattern: cards should make the learner retrieve an idea, explain it plainly, expose the mechanism, apply it, and correct a tempting misunderstanding. Each card must test one idea per card and remain grounded in the generated skill.
+Run only when the user requests an Anki export, audit, or revision. Read
+[docs/anki.md](docs/anki.md) for the complete Stage 2 specification. The
+generated skill is the normal source of truth; do not re-process the original
+book unless the user requests verification or a source check is needed to avoid
+a misleading card.
 
-1. Resolve the existing generated skill directory from the user's path or slug.
-2. Read `SKILL.md`, every file under `chapters/`, and the supporting glossary, patterns, and cheatsheet.
-3. Create a UTF-8 TSV at `anki/<book-slug>.tsv` with exactly `Front`, `Back`, and `Tags` columns. Use adaptive card counts, source/chapter tags, concise self-contained answers, and `<br>` instead of physical line breaks.
-4. Create `anki/import.md` with Anki field mapping, import instructions, card counts by chapter/type, and any omitted or uncertain source areas.
-5. Run `python tools/validate_anki_tsv.py anki/<book-slug>.tsv`. Fix duplicates, blank fields, malformed rows, and unsupported claims before reporting success.
+Use Feynman-style explanation and the book-learning tutor pattern: retrieval
+should be followed by plain-language reconstruction and useful transfer practice.
 
-Do not create cards merely to hit a quota. Prefer concept, mechanism, contrast, procedure, application, failure-mode, worked-example, and synthesis cards when the source supports them. Do not add general knowledge, fabricated examples, or long quotations.
+Build `anki/concepts.json` before cards. Rank concepts into tiers, then generate
+complementary concept, mechanism, situation, application, trigger, contrast,
+failure-mode, procedure, book-map, and synthesis cards where the source supports
+them. Every Tier 1/2 card must have a self-contained re-teaching back: one clear
+retrieval target, a direct Answer, and enough explanation to recover the idea
+after complete forgetting. one idea per card means one target, not one sentence.
+
+When the generated skill includes `cheatsheet.md`, `patterns.md`, `glossary.md`,
+templates, or a default workflow, add a companion coverage pass. Directly test
+the skill model and workflow, cheatsheet procedures and diagnostics, named
+pattern triggers or applications, glossary distinctions, and source examples
+that teach transfer. Use procedure overviews plus component cards for long
+checklists, avoid duplicate definitions, and report supporting-file coverage
+and omissions. An explicit target such as 100 cards is applied after coverage,
+not by manufacturing repetition.
+
+Run the forgotten-book, book-reconstruction, real-life retrieval, source-fidelity,
+atomicity, and duplication checks before exporting. Create deterministic card
+IDs, a portable `ID/Front/Back/Tags` TSV, `concepts.json`, `preview.md`,
+`report.md`, and `import.md`; use a header-safe import file when needed. For an
+existing deck, retain stable IDs, write `changes.md`, and flag obsolete cards
+without silently deleting them. Validate the export and never claim structural
+validation proves learning effectiveness.
 
 ## Step 10 — Cleanup and report
 
