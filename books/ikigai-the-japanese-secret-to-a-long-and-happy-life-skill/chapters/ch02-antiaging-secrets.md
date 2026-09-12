@@ -35,7 +35,7 @@ The chapter links aging with the condition of the mind, the body, and the stress
 
 ## Worked Example
 
-The chapter describes mental training as difficult at first and easier with practice, with improvement affecting both performance and self-image. It also points to ordinary interaction—playing a game or being with other people—as a source of stimulation that can counter solitude. The example supports a small, repeatable approach: choose a task that is initially effortful, return to it, and let growing competence make the activity more rewarding.
+The chapter describes mental training as difficult at first and easier with practice, with improvement affecting both performance and self-image rather than requiring a dramatic transformation. It also points to ordinary interaction—playing a game or being with other people—as a source of stimulation that can counter solitude and keep a routine from becoming purely automatic. The broader examples pair this mental activity with walking, gentle exercise, sleep, and recovery from chronic stress. The example supports a small, repeatable approach: choose a task that is initially effortful, return to it, and let growing competence make the activity more rewarding.
 
 ## Key Takeaways
 

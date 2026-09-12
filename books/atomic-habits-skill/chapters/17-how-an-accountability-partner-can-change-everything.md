@@ -2,7 +2,7 @@
 
 ## Core lesson
 
-An accountability partner or habit contract adds an immediate social cost to breaking a promise. The prospect of another person knowing can be more motivating than a distant consequence because reputation and belonging are experienced in the present. Accountability also makes the commitment more concrete by specifying what will be done and what evidence will count. It works best when the partner supports the desired identity and helps the user recover, rather than simply monitoring for failure. The agreement should make the consequence visible enough to matter without making the relationship unsafe or punitive.
+An accountability partner or habit contract adds an immediate social cost to breaking a promise. The book's example of a written contract between Bryan Harris, his wife, and his trainer shows why specificity matters: the commitment named daily behaviors, evidence, check-ins, and consequences. The prospect of another person knowing can be more motivating than a distant consequence because reputation and belonging are experienced in the present. Accountability also makes the commitment more concrete by specifying what will be done and what evidence will count. It works best when the partner supports the desired identity and helps the user recover, rather than simply monitoring for failure. The agreement should make the consequence visible enough to matter without making the relationship unsafe or punitive.
 
 ## Use it
 

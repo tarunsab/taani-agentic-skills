@@ -5,6 +5,8 @@ description: Apply James Clear's Atomic Habits framework to behavior change. Use
 
 # Atomic Habits
 
+**Regenerated**: 2026-09-12 — chapter set reconciled after a source-grounded depth pass.
+
 This skill turns James Clear's *Atomic Habits: Tiny Changes, Remarkable Results* into a practical behavior-design coach. It is a reusable framework, not a replacement for the user's judgment or for professional advice.
 
 ## What this skill does

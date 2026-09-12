@@ -2,11 +2,11 @@
 
 ## Core lesson
 
-Motivation is often strongest when a task sits just beyond current ability: difficult enough to be engaging but not so difficult that progress feels impossible. This middle zone creates frequent evidence of improvement while still presenting a problem worth solving. If the challenge is too easy, the behavior loses novelty and attention; if it is too hard, repeated failure weakens the expectation of reward. After a habit becomes routine, boredom—not failure—can become the main threat because the system no longer provides much immediate stimulation. Sustained practice therefore requires a stable minimum plus deliberate adjustments to the edge of difficulty.
+Motivation is often strongest when a task sits just beyond current ability: difficult enough to be engaging but not so difficult that progress feels impossible. The chapter's Goldilocks Rule places the useful challenge at the edge of current ability, where the person can win often enough to continue while still needing to concentrate. This middle zone creates frequent evidence of improvement while still presenting a problem worth solving. If the challenge is too easy, the behavior loses novelty and attention; if it is too hard, repeated failure weakens the expectation of reward. After a habit becomes routine, boredom—not failure—can become the main threat because the system no longer provides much immediate stimulation. Sustained practice therefore requires a stable minimum plus deliberate adjustments to the edge of difficulty.
 
 ## Use it
 
-Keep the basic schedule stable while varying the challenge, feedback, or context. Increase difficulty in small steps that preserve a reasonable chance of success, and use feedback to decide whether the next step is too easy or too hard. Professionals continue when the novelty has faded; they do not make motivation a prerequisite for showing up. When boredom appears, change the quality of the challenge rather than discarding the habit cue. A minimum version protects continuity while the full practice remains flexible enough to stay engaging.
+Keep the basic schedule stable while varying the challenge, feedback, or context. Increase difficulty in small steps that preserve a reasonable chance of success, and use feedback to decide whether the next step is too easy or too hard. Professionals continue when the novelty has faded; the chapter uses Steve Martin's repeated testing of new material as an example of staying engaged through deliberate refinement rather than waiting for inspiration. When boredom appears, change the quality of the challenge rather than discarding the habit cue. A minimum version protects continuity while the full practice remains flexible enough to stay engaging.
 
 ## Playbook
 

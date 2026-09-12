@@ -6,7 +6,7 @@ description: Apply the Ikigai framework from Héctor García and Francesc Mirall
 <!-- argument-hint: [topic, framework name, or chapter number] -->
 
 # Ikigai: The Japanese Secret to a Long and Happy Life
-**Authors**: Héctor García and Francesc Miralles | **Chapters**: 9 chapters plus prologue and epilogue | **Generated**: 2026-09-07
+**Authors**: Héctor García and Francesc Miralles | **Chapters**: 9 chapters plus prologue and epilogue | **Generated**: 2026-09-12
 
 ## How to Use This Skill
 

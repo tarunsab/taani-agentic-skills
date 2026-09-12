@@ -6,7 +6,7 @@ description: Apply Robert Kiyosaki's Rich Dad Poor Dad framework to financial ed
 <!-- argument-hint: [topic, framework name, or chapter number] -->
 
 # Rich Dad Poor Dad
-**Author**: Robert T. Kiyosaki | **Chapters**: 9 lessons plus final thoughts | **Generated**: 2026-09-05
+**Author**: Robert T. Kiyosaki | **Chapters**: 9 lessons plus final thoughts | **Generated**: 2026-09-12
 
 ## How to Use This Skill
 

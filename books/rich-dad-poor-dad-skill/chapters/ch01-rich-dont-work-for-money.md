@@ -6,7 +6,7 @@ The opening story uses the author's childhood desire to become rich and his work
 
 ## Fear and greed
 
-The book describes a loop in which fear of not paying bills drives work, while greed or desire makes the next purchase feel necessary. A raise can temporarily relieve fear without changing the underlying dependence, because expenses may rise and recreate the same pressure. The proposed response is not to deny the need for income; it is to notice the emotional loop and learn how money, taxes, expenses, and assets interact. A useful coaching question is: “If your income rose, what would change in your asset column rather than only in your spending?”
+The book describes a loop in which fear of not paying bills drives work, while greed or desire makes the next purchase feel necessary. A raise can temporarily relieve fear without changing the underlying dependence, because expenses may rise and recreate the same pressure. Rich dad turns this loop into a live lesson by increasing the boys' hypothetical wage until they can feel how quickly a larger reward can capture their attention. The proposed response is not to deny the need for income; it is to notice the emotional loop and learn how money, taxes, expenses, and assets interact. A useful coaching question is: “If your income rose, what would change in your asset column rather than only in your spending?”
 
 ## Learn before demanding a reward
 
@@ -14,4 +14,4 @@ Rich dad deliberately withholds the expected wage in the story so that the child
 
 ## Practical translation
 
-Use earned income as a resource for stability and for building assets, rather than treating the paycheck as the entire strategy. Track where the money goes after taxes and identify the smallest repeatable amount that can be directed toward financial education or productive ownership. Avoid assuming that any asset will automatically produce income: verify the cash flow, costs, liquidity, and risk. The lesson is a change in attention—from “how do I get paid more?” to “how do I learn to create and control more value?”
+Use earned income as a resource for stability and for building assets, rather than treating the paycheck as the entire strategy. Track where the money goes after taxes and identify the smallest repeatable amount that can be directed toward financial education or productive ownership. The chapter's childhood story also separates doing something from merely talking about becoming rich: the boys' first scheme fails, but the attempt exposes both creativity and the need to learn the rules. Avoid assuming that any asset will automatically produce income: verify the cash flow, costs, liquidity, and risk. The lesson is a change in attention—from “how do I get paid more?” to “how do I learn to create and control more value?”

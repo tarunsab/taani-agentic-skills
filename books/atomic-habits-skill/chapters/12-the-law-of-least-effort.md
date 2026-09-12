@@ -2,11 +2,11 @@
 
 ## Core lesson
 
-People tend to choose the option requiring less work. A small amount of friction can determine which of two otherwise similar actions happens, especially when the user is tired, rushed, or undecided. Friction includes physical effort, number of steps, waiting, setup, and the need to remember what comes next. This makes convenience a design variable rather than a sign that the person cares less. Reduce friction for the behavior that serves the chosen aim, while adding enough friction to the competing behavior that the default can change.
+People tend to choose the option requiring less work. The chapter illustrates this at a large scale through the easier east–west spread of agriculture across similar climates, then brings the same principle down to ordinary choices such as a one-push-up habit or a gym that lies on the route to work. A small amount of friction can determine which of two otherwise similar actions happens, especially when the user is tired, rushed, or undecided. Friction includes physical effort, number of steps, waiting, setup, and the need to remember what comes next. This makes convenience a design variable rather than a sign that the person cares less. Reduce friction for the behavior that serves the chosen aim, while adding enough friction to the competing behavior that the default can change.
 
 ## Use it
 
-Prime the environment in advance. Prepare materials, reduce clicks, pre-commit choices, and place the desired behavior in the path of least resistance. Add steps, distance, or delay to a competing behavior, but keep the added barrier proportionate so it does not create an unreasonable burden. Look for one-time changes that improve many future repetitions, such as preparing the workspace or changing a default. After implementation, observe where the user still hesitates; the remaining friction is often more informative than the original plan.
+Prime the environment in advance. Prepare materials, reduce clicks, pre-commit choices, and place the desired behavior in the path of least resistance. The book's “resetting the room” example prepares a space for its next use, while setting out food, workout clothes, or drawing tools turns a future intention into an available response. Add steps, distance, or delay to a competing behavior, but keep the added barrier proportionate so it does not create an unreasonable burden. Look for one-time changes that improve many future repetitions, such as preparing the workspace or changing a default. After implementation, observe where the user still hesitates; the remaining friction is often more informative than the original plan.
 
 ## Playbook
 

@@ -2,7 +2,7 @@
 
 ## Core lesson
 
-Natural variation can make some habits and fields feel easier or harder for different people. These differences do not determine a fixed destiny, but they can influence which environments reward effort and which create unnecessary struggle. The practical implication is not to abandon effort, but to choose a game that fits the person's strengths and to use constraints as information about where effort is likely to pay off. A good fit can make practice more rewarding, which increases the chance that the behavior will be repeated long enough to compound. The task is to discover fit through experience rather than use talent as an excuse to avoid learning.
+Natural variation can make some habits and fields feel easier or harder for different people. The chapter compares Michael Phelps and Hicham El Guerrouj to show that elite performance can depend on a particular body and environment fitting a particular event, not on one universal ideal. These differences do not determine a fixed destiny, but they can influence which environments reward effort and which create unnecessary struggle. The practical implication is not to abandon effort, but to choose a game that fits the person's strengths and to use constraints as information about where effort is likely to pay off. A good fit can make practice more rewarding, which increases the chance that the behavior will be repeated long enough to compound. The task is to discover fit through experience rather than use talent as an excuse to avoid learning.
 
 ## Use it
 

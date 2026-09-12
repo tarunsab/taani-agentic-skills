@@ -10,9 +10,9 @@ Diagnose before prescribing. Ask what starts the behavior, what state the person
 
 ## Playbook
 
-Use the laws as levers rather than as a checklist that must always be changed all at once. Start with the link that is weakest in the current context, then change one or two variables so the effect is visible. For a desired habit, increase the chance of starting before adding ambitious volume. For an unwanted habit, reducing exposure to the cue may be more powerful than arguing with the craving in the moment. Reassess after repeated attempts and keep the parts that reduce effort without damaging the larger aim.
+Use the laws as levers rather than as a checklist that must always be changed all at once. Start with the link that is weakest in the current context, then change one or two variables so the effect is visible. The chapter's examples—such as making a phone less visible, placing workout clothes in the path of the morning, or adding friction to an unwanted screen habit—show that a small environmental change can alter the whole sequence. For a desired habit, increase the chance of starting before adding ambitious volume. For an unwanted habit, reducing exposure to the cue may be more powerful than arguing with the craving in the moment. Reassess after repeated attempts and keep the parts that reduce effort without damaging the larger aim.
 
-For a desired habit, improve each law in sequence. For an unwanted habit, invert the sequence: hide the cue, make the outcome unattractive, add friction, and add an immediate cost. If one link is weak, change the environment before asking for more motivation.
+For a desired habit, improve each law in sequence: make the cue obvious, the craving attractive, the response easy, and the reward satisfying. For an unwanted habit, invert the sequence: hide the cue, make the outcome unattractive, add friction, and add an immediate cost. The four laws are broad design levers rather than an exhaustive theory of behavior, so use the model to locate the bottleneck and then test the smallest change that addresses it. If one link is weak, change the environment before asking for more motivation.
 
 ## Pitfall
 

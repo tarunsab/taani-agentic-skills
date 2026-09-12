@@ -6,7 +6,7 @@ The authors introduce ikigai through questions about meaning, purpose, longevity
 
 ## Community and mutual help
 
-The prologue highlights ichariba chode, treating people like brothers even when they have not met, and yuimaaru, the local spirit of teamwork. These ideas make belonging practical: residents help one another and feel useful rather than merely protected. The authors connect this social fabric with the motivation to stay active and celebrate life. When applying the model, ask not only “what is my purpose?” but also “where do I contribute and who would notice my absence?”
+The prologue highlights ichariba chode, treating people like brothers even when they have not met, and yuimaaru, the local spirit of teamwork. These ideas make belonging practical: residents help one another, share ordinary responsibilities, and feel useful rather than merely protected. The authors connect this social fabric with the motivation to stay active and celebrate life, while presenting the observation as part of a wider pattern rather than proof of one cause. When applying the model, ask not only “what is my purpose?” but also “where do I contribute and who would notice my absence?”
 
 ## Source boundary
 

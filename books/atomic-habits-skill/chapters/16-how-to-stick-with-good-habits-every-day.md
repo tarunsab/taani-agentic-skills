@@ -2,11 +2,11 @@
 
 ## Core lesson
 
-Visible progress can make repetition satisfying. A habit tracker provides evidence that the behavior happened and can support a streak, turning an otherwise invisible process into something the user can see. The record is useful because it supplies immediate feedback, not because an unbroken chain is morally valuable. The recovery rule matters more than perfect continuity: return quickly after a miss before the exception becomes a new pattern. Tracking should remain subordinate to the actual behavior and outcome, since a perfectly maintained proxy can still represent poor progress.
+Visible progress can make repetition satisfying. The chapter's paper-clip strategy makes this tangible: one clip moves after each sales call, so the day's work is visible before the long-term result arrives. A habit tracker provides evidence that the behavior happened and can support a streak, turning an otherwise invisible process into something the user can see. The record is useful because it supplies immediate feedback, not because an unbroken chain is morally valuable. The recovery rule matters more than perfect continuity: return quickly after a miss before the exception becomes a new pattern. Tracking should remain subordinate to the actual behavior and outcome, since a perfectly maintained proxy can still represent poor progress.
 
 ## Use it
 
-Track the smallest meaningful completion with a checkmark, calendar mark, or count. Pair tracking with “never miss twice” so the record encourages recovery rather than fear of breaking perfection. Choose a measure that is close enough to the behavior to be recorded immediately, but meaningful enough to inform a later decision. Review whether the metric is a useful proxy rather than assuming that every measurable number matters. If the tracker becomes burdensome or the number improves while quality declines, simplify the measure and inspect the underlying system.
+Track the smallest meaningful completion with a checkmark, calendar mark, or count. Pair tracking with “never miss twice” so the record encourages recovery rather than fear of breaking perfection. Record the measure immediately after the behavior, as in moving a paper clip after a sales call, so the completion itself becomes the cue to track. Choose a measure that is close enough to the behavior to be recorded immediately, but meaningful enough to inform a later decision. Review whether the metric is a useful proxy rather than assuming that every measurable number matters. If the tracker becomes burdensome or the number improves while quality declines, simplify the measure and inspect the underlying system.
 
 ## Playbook
 

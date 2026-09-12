@@ -14,7 +14,7 @@ Kiyosaki distinguishes people who buy packaged investments from people who creat
 
 ## Manage risk instead of denying it
 
-The book repeatedly says that risk is always present and that avoiding every risk can also carry a cost. The disciplined interpretation is to identify the downside, limit exposure, preserve essential liquidity, test assumptions, and know how to recover. Boldness without diligence is not the financial intelligence being taught. When a user asks whether an opportunity is “safe,” replace the binary question with “what risks exist, how large are they, and what controls do we have?”
+The book repeatedly says that risk is always present and that avoiding every risk can also carry a cost. Its own examples range from relatively stable real estate to highly speculative stocks, and the author explicitly notes that a deal risky for one person may be less risky for someone with more knowledge and experience. The disciplined interpretation is to identify the downside, limit exposure, preserve essential liquidity, test assumptions, and know how to recover. Boldness without diligence is not the financial intelligence being taught. When a user asks whether an opportunity is “safe,” replace the binary question with “what risks exist, how large are they, and what controls do we have?”
 
 ## Use games and feedback
 

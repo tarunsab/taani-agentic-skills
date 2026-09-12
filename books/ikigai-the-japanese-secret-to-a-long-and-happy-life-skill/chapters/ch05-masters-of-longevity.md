@@ -34,7 +34,7 @@ The authors collect statements and life patterns from supercentenarians and olde
 
 ## Worked Example
 
-The chapter contrasts artists who continue creating into old age with the idea that retirement should end productive identity. Hokusai is presented as treating later life as a period of deeper observation and future artistic progress. The example is useful as a design question: what work or practice would you still want to improve if external status and deadlines disappeared?
+The chapter contrasts artists who continue creating into old age with the idea that retirement should end productive identity. Hokusai is presented as treating later life as a period of deeper observation and future artistic progress, while other examples emphasize ordinary habits such as rest, moderate living, helping others, humor, and staying curious. These stories show recurring patterns the authors find meaningful, but they do not establish that any one practice causes exceptional longevity. The example is useful as a design question: what work or practice would you still want to improve if external status and deadlines disappeared?
 
 ## Key Takeaways
 
