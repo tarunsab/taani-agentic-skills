@@ -573,6 +573,19 @@ them. Every Tier 1/2 card must have a self-contained re-teaching back: one clear
 retrieval target, a direct Answer, and enough explanation to recover the idea
 after complete forgetting. one idea per card means one target, not one sentence.
 
+The Front may be a simple quiz or glossary prompt; the Back must do the
+teaching. Make `Answer` itself self-contained: define the term, explain why it
+matters and how it works, and state a use condition or distinction when the
+source supports it. For a framework or law, explain every member rather than
+only naming a list. For a pattern or procedure, include its trigger and steps.
+Use `Re-teach` for a second recovery pass, examples, or common confusions; do
+not hide the only explanation there. These rules are generic across
+self-help, psychology, productivity, leadership, and relationship books: use
+the source's own frameworks and terminology rather than assuming a fixed set of
+laws. Aim for three to eight clear sentences or a short labelled list in the
+Answer, with one explanatory sentence per member when a framework contains a
+list.
+
 When the generated skill includes `cheatsheet.md`, `patterns.md`, `glossary.md`,
 templates, or a default workflow, add a companion coverage pass. Directly test
 the skill model and workflow, cheatsheet procedures and diagnostics, named

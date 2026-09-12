@@ -49,6 +49,41 @@ Back  → confirm memory or teach the idea again
 This is a hard requirement. A card that merely names a concept, repeats a
 slogan, or uses unexplained jargon fails even if its answer is factually true.
 
+## Teaching-answer requirement
+
+This rule is domain-neutral: apply it to self-help, psychology, productivity,
+leadership, relationships, and other behavior-oriented books. The source's own
+terms and frameworks determine what gets explained; do not import a fixed
+framework or assume every book has the same laws.
+
+The Front may be a short quiz prompt, a glossary term, or a realistic situation.
+The first `Answer` section on the Back is the primary teaching unit; do not put
+the actual explanation only in `Re-teach`. A learner who has forgotten the book
+must be able to read `Answer` and understand the concept without reopening the
+source notes.
+
+Use the answer shape that fits the target:
+
+- **Concept or glossary term:** give a plain definition, why it matters, the
+  mechanism or role it plays, and a boundary, distinction, or use condition
+  when the source supports one.
+- **Framework, law, or named list:** name every member and explain what each
+  one changes, why it works, and its inversion or example when applicable. A
+  sentence that only lists the names is insufficient.
+- **Mechanism:** state the causal chain in order, then connect it to the
+  practical decision it changes.
+- **Pattern or procedure:** give the trigger, the steps, and the reason the
+  steps work; include a source example when it clarifies transfer.
+- **Situation or application:** name the relevant idea, explain the choice, and
+  state the limitation or tempting mistake that would change the decision.
+
+Aim for three to eight clear sentences or a short labelled list in `Answer`;
+major frameworks may need one explanatory sentence per member. Keep `Re-teach`
+as a second pass that restores the idea after a miss, adds a compact memory
+cue, or explains a common confusion. Never use a one-sentence label as the
+only explanation for a major concept, mechanism, glossary definition, or
+framework.
+
 ## Concept model before cards
 
 Do not turn paragraphs into questions in a single pass. First construct an
@@ -171,7 +206,7 @@ Every substantial card uses progressive disclosure:
 
 ```html
 <b>Answer</b><br>
-{direct answer in 1–4 sentences}
+{direct teaching answer in 2–6 sentences or a short labelled list}
 <br><br>
 <b>Re-teach</b><br>
 {why it matters, how it works, and the source-supported detail needed to recover it}
@@ -186,8 +221,8 @@ Every substantial card uses progressive disclosure:
 ```
 
 Omit empty sections, but do not omit re-teaching for Tier 1 or Tier 2 cards.
-The first visible section answers the question quickly; the re-teach section
-must make the idea understandable if retrieval failed. Define a term before
+The first visible section answers the question quickly and teaches the idea;
+the re-teach section must make recovery easier after retrieval failed. Define a term before
 using it, explain its mechanism, and include why it matters or when it applies
 when the source supports that detail. A one-sentence back is acceptable only for
 a genuinely simple fact or precise label that remains intelligible without
