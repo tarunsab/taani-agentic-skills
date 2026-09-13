@@ -1,81 +1,47 @@
 # Atomic Habits Anki deck
 
-This Stage 2 deck turns the Atomic Habits skill into retrieval practice. The
-chapter notes remain the source of truth; the cards test the book's main
-mechanisms, distinctions, procedures, examples, failure modes, and transfer
-decisions.
+This Stage 2 deck is the teaching core for the Atomic Habits skill. It uses
+three card families: concept/definition, mechanism/why, and book-map/synthesis.
+Laws, glossary terms, named patterns, examples, limitations, and use conditions
+are explained inside the card backs. Situational, application, and trigger cards
+are not included.
 
 ## Deck details
 
 - **Deck name**: Atomic Habits
 - **File**: [atomic-habits.tsv](atomic-habits.tsv)
-- **Cards**: 130
+- **Header-safe import**: [atomic-habits-import.txt](atomic-habits-import.txt)
+- **Cards**: 40
 - **Note type**: Basic
 - **Encoding**: UTF-8
-- **Fields**: `Front`, `Back`, `Tags`
+- **Fields**: `ID`, `Front`, `Back`, `Tags`
 - **Line breaks**: `<br>` is used inside fields; each card occupies one TSV row.
 
-## Import into Anki
-
-1. In Anki, choose **File → Import** and select `atomic-habits.tsv`.
-2. Select or create the **Atomic Habits** deck.
-3. Set the file type to **Tab**, map the three fields to **Front**, **Back**,
-   and **Tags**, and enable HTML in fields if Anki presents that option.
-4. Preview the import, then import the notes. Tags include chapter and card
-   type, for example `atomic-habits::ch13::procedure`.
-
-## Coverage by chapter
-
-| Source area | Cards |
-|---|---:|
-| Introduction | 4 |
-| Chapter 1 | 6 |
-| Chapter 2 | 5 |
-| Chapter 3 | 6 |
-| Chapter 4 | 5 |
-| Chapter 5 | 6 |
-| Chapter 6 | 5 |
-| Chapter 7 | 5 |
-| Chapter 8 | 6 |
-| Chapter 9 | 5 |
-| Chapter 10 | 6 |
-| Chapter 11 | 6 |
-| Chapter 12 | 6 |
-| Chapter 13 | 6 |
-| Chapter 14 | 6 |
-| Chapter 15 | 6 |
-| Chapter 16 | 6 |
-| Chapter 17 | 5 |
-| Chapter 18 | 6 |
-| Chapter 19 | 6 |
-| Chapter 20 | 6 |
-| Appendix | 8 |
-| Conclusion | 4 |
-| **Total** | **130** |
-
-## Coverage by card type
+## Card composition
 
 | Type | Cards |
 |---|---:|
-| Application | 19 |
-| Concept | 18 |
-| Contrast | 11 |
-| Decision | 5 |
-| Diagnosis | 1 |
-| Failure mode | 16 |
-| Mechanism | 22 |
-| Procedure | 27 |
-| Synthesis | 2 |
-| Worked example | 9 |
-| **Total** | **130** |
+| Concept / definition | 22 |
+| Mechanism / why | 14 |
+| Book-map | 3 |
+| Synthesis | 1 |
+| **Total** | **40** |
 
-## Fidelity and limitations
+## Import into Anki
 
-The cards were built from `SKILL.md`, all chapter notes, `patterns.md`,
-`cheatsheet.md`, and `glossary.md`. No chapter was omitted because the skill
-lacked enough reliable material. The deck intentionally does not reproduce
-every anecdote, repeated explanation, or narrative detail from the EPUB; it
-prioritizes retrieval of ideas that improve understanding and application.
-Answers are paraphrases, not long quotations, and preserve caveats where the
-skill includes them. This is a learning aid, not professional medical,
-financial, or other domain-specific advice.
+1. In Anki, choose **File → Import** and select `atomic-habits-import.txt`.
+2. Select or create the **Atomic Habits** deck.
+3. Confirm the separator is **Tab**, HTML is enabled, and the columns map to
+   `ID`, `Front`, `Back`, and `Tags`.
+4. Preview the import, then import the notes. The `ID` column is the stable note
+   identifier; tags identify the chapter and teaching family.
+
+The ordinary `atomic-habits.tsv` is also a valid four-column tab-separated export
+for importers that do not use Anki directives.
+
+## Scope
+
+The chapter notes remain the source of truth. The deck is designed to preserve
+book reconstruction: what the key ideas mean, why their mechanisms work, and how
+the model fits together. It is a memory and re-teaching aid, not a replacement
+for the full skill files.
