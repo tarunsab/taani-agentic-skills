@@ -45,6 +45,13 @@ each law, framework, or procedure contains. Put source examples, use conditions,
 and limitations in the Back of those cards. Do not require a situation prompt to
 teach a concept.
 
+Core card families are concept/definition, mechanism/why, and book-map/synthesis.
+Fold laws, glossary terms, named patterns, and essential procedures into those
+core cards rather than creating separate card types by default. Procedure,
+contrast, failure-mode, worked-example, and other specialised cards are optional
+extensions when the user asks for them or when a source cannot be taught
+faithfully within the three core families.
+
 Situation, application, trigger, and other transfer prompts form an **optional
 application layer**. They are useful after the core is familiar because they
 test conditional retrieval: recognising an idea in a new circumstance and
@@ -162,14 +169,14 @@ valid ranges, never quotas. Prefer 85 excellent cards to 180 repetitions.
 The deck normally sits on top of the generated skill rather than replacing it.
 When `SKILL.md` has a cheatsheet, patterns, glossary, templates, or a default
 workflow, perform a companion coverage pass after the core concept ranking.
-Fold load-bearing definitions, model relationships, and procedures into the
-core teaching deck. Put transfer-only prompts into the optional application
-layer:
+Fold load-bearing definitions, model relationships, laws, glossary terms,
+patterns, and procedures into the three core card families. Put transfer-only
+prompts and specialised card types into optional layers:
 
 - add direct retrieval for the skill's model, workflow, response modes, and
   guardrails;
 - cover the cheatsheet's build/break procedures, diagnostic worksheet, failure
-  modes, and review questions;
+  modes, and review questions inside the relevant concept or mechanism backs;
 - give each named reusable pattern a direct teaching card in the core when it is
   load-bearing; add a trigger, application, or failure card only in the optional
   layer when transfer is requested;
@@ -196,16 +203,17 @@ for self-help, psychology, and productivity books; the source controls the deck.
 | Situation → concept (optional) | Recognising an unnamed real-life situation and retrieving the relevant idea |
 | Concept → application (optional) | Using the idea in a specified situation, including a limitation |
 | Trigger (optional) | What observation should make the idea come to mind |
-| Contrast | A meaningful distinction and when it matters |
-| Failure mode (core when load-bearing; otherwise optional) | Mistake → consequence → correction |
-| Procedure | A genuine process; use an overview plus small cards for difficult components |
+| Contrast (optional) | A meaningful distinction and when it matters |
+| Failure mode (optional) | Mistake → consequence → correction |
+| Procedure (optional) | A genuine process; use an overview plus small cards for difficult components |
 | Book-map / synthesis | The conceptual spine and relationships between ideas |
-| Worked example | What a source example illustrates, not incidental trivia |
+| Worked example (optional) | What a source example illustrates, not incidental trivia |
 
 Do not use a fixed mix for the core. Check that every load-bearing concept has a
 meaning/definition card, every important causal claim has a mechanism card, and
-the book's model and named lists can be reconstructed. Treat any mix of optional
-application cards as a separate diagnostic, never as a quota for the core.
+the book's model and named lists can be reconstructed. Treat procedures,
+contrasts, failure modes, worked examples, and application cards as optional
+extensions, never as a quota for the core.
 
 For a Tier 1 concept, build a retrieval network when the source supports it:
 
@@ -218,7 +226,7 @@ CONCEPT ──→ What does it mean? (core)
                     │
                     ├── What should trigger it? (optional)
                     │
-                    └── What is it confused with? (core when needed)
+                    └── What is it confused with? (optional)
 ```
 
 The core routes teach and explain the book. Optional routes add transfer after
@@ -359,9 +367,11 @@ Do not generate the final TSV in one pass. Follow this sequence:
 1. Understand the generated skill architecture.
 2. Extract concepts into `concepts.json`.
 3. Rank concepts by importance.
-4. Generate candidate concept, mechanism, contrast, procedure, and failure cards.
-5. If the optional application layer is requested, generate situation,
-   application, and trigger cards for actionable Tier 1/2 ideas.
+4. Generate candidate concept/definition, mechanism/why, and book-map/synthesis
+   cards. Fold laws, glossary terms, patterns, and procedures into those backs.
+5. If optional extensions are requested, generate contrast, failure, procedure,
+   worked-example, situation, application, and trigger cards as source-supported
+   additions.
 6. Add re-teaching explanations and source examples.
 7. Deduplicate and test atomicity.
 8. Audit book and supporting-file coverage and source fidelity.

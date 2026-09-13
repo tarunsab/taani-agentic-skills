@@ -568,9 +568,10 @@ should be followed by plain-language reconstruction. Transfer practice belongs
 to a separately reported application layer when the user requests it.
 
 Build `anki/concepts.json` before cards. Rank concepts into tiers, then generate
-the core teaching deck first: concept/meaning, mechanism/why, framework or law,
-procedure, contrast when needed, book-map, and synthesis cards where the source
-supports them. Situation, application, and trigger cards are an optional
+the core teaching deck first: concept/definition, mechanism/why, and book-map/
+synthesis cards. Fold frameworks, laws, glossary terms, named patterns, and
+essential procedures into those core backs. Situation, application, trigger,
+contrast, failure-mode, procedure, and worked-example cards are an optional
 application layer; generate them only when the user requests transfer practice,
 an exhaustive companion deck, or a separate application export. Every Tier 1/2
 card must have a self-contained re-teaching back: one clear retrieval target, a
@@ -592,12 +593,12 @@ list.
 
 When the generated skill includes `cheatsheet.md`, `patterns.md`, `glossary.md`,
 templates, or a default workflow, add a companion coverage pass to the core for
-load-bearing definitions, model relationships, procedures, and glossary
-distinctions. Put trigger/application/situation prompts in the optional
-application layer. Use procedure overviews plus component cards for long
-checklists, avoid duplicate definitions, and report core and application
-coverage separately. An explicit target such as 100 cards is applied after core
-coverage, not by manufacturing repetition.
+load-bearing definitions, model relationships, glossary distinctions, and the
+explanation of essential procedures inside core backs. Put
+trigger/application/situation prompts and specialised card types in optional
+layers. Avoid duplicate definitions, and report core and optional coverage
+separately. An explicit target such as 100 cards is applied after core coverage,
+not by manufacturing repetition.
 
 Run the forgotten-book, book-reconstruction, source-fidelity, atomicity, and
 duplication checks before exporting. Run real-life retrieval checks only for an
