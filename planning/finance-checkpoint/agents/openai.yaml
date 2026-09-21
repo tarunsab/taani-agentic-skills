@@ -1,0 +1,6 @@
+interface:
+  display_name: "Finance Checkpoint"
+  short_description: "Run a safe household finance checkpoint"
+  default_prompt: "Use $finance-checkpoint to run my household financial checkpoint."
+policy:
+  allow_implicit_invocation: true

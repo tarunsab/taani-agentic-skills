@@ -1,0 +1,16 @@
+[
+  {"query":"Run my financial checkpoint.","should_trigger":true},
+  {"query":"Update our household Financial Snapshot and compare it with the previous quarter.","should_trigger":true},
+  {"query":"Our salaries and mortgage balance changed—prepare the next finance review.","should_trigger":true},
+  {"query":"Check whether my Finance dashboard is stale and refresh it from approved history.","should_trigger":true},
+  {"query":"Seal the finance checkpoint I just approved.","should_trigger":true},
+  {"query":"Review progress against our approved financial goals.","should_trigger":true},
+  {"query":"We need to revise our household Financial Policy.","should_trigger":true},
+  {"query":"Verify that my last financial checkpoint has not been altered.","should_trigger":true},
+  {"query":"Build a generic budgeting spreadsheet for a small business.","should_trigger":false},
+  {"query":"Explain what net worth means.","should_trigger":false},
+  {"query":"Research today's best ISA rates without changing my vault.","should_trigger":false},
+  {"query":"Summarize this bank statement PDF.","should_trigger":false},
+  {"query":"Calculate compound interest on £10,000.","should_trigger":false},
+  {"query":"Give me general investing advice.","should_trigger":false}
+]

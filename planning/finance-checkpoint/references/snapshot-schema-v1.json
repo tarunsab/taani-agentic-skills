@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://taivault.local/finance/snapshot-schema-v1.json",
+  "title": "Taivault Financial Snapshot Schema v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "as_of",
+    "currency",
+    "household_members",
+    "income",
+    "assets",
+    "liabilities",
+    "recurring_flows",
+    "overrides"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "as_of": { "type": "string", "format": "date" },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "household_members": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "income": { "type": "array", "items": { "$ref": "#/$defs/income" } },
+    "assets": { "type": "array", "items": { "$ref": "#/$defs/asset" } },
+    "liabilities": { "type": "array", "items": { "$ref": "#/$defs/liability" } },
+    "recurring_flows": { "type": "array", "items": { "$ref": "#/$defs/flow" } },
+    "overrides": { "type": "array", "items": { "$ref": "#/$defs/override" } }
+  },
+  "$defs": {
+    "quality": { "enum": ["confirmed", "estimated", "stale", "unknown"] },
+    "baseRecord": {
+      "type": "object",
+      "required": ["id", "label", "quality", "source"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "quality": { "$ref": "#/$defs/quality" },
+        "value_date": { "type": ["string", "null"], "format": "date" },
+        "source": { "type": "string", "minLength": 1 },
+        "method": { "type": "string" },
+        "required_for_sealing": { "type": "boolean", "default": true }
+      }
+    },
+    "income": {
+      "allOf": [
+        { "$ref": "#/$defs/baseRecord" },
+        {
+          "type": "object",
+          "required": ["monthly_net"],
+          "properties": { "monthly_net": { "type": ["number", "null"], "minimum": 0 } }
+        }
+      ]
+    },
+    "asset": {
+      "allOf": [
+        { "$ref": "#/$defs/baseRecord" },
+        {
+          "type": "object",
+          "required": ["category", "value"],
+          "properties": {
+            "category": { "enum": ["cash", "investment", "pension", "property", "vehicle", "material-asset"] },
+            "value": { "type": ["number", "null"], "minimum": 0 },
+            "valuation_date": { "type": ["string", "null"], "format": "date" },
+            "valuation_method": { "type": "string" },
+            "uncertainty_material": { "type": "boolean" },
+            "range_low": { "type": "number", "minimum": 0 },
+            "range_high": { "type": "number", "minimum": 0 }
+          }
+        }
+      ]
+    },
+    "liability": {
+      "allOf": [
+        { "$ref": "#/$defs/baseRecord" },
+        {
+          "type": "object",
+          "required": ["category", "balance", "interest_rate_percent", "monthly_payment"],
+          "properties": {
+            "category": { "enum": ["mortgage", "loan", "credit-card", "student-loan", "other"] },
+            "balance": { "type": ["number", "null"], "minimum": 0 },
+            "interest_rate_percent": { "type": ["number", "null"], "minimum": 0 },
+            "monthly_payment": { "type": ["number", "null"], "minimum": 0 },
+            "secured_asset_id": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "flow": {
+      "allOf": [
+        { "$ref": "#/$defs/baseRecord" },
+        {
+          "type": "object",
+          "required": ["direction", "category", "amount_monthly"],
+          "properties": {
+            "direction": { "enum": ["income", "expense"] },
+            "category": { "enum": ["fixed", "variable"] },
+            "amount_monthly": { "type": ["number", "null"], "minimum": 0 }
+          }
+        }
+      ]
+    },
+    "override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "item_id", "reason", "approved_by", "approved_at"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "item_id": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "approved_by": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "approved_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

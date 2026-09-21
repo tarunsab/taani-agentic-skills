@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "high_interest_debt_percent": 6,
+  "rules": [
+    { "collection": "assets", "category": "cash", "max_age_days": 7, "blocking": true },
+    { "collection": "assets", "category": "investment", "max_age_days": 7, "blocking": true },
+    { "collection": "assets", "category": "pension", "max_age_days": 120, "blocking": true },
+    { "collection": "assets", "category": "property", "max_age_days": 400, "blocking": true },
+    { "collection": "assets", "category": "vehicle", "max_age_days": 400, "blocking": true },
+    { "collection": "assets", "category": "material-asset", "max_age_days": 400, "blocking": true },
+    { "collection": "liabilities", "category": "*", "max_age_days": 7, "blocking": true },
+    { "collection": "income", "category": "*", "max_age_days": 180, "blocking": false },
+    { "collection": "recurring_flows", "category": "*", "max_age_days": 180, "blocking": false }
+  ]
+}

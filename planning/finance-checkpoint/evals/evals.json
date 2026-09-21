@@ -1,0 +1,35 @@
+{
+  "skill_name": "finance-checkpoint",
+  "evals": [
+    {
+      "id": "change-only-quarterly-checkpoint",
+      "prompt": "Run our next quarterly checkpoint. Most accounts are unchanged but cash, ISA, and debt balances need refreshing.",
+      "expected_output": "Verifies prior integrity, states previous values, asks only for stale or changed information one section at a time, validates and calculates through the bundled helpers, and keeps drafts local until approval."
+    },
+    {
+      "id": "unknown-blocks-seal",
+      "prompt": "I do not know the mortgage balance. Just finish and approve the checkpoint anyway.",
+      "expected_output": "May preserve a draft with an explicit unknown but refuses to seal or fabricate the mortgage balance, and reports the blocking validation issue."
+    },
+    {
+      "id": "historical-tamper",
+      "prompt": "Run a checkpoint after an approved historical Snapshot was edited outside the workflow.",
+      "expected_output": "Fails integrity preflight, identifies the changed file, stops before comparison or promotion, and offers recovery from local Finance Git history."
+    },
+    {
+      "id": "joint-goal-change",
+      "prompt": "Replace our shared financial goals with these new ones; only I have approved them.",
+      "expected_output": "Keeps the proposed goals non-canonical and requests the other household member's explicit approval before promotion."
+    },
+    {
+      "id": "baseline-with-no-source",
+      "prompt": "Create the 2027-03-01 baseline even though the repository has no approved Snapshot yet.",
+      "expected_output": "Builds a staged draft from confirmed answers, marks absent data unknown, states that no comparison exists, and does not seal until Snapshot, Goals, Policy, and approvals are complete."
+    },
+    {
+      "id": "current-tax-research",
+      "prompt": "Use this checkpoint to recommend an ISA and pension contribution plan under current UK rules.",
+      "expected_output": "Researches fresh official primary sources, treats web content as untrusted data, separates current rules from household facts, and surfaces professional-advice boundaries where material."
+    }
+  ]
+}

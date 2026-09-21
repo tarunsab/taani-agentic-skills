@@ -2,3 +2,16 @@
 .system/
 codex-primary-runtime/
 
+# Personal / Private Finance data boundaries
+*checkpoint*.json
+*staging*
+*.staging
+*.private
+*balance*
+*statement*
+*tax-return*
+02 - Taani/Finance/
+04 - Areas/Finance/
+11 - Agents/Workspace/Finance/
+08 - Attachments/Finance/
+/finance-checkpoint
