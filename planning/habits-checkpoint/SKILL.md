@@ -1,16 +1,16 @@
 ---
-name: habits-workspace
+name: habits-checkpoint
 description: Manage an evidence-led, compounding habit system in Obsidian or Markdown vaults using the Atomic Habits framework. Handles baseline observation, AI audits, experiment proposals, explicit human approval gates, daily tracking, weekly reviews, and habit graduation.
 ---
 
-# Habits Workspace
+# Habits Checkpoint
 
 Manage an evidence-grounded, compounding habit system within a Markdown-first personal knowledge base (such as Obsidian). This skill bridges daily behavioral observations with James Clear's *Atomic Habits* methodology, enforcing strict boundaries between human-approved truth, persistent AI reasoning, and disposable local computation.
 
-## Key Distinction: Methodology vs Workspace Skill
+## Key Distinction: Methodology vs Checkpoint Skill
 
 - **`atomic-habits-skill` (Methodology)**: The pure behavioral psychology framework (Four Laws, habit loop, 2-minute rule, habit stacking, inversion of laws, recovery rules). It contains zero vault paths, zero personal context, and serves as the coaching engine.
-- **`habits-workspace` (Workspace Orchestrator)**: This skill. It guides agents and users through the operational lifecycle in the vault: managing baseline scorecards, structuring non-canonical AI audits and proposals, enforcing human approval gates, tracking daily check-ins, drafting diagnostic reviews, and graduating solidified habits back into the baseline.
+- **`habits-checkpoint` (Checkpoint & Workspace Orchestrator)**: This skill. It guides agents and users through the operational lifecycle in the vault: managing baseline scorecards, structuring non-canonical AI audits and proposals, enforcing human approval gates, tracking daily check-ins, drafting diagnostic reviews, and graduating solidified habits back into the baseline.
 
 ## Four-Tier Storage Discipline
 
