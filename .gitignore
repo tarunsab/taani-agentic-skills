@@ -22,6 +22,6 @@ codex-primary-runtime/
 08 - Attachments/Habit Exports/
 /habits-checkpoint
 
-# Vault Checkpoint root symlink
-/vault-checkpoint
+# Vault Sentry root symlink
+/vault-sentry
 

@@ -50,7 +50,7 @@ selected, explicitly name it or point the agent at its `SKILL.md`.
 - [`triage`](planning/triage/SKILL.md) — Categorize, verify, and brief issues or external pull requests. Use when incoming work needs a consistent triage state and next action.
 - [`finance-checkpoint`](planning/finance-checkpoint/SKILL.md) — Run a low-admin household Finance checkpoint that moves through four clear stages: review the position, review Goals, give an expert-style assessment against those Goals, then optionally model scenarios or answer a specific financial question.
 - [`habits-checkpoint`](planning/habits-checkpoint/SKILL.md) — Manage an evidence-led, compounding habit system in Obsidian or Markdown vaults using the Atomic Habits framework, with baseline scorecards, AI audits, explicit approval gates, daily tracking, weekly reviews, and habit graduation.
-- [`vault-checkpoint`](planning/vault-checkpoint/SKILL.md) — Run a comprehensive, read-only Obsidian vault health, link integrity, frontmatter schema, and structural audit diagnosing broken links, orphans, duplicates, configuration drift, and data loss risks.
+- [`vault-sentry`](planning/vault-sentry/SKILL.md) — Perform a deep DFS directory-by-directory structural audit, link graph verification, note relocation recommendations, and staleness/archival diagnosis for Obsidian vaults.
 - [`setup-matt-pocock-skills`](planning/setup-matt-pocock-skills/SKILL.md) — Configure a repository’s issue tracker, labels, and domain-document layout for the engineering workflow. Use once before using the related engineering skills in a new repo.
 
 ## Engineering, debugging, and quality

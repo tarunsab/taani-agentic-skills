@@ -1,6 +1,0 @@
-interface:
-  display_name: "Vault Checkpoint"
-  short_description: "Run an Obsidian vault health, link, and integrity checkpoint"
-  default_prompt: "Use $vault-checkpoint to run a health check and integrity audit of my Obsidian vault."
-policy:
-  allow_implicit_invocation: true

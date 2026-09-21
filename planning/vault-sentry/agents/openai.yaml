@@ -1,0 +1,6 @@
+interface:
+  display_name: "Vault Sentry"
+  short_description: "Deep DFS directory, link, structure, and archival auditor for Obsidian vaults"
+  default_prompt: "Use $vault-sentry to audit my Obsidian vault section-by-section, evaluate structure and links, suggest note relocations, and identify notes to archive."
+policy:
+  allow_implicit_invocation: true

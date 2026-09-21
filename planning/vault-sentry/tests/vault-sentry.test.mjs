@@ -8,11 +8,11 @@ import { execFileSync } from "node:child_process";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const skillDir = path.resolve(__dirname, "..");
 const skillMdPath = path.join(skillDir, "SKILL.md");
-const scriptPath = path.join(skillDir, "scripts", "vault-audit.py");
+const scriptPath = path.join(skillDir, "scripts", "vault-sentry.py");
 
-test("vault-checkpoint SKILL.md has valid frontmatter", () => {
+test("vault-sentry SKILL.md has valid frontmatter", () => {
   const content = fs.readFileSync(skillMdPath, "utf8");
-  assert.match(content, /^---\nname:\s*vault-checkpoint\n/);
+  assert.match(content, /^---\nname:\s*vault-sentry\n/);
   assert.match(content, /description:\s*.+/);
 });
 
@@ -22,10 +22,10 @@ test("vault-checkpoint SKILL.md does not contain hardcoded private user paths", 
   assert.doesNotMatch(content, /Dhwani|Tarun Sabbineni/, "Should not contain private personal names");
 });
 
-test("vault-checkpoint CLI script is syntax valid and executable", () => {
-  assert.ok(fs.existsSync(scriptPath), "vault-audit.py exists");
+test("vault-sentry CLI script is syntax valid and executable", () => {
+  assert.ok(fs.existsSync(scriptPath), "vault-sentry.py exists");
   const output = execFileSync("python3", [scriptPath, "--help"], { encoding: "utf8" });
-  assert.match(output, /usage:\s*vault-audit\.py/i);
+  assert.match(output, /usage:\s*vault-sentry\.py/i);
 });
 
 test("vault-checkpoint references exist and are populated", () => {
