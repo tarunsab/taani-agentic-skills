@@ -126,7 +126,7 @@ def run_audit(vault_dir, output_dir=None):
 
     # 2. Markdown & Link Parsing
     wikilink_re = re.compile(r"(!?\[\[(.*?)\]\])")
-    mdlink_re = re.compile(r"(!?\[([^\]]*)\]\(([^)]+)\))")
+    mdlink_re = re.compile(r"!?\[([^\]]*)\]\(([^)]+)\)")
     dataview_re = re.compile(r"```dataview(js)?(.*?)```", re.DOTALL)
 
     incoming_links = defaultdict(set)
