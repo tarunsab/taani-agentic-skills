@@ -21,3 +21,7 @@ codex-primary-runtime/
 11 - Agents/Workspace/Habits/
 08 - Attachments/Habit Exports/
 /habits-checkpoint
+
+# Vault Checkpoint root symlink
+/vault-checkpoint
+
