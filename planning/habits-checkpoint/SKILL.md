@@ -31,7 +31,7 @@ TIER 2: PERSISTENT AI WORKING KNOWLEDGE
 TIER 3: CANONICAL VAULT TRUTH & HISTORY
 04 - Areas/Habits/
 → Human-approved state: 00 - Habits Index.md, Current Habits.md, Active Habit Experiments.md, Daily Habit Tracking.md.
-→ Subdirectories: Experiments/ (canonical H### notes), Reviews/ (approved weekly reviews), Tracking/ (daily/weekly tracking sheets).
+→ Subdirectories: Experiments/ (canonical H### notes), Reviews/ (approved weekly reviews).
 → Requires EXPLICIT user approval for creation, promotion, or modification.
 
 TIER 4: GENERIC REUSABLE METHODOLOGY
@@ -49,7 +49,7 @@ Real life
 → 3. Draft Proposed Experiment (Non-canonical in AI Workspace)
 → 4. Explicit Human Approval Gate
 → 5. Canonical Experiment Active (04 - Areas/Habits/Experiments/H###)
-→ 6. Daily Tracking (Daily Habit Tracking & Tracking/)
+→ 6. Daily Tracking (Daily Habit Tracking.md)
 → 7. Weekly Diagnostic Reviews (AI draft in Workspace → Approved to Habits/Reviews/)
 → 8. Habit Graduation & Compounding (Merge into Current Habits, stack next experiment)
 ```
@@ -87,9 +87,9 @@ Real life
   5. Log the promotion in `11 - Agents/Logs/Decisions and Corrections.md`.
 
 ### Stage 5 — Daily Tracking
-- Hub: `04 - Areas/Habits/Daily Habit Tracking.md` and `04 - Areas/Habits/Tracking/`
+- Hub: `04 - Areas/Habits/Daily Habit Tracking.md`
 - Procedure:
-  - Track daily check-ins using markdown checklists or weekly tracking sheets.
+  - Track daily check-ins using the weekly grid on the single live note `Daily Habit Tracking.md`.
   - Active experiments are automatically queried and surfaced via Dataview on `Active Habit Experiments.md`.
   - Focus on identity votes and 2-minute completions on low-energy days.
   - Any raw external app exports go to `08 - Attachments/Habit Exports/`.
