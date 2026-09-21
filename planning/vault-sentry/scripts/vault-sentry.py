@@ -92,7 +92,7 @@ def run_sentry(vault_dir, output_dir=None):
             elif f.endswith(".tmp") or f.endswith(".bak"):
                 add_issue("P3", "filesystem-temp", rel_p, None, f"Temporary file '{f}' found in vault", "Delete if confirmed redundant", "HIGH", True)
 
-            if is_hidden_root or f.startswith("."):
+            if is_hidden_root or f.startswith(".") or f in ["Vault Health Report.md", "Vault Repair Manifest.md", "Vault Health Findings.json"]:
                 continue
 
             all_files[rel_p] = full_p
@@ -228,9 +228,21 @@ def run_sentry(vault_dir, output_dir=None):
     ambiguous_links = []
 
     for rel_p, content in note_contents.items():
+        full_p = md_files[rel_p]
         lines = content.splitlines()
+        in_code_block = False
         for idx, line in enumerate(lines):
-            for full_match, inner in wikilink_re.findall(line):
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_code_block = not in_code_block
+                continue
+            if in_code_block:
+                continue
+
+            # Strip inline code backticks so code snippets like `[[target]]` aren't treated as active links
+            line_clean = re.sub(r"`[^`]+`", "", line)
+
+            for full_match, inner in wikilink_re.findall(line_clean):
                 is_embed = full_match.startswith("!")
                 link_part = inner.split("|")[0].strip()
                 target_base = link_part.split("#")[0].split("^")[0].strip()
@@ -280,7 +292,7 @@ def run_sentry(vault_dir, output_dir=None):
                     if block_part not in note_blocks[target_rel]:
                         add_issue("P2", "broken-block-link", rel_p, idx + 1, f"Block reference '^{block_part}' not found in target '{target_rel}'", "Update or recreate block reference", "HIGH", False)
 
-            for text, link in mdlink_re.findall(line):
+            for text, link in mdlink_re.findall(line_clean):
                 if link.startswith("http://") or link.startswith("https://") or link.startswith("mailto:") or link.startswith("#"):
                     continue
                 if "{{" in link and "}}" in link:
@@ -522,6 +534,19 @@ def run_sentry(vault_dir, output_dir=None):
             untracked = [l for l in lines if l.startswith("?? ")]
             if any("02 - Taani/" in l for l in untracked) and deleted_moves:
                 add_issue("P0", "git-data-loss-risk", "Git Repository", None, f"Found {len(deleted_moves)} unstaged deletions from moved folders while '02 - Taani/' remains untracked. A partial commit risks recording permanent note deletions!", "Stage and commit '02 - Taani/' alongside the deleted paths", "HIGH", False)
+    except Exception:
+        pass
+
+    # Git volatile worktree check
+    try:
+        wt_stat = subprocess.run(["git", "-C", vault_dir, "worktree", "list"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if wt_stat.returncode == 0:
+            for wt_line in wt_stat.stdout.splitlines():
+                parts = wt_line.split()
+                if parts:
+                    wt_path = parts[0]
+                    if wt_path.startswith("/private/tmp") or wt_path.startswith("/tmp"):
+                        add_issue("P1", "git-volatile-worktree", wt_path, None, f"Active Git worktree resides in ephemeral temp path '{wt_path}'. macOS will purge it on reboot or memory pressure!", f"Remove worktree with 'git worktree remove {wt_path}' or relocate to persistent storage", "HIGH", False)
     except Exception:
         pass
 
