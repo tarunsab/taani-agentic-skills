@@ -74,7 +74,7 @@ export_end:
 # Habit Review — {{YYYY-Www}}
 
 ## Evidence
-Link to active experiment notes under `04 - Areas/Habits/Experiments/`, daily tracking logs under `04 - Areas/Habits/Tracking/`, and any intentionally retained raw source evidence. Do not copy large source sections into this review.
+Link to active experiment notes under `04 - Areas/Habits/Experiments/`, daily tracking data from [[04 - Areas/Habits/Daily Habit Tracking|Daily Habit Tracking]], and any intentionally retained raw source evidence. Do not copy large source sections into this review.
 
 ## What Repeated
 
@@ -98,7 +98,7 @@ Link to active experiment notes under `04 - Areas/Habits/Experiments/`, daily tr
 - Why:
 ```
 
-## 3. Habit Daily Tracking Template (`09 - Templates/Habit Daily Tracking.md`)
+## 3. Daily Habit Tracking Note (`04 - Areas/Habits/Daily Habit Tracking.md`)
 
 ```markdown
 ---
@@ -106,23 +106,27 @@ parent: "[[04 - Areas/Habits/00 - Habits Index|Habits Index]]"
 tags:
   - habits
   - tracking
-period: "{{YYYY-Www}}"
+  - dashboard
 ---
-# Habit Tracking — {{YYYY-Www}}
+# Daily Habit Tracking
 
-## Active Habit Targets
+Central tracking scratchpad for all active habit experiments. Record daily check-ins here. At the end of each review cycle, the AI archives this data into `04 - Areas/Habits/Reviews/` and prepares this tracker for the next period.
 
-| Experiment ID | Habit / Routine | Target Frequency | Minimum 2-Min Version |
-|---|---|---|---|
-| [[04 - Areas/Habits/Experiments/H###|H###]] |  |  |  |
+## Active Habits to Track Today
 
-## Daily Check-Ins
+```dataview
+TABLE experiment_id, phase, start_date, review_date
+FROM "04 - Areas/Habits/Experiments"
+WHERE phase = "active"
+SORT review_date ASC
+```
 
-| Habit | Mon | Tue | Wed | Thu | Fri | Sat | Sun | Total | Notes / Adjustments |
+## Daily Check-In Grid
+
+> [!TIP] The Two-Minute Rule & Never Miss Twice
+> If time or energy is low, do the two-minute gateway version to cast a vote for your identity. If you miss a day, treat it as friction data and prioritize showing up the next day. Never miss twice.
+
+| Active Habit | Mon | Tue | Wed | Thu | Fri | Sat | Sun | Total | Notes / Friction Observed |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|---|
 |  | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | 0/7 |  |
-
-## Recovery & Observations
-- Never Miss Twice Check:
-- Friction Observations:
 ```
