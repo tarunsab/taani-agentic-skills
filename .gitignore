@@ -15,3 +15,9 @@ codex-primary-runtime/
 11 - Agents/Workspace/Finance/
 08 - Attachments/Finance/
 /finance-checkpoint
+
+# Personal / Private Habits data boundaries
+04 - Areas/Habits/
+11 - Agents/Workspace/Habits/
+08 - Attachments/Habit Exports/
+/habits-workspace

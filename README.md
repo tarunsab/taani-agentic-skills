@@ -49,6 +49,7 @@ selected, explicitly name it or point the agent at its `SKILL.md`.
 - [`to-tickets`](planning/to-tickets/SKILL.md) — Break a plan, specification, or conversation into tracer-bullet tickets with dependencies. Use when work needs to be organized into small, agent-ready units.
 - [`triage`](planning/triage/SKILL.md) — Categorize, verify, and brief issues or external pull requests. Use when incoming work needs a consistent triage state and next action.
 - [`finance-checkpoint`](planning/finance-checkpoint/SKILL.md) — Run safe, rigorous household financial checkpoints with four-tier storage discipline, deterministic calculations, automated sealing, and open-ended scenario modeling.
+- [`habits-workspace`](planning/habits-workspace/SKILL.md) — Manage an evidence-led, compounding habit system in Obsidian or Markdown vaults using the Atomic Habits framework, with baseline scorecards, AI audits, explicit approval gates, daily tracking, weekly reviews, and habit graduation.
 - [`setup-matt-pocock-skills`](planning/setup-matt-pocock-skills/SKILL.md) — Configure a repository’s issue tracker, labels, and domain-document layout for the engineering workflow. Use once before using the related engineering skills in a new repo.
 
 ## Engineering, debugging, and quality
