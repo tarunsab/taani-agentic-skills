@@ -13,6 +13,9 @@ Requires Node.js 22 or newer, local Git, write access to Taivault, and a disposa
 
 ## Fixed Boundaries
 
+- Canonical source code (golden copy): `https://github.com/tarunsab/taani-agentic-skills` (`$HOME/.codex/skills/planning/finance-checkpoint/`)
+- Agent runtime installations: symlinked to the golden copy (`~/.codex/skills/finance-checkpoint`, `~/.gemini/config/skills/finance-checkpoint`, `~/.lmstudio/skills/finance-checkpoint`)
+- In-vault workflow companion: `11 - Agents/Workflows/finance-checkpoint/` (mirrored, self-contained native Obsidian copy)
 - Approved facts and checkpoint history: `02 - Taani/Finance/`
 - Durable non-canonical reasoning: `11 - Agents/Workspace/Finance/`
 - Deliberately retained, untouched source evidence: `08 - Attachments/Finance/`
