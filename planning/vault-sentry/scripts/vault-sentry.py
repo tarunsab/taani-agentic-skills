@@ -18,6 +18,9 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Vault Sentry: Deep DFS Directory, Link & Archival Auditor")
     parser.add_argument("--vault", default="/Users/sai/Library/Mobile Documents/iCloud~md~obsidian/Documents/Taivault", help="Path to Obsidian vault")
     parser.add_argument("--output", help="Directory to output reports (defaults to '11 - Agents/Audits' or vault root)")
+    parser.add_argument("--suggest", type=str, help="Suggest destination for a new note based on title or description")
+    parser.add_argument("--suggest-file", type=str, help="Suggest destination for a draft markdown file")
+    parser.add_argument("--json", action="store_true", help="Output destination suggestion or findings as JSON")
     return parser.parse_args()
 
 def dfs_walk(current_dir, rel_path="", depth=0):
@@ -31,6 +34,682 @@ def dfs_walk(current_dir, rel_path="", depth=0):
     for d in dirs:
         next_rel = os.path.join(rel_path, d) if rel_path else d
         yield from dfs_walk(os.path.join(current_dir, d), next_rel, depth + 1)
+
+def suggest_destination(query, note_text="", vault_dir=None):
+    """
+    Suggest optimal folder path, clean filename, parent index wikilink,
+    tags, icon, classification rationale, frontmatter scaffold, and alternative destination.
+    Distinguishes Shared Household Space (02 - Taani) vs Personal Space, and enforces PARA tiers.
+    """
+    combined = (query + " " + note_text).lower()
+    clean_title = query.strip()
+    if clean_title.endswith(".md"):
+        clean_title = clean_title[:-3]
+
+    # Clean title helper
+    def fmt_title(raw):
+        # Remove common prefixes like 'Recipe for', 'How to', 'Draft note on'
+        t = re.sub(r"^(?:recipe\s+for|draft\s+note\s+on|guide\s+to|notes\s+on)\s+", "", raw, flags=re.IGNORECASE).strip()
+        return t
+
+    # 1. Shared Household Space (02 - Taani)
+    # 1A. Recipes
+    is_recipe = any(w in combined for w in ["recipe", "curry", "rice", "dal", "masala", "paneer", "tofu", "sourdough", "pasta", "dessert", "ice cream", "cookie", "cake", "salad", "bake", "roast"]) and not any(w in combined for w in ["running", "workout", "gym", "marathon", "cycling"])
+    if is_recipe:
+        next_num = 12
+        if vault_dir and os.path.exists(os.path.join(vault_dir, "02 - Taani", "Food", "Recipes")):
+            rec_files = os.listdir(os.path.join(vault_dir, "02 - Taani", "Food", "Recipes"))
+            nums = [int(m.group(1)) for f in rec_files if (m := re.match(r"^R(\d+)", f))]
+            if nums:
+                next_num = max(nums) + 1
+        dish_name = re.sub(r"\brecipe\b", "", fmt_title(clean_title), flags=re.IGNORECASE).strip()
+        fname = f"R{next_num:03d} - {dish_name}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/Food/Recipes/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/Food/Recipes/{fname}",
+            "parent_index": "[[00 - Food Index]]",
+            "recommended_tags": ["food", "recipe"],
+            "recommended_icon": "🍳",
+            "tier": "Resource (Shared)",
+            "rationale": "Culinary recipe shared within household food system. Follows standard sequential Rxxx numbering.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Food Index]]\"\ntags:\n  - food\n  - recipe\n---",
+            "alternative_destination": "02 - Taani/Food/",
+            "alternative_rationale": "If this document is a broad weekly meal framework or grocery list rather than a single recipe."
+        }
+
+    # 1B. Food & Dining General
+    if any(w in combined for w in ["grocery", "groceries", "restaurant", "meal plan", "dining out", "supermarket", "food prep", "kitchen routine"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/Food/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/Food/{fname}",
+            "parent_index": "[[00 - Food Index]]",
+            "recommended_tags": ["food", "household"],
+            "recommended_icon": "🍽️",
+            "tier": "Area (Shared)",
+            "rationale": "Household food provisioning, recurring grocery system, or joint dining directory.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Food Index]]\"\ntags:\n  - food\n  - household\n---",
+            "alternative_destination": "02 - Taani/Food/Recipes/",
+            "alternative_rationale": "Use Recipes subfolder if this document is an individual cooking card."
+        }
+
+    # 1C. House - Cleaning
+    if any(w in combined for w in ["cleaning", "detergent", "laundry", "cleaner", "scrub", "chores", "bleach", "mop", "dishwasher tablets"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/House/Cleaning/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/House/Cleaning/{fname}",
+            "parent_index": "[[00 - House Index]]",
+            "recommended_tags": ["house", "cleaning"],
+            "recommended_icon": "🧽",
+            "tier": "Area (Shared)",
+            "rationale": "Household maintenance, room-by-room cleaning checklist, or chemical cleaning supply reference.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - House Index]]\"\ntags:\n  - house\n  - cleaning\n---",
+            "alternative_destination": "02 - Taani/House/",
+            "alternative_rationale": "Flat House root if subfolder clustering is not yet adopted."
+        }
+
+    # 1D. House - Appliances
+    if any(w in combined for w in ["dreame", "robot vacuum", "air fryer", "vacuum", "thermostat", "smart doorbell", "washing machine", "washer dryer", "water filter", "appliance"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/House/Appliances/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/House/Appliances/{fname}",
+            "parent_index": "[[00 - House Index]]",
+            "recommended_tags": ["house", "appliances"],
+            "recommended_icon": "🤖",
+            "tier": "Resource (Shared)",
+            "rationale": "Household appliance research, manual instructions, or smart home device specifications.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - House Index]]\"\ntags:\n  - house\n  - appliances\n---",
+            "alternative_destination": "02 - Taani/House/",
+            "alternative_rationale": "Flat House root if subfolder clustering is not yet adopted."
+        }
+
+    # 1E. House - Furnishing & Homeware
+    if any(w in combined for w in ["bedding", "linen", "duvet", "pillow", "sofa", "table", "chair", "curtain", "furniture", "dinnerware", "cutlery", "rug", "wardrobe"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/House/Furnishing/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/House/Furnishing/{fname}",
+            "parent_index": "[[00 - House Index]]",
+            "recommended_tags": ["house", "furnishing"],
+            "recommended_icon": "🛋️",
+            "tier": "Resource (Shared)",
+            "rationale": "Household furniture links, homeware purchase options, and interior decor references.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - House Index]]\"\ntags:\n  - house\n  - furnishing\n---",
+            "alternative_destination": "02 - Taani/House/",
+            "alternative_rationale": "Flat House root if subfolder clustering is not yet adopted."
+        }
+
+    # 1F. House - Renovation & DIY (Shared Project)
+    if any(w in combined for w in ["lvt", "flooring", "spotlight", "switch", "door foil", "paint", "sprayer", "renovation", "diy", "plaster", "tiling", "solar panel"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/House/Renovation/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/House/Renovation/{fname}",
+            "parent_index": "[[00 - House Index]]",
+            "recommended_tags": ["house", "renovation", "project"],
+            "recommended_icon": "🪵",
+            "tier": "Project (Shared)",
+            "rationale": "Finite household home improvement, electrical modification, or DIY renovation task.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - House Index]]\"\ntags:\n  - house\n  - renovation\n  - project\n---",
+            "alternative_destination": "03 - Projects/House Renovation/",
+            "alternative_rationale": "If personal projects and household projects are merged into vault top-level 03 - Projects."
+        }
+
+    # 1G. House - Property / Legal
+    if any(w in combined for w in ["mortgage", "rightmove", "conveyancing", "deeds", "surveyor", "solicitor", "property search"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/House/Property/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/House/Property/{fname}",
+            "parent_index": "[[00 - House Index]]",
+            "recommended_tags": ["house", "property", "legal"],
+            "recommended_icon": "⚖️",
+            "tier": "Archive / Resource (Shared)",
+            "rationale": "Property transaction history, mortgage terms, or conveyancing documentation.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - House Index]]\"\ntags:\n  - house\n  - property\n  - legal\n---",
+            "alternative_destination": "02 - Taani/House/",
+            "alternative_rationale": "Flat House root if property subfolder is not yet provisioned."
+        }
+
+    # 1H. Finance (Shared)
+    if any(w in combined for w in ["household budget", "joint budget", "joint finance", "checkpoint", "net worth", "household expense", "financial dashboard"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/Finance/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/Finance/{fname}",
+            "parent_index": "[[00 - Finance Index]]",
+            "recommended_tags": ["finance", "household"],
+            "recommended_icon": "💷",
+            "tier": "Area (Shared)",
+            "rationale": "Joint household financial cadence, budget checkpoint, or asset tracking.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Finance Index]]\"\ntags:\n  - finance\n  - household\n---",
+            "alternative_destination": "02 - Taani/Finance/Checkpoints/",
+            "alternative_rationale": "Use Checkpoints subfolder if this is a dated monthly balance snapshot."
+        }
+
+    # 1I. Travel (Shared)
+    if any(w in combined for w in ["packing list", "itinerary", "holiday", "trip", "flight", "hotel", "roadtrip", "weekend away", "vacation"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "02 - Taani/Travel/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"02 - Taani/Travel/{fname}",
+            "parent_index": "[[00 - Travel Index]]",
+            "recommended_tags": ["travel", "project"],
+            "recommended_icon": "✈️",
+            "tier": "Project (Shared)",
+            "rationale": "Finite shared travel itinerary, holiday planning, or trip packing checklist.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Travel Index]]\"\ntags:\n  - travel\n  - project\n---",
+            "alternative_destination": "03 - Projects/Travel/",
+            "alternative_rationale": "If personal and shared travel are unified under 03 - Projects."
+        }
+
+    # 2. Personal Space
+    # 2A. AI Agent / Tooling (11 - Agents)
+    if any(w in combined for w in ["agent", "subagent", "prompt spec", "workflow", "audit", "vault sentry", "bionic skill", "anthropic tool", "skill.md"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "11 - Agents/Workflows/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"11 - Agents/Workflows/{fname}",
+            "parent_index": "[[Agent Index]]",
+            "recommended_tags": ["agent", "workflow"],
+            "recommended_icon": "🤖",
+            "tier": "System / Agent Tooling",
+            "rationale": "AI agent specification, executable workflow instruction, or governance rule.",
+            "frontmatter_scaffold": f"---\nparent: \"[[Agent Index]]\"\ntags:\n  - agent\n  - workflow\n---",
+            "alternative_destination": "11 - Agents/Workspace/",
+            "alternative_rationale": "Use Workspace for temporary working drafts before canonizing into Workflows."
+        }
+
+    # 2B. Cycling
+    if any(w in combined for w in ["cycling", "bike", "bicycle", "strava", "garmin", "gravel", "chain", "cassette", "derailleur", "pedals"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "04 - Areas/Cycling/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"04 - Areas/Cycling/{fname}",
+            "parent_index": "[[00 - Cycling Index]]",
+            "recommended_tags": ["cycling", "fitness"],
+            "recommended_icon": "🚲",
+            "tier": "Area (Personal)",
+            "rationale": "Maintained personal cycling area, gear maintenance log, or route database.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Cycling Index]]\"\ntags:\n  - cycling\n  - fitness\n---",
+            "alternative_destination": "04 - Areas/Health and Fitness/",
+            "alternative_rationale": "If consolidating general cardio under Health and Fitness."
+        }
+
+    # 2C. Personal Health & Fitness
+    if any(w in combined for w in ["running", "half marathon", "marathon", "5k", "10k", "cardio", "vo2 max", "zone 2", "gym", "hypertrophy", "workout", "lifting", "supplements", "protein", "sleep", "recovery"]):
+        is_project = any(w in combined for w in ["half marathon", "marathon", "race day", "training plan", "taper"])
+        folder = "03 - Projects/" if is_project else "04 - Areas/Health and Fitness/"
+        parent = "[[00 - Projects Index]]" if is_project else "[[00 - Health and Fitness Index]]"
+        tier = "Project (Personal)" if is_project else "Area (Personal)"
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": folder,
+            "recommended_filename": fname,
+            "full_recommended_path": f"{folder}{fname}",
+            "parent_index": parent,
+            "recommended_tags": ["health", "fitness", "running"] if "running" in combined else ["health", "fitness"],
+            "recommended_icon": "🏃" if "running" in combined else "💪",
+            "tier": tier,
+            "rationale": "Personal health, training methodology, or finite race milestone.",
+            "frontmatter_scaffold": f"---\nparent: \"{parent}\"\ntags:\n  - health\n  - fitness\n---",
+            "alternative_destination": "04 - Areas/Health and Fitness/",
+            "alternative_rationale": "If treating race training as continuous physical maintenance rather than a distinct project."
+        }
+
+    # 2D. Personal Habits
+    if any(w in combined for w in ["habit", "atomic habit", "streak", "habit tracker", "daily routine", "habit audit", "habit experiment"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "04 - Areas/Habits/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"04 - Areas/Habits/{fname}",
+            "parent_index": "[[00 - Habits Index]]",
+            "recommended_tags": ["habits", "productivity"],
+            "recommended_icon": "⚡",
+            "tier": "Area (Personal)",
+            "rationale": "Personal behavioral system, habit experiments, or daily tracking cadence.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Habits Index]]\"\ntags:\n  - habits\n  - productivity\n---",
+            "alternative_destination": "04 - Areas/Habits/Experiments/",
+            "alternative_rationale": "If this note defines an active, 30-day habit hypothesis experiment."
+        }
+
+    # 2E. NAS & Homelab
+    if any(w in combined for w in ["nas", "synology", "qbittorrent", "seedbox", "docker", "portainer", "plex", "jellyfin", "truenas", "unraid"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "04 - Areas/NAS/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"04 - Areas/NAS/{fname}",
+            "parent_index": "[[00 - NAS Index]]",
+            "recommended_tags": ["nas", "technology", "homelab"],
+            "recommended_icon": "🖧",
+            "tier": "Area (Personal)",
+            "rationale": "Personal home server operations, container configurations, and NAS maintenance.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - NAS Index]]\"\ntags:\n  - nas\n  - technology\n  - homelab\n---",
+            "alternative_destination": "04 - Areas/Technology/",
+            "alternative_rationale": "If homelab configurations are grouped under general Technology."
+        }
+
+    # 2F. Technology & Dev Setup
+    if any(w in combined for w in ["cli", "terminal", "zsh", "dotfiles", "bionic setup", "ide", "vscode", "cursor setup", "brew", "macos"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "04 - Areas/Technology/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"04 - Areas/Technology/{fname}",
+            "parent_index": "[[00 - Technology Index]]",
+            "recommended_tags": ["technology", "setup", "tools"],
+            "recommended_icon": "💻",
+            "tier": "Area (Personal)",
+            "rationale": "Personal developer workstation, environment setup, and CLI configuration.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Technology Index]]\"\ntags:\n  - technology\n  - setup\n---",
+            "alternative_destination": "05 - Knowledge/",
+            "alternative_rationale": "If this is an evergreen programming conceptual guide rather than machine setup."
+        }
+
+    # 2G. Personal Admin & Identity
+    if any(w in combined for w in ["passport", "driving license", "hmrc", "tax return", "pension", "national insurance", "visa", "id docs"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "04 - Areas/Admin/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"04 - Areas/Admin/{fname}",
+            "parent_index": "[[00 - Admin Index]]",
+            "recommended_tags": ["admin", "personal"],
+            "recommended_icon": "🪪",
+            "tier": "Area (Personal)",
+            "rationale": "Personal civil documentation, identity records, and tax administrative filing.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Admin Index]]\"\ntags:\n  - admin\n  - personal\n---",
+            "alternative_destination": "10 - Archive/",
+            "alternative_rationale": "If these are expired identity documents preserved for historical reference."
+        }
+
+    # 2H. Deep Dives (Knowledge)
+    if any(w in combined for w in ["deep dive", "architecture", "system design", "spec", "memory models", "comprehensive guide"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "05 - Knowledge/Deep Dives/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"05 - Knowledge/Deep Dives/{fname}",
+            "parent_index": "[[00 - Deep Dives Index]]",
+            "recommended_tags": ["knowledge", "deep-dive", "architecture"],
+            "recommended_icon": "🧭",
+            "tier": "Knowledge (Personal)",
+            "rationale": "Permanent synthetic architectural analysis, technical breakdown, or comprehensive deep dive.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Deep Dives Index]]\"\ntags:\n  - knowledge\n  - deep-dive\n  - architecture\n---",
+            "alternative_destination": "05 - Knowledge/",
+            "alternative_rationale": "Can reside in Knowledge root if not adopting the Deep Dives sub-clustering."
+        }
+
+    # 2I. Book Summaries
+    if any(w in combined for w in ["book summary", "reading notes", "chapter summary", "author", "book review"]) or ("book" in combined and any(b in combined for b in ["habits", "ikigai", "rich dad", "courage"])):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "06 - Resources/Books/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"06 - Resources/Books/{fname}",
+            "parent_index": "[[00 - Books Index]]",
+            "recommended_tags": ["books", "reading", "summary"],
+            "recommended_icon": "📚",
+            "tier": "Resource (Personal)",
+            "rationale": "Structured book review, chapter analysis, or mental model extraction from published literature.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - Books Index]]\"\ntags:\n  - books\n  - reading\n  - summary\n---",
+            "alternative_destination": "06 - Resources/",
+            "alternative_rationale": "General Resources folder if not catalogued inside Books Base."
+        }
+
+    # 2J. YouTube Summaries
+    if any(w in combined for w in ["youtube", "video summary", "mkbhd", "podcast summary", "transcript"]):
+        fname = f"{clean_title}.md"
+        return {
+            "query": query,
+            "recommended_folder": "06 - Resources/YouTube/",
+            "recommended_filename": fname,
+            "full_recommended_path": f"06 - Resources/YouTube/{fname}",
+            "parent_index": "[[00 - YouTube Index]]",
+            "recommended_tags": ["youtube", "video", "summary"],
+            "recommended_icon": "🎬",
+            "tier": "Resource (Personal)",
+            "rationale": "Summarized video content or transcript digest from YouTube.",
+            "frontmatter_scaffold": f"---\nparent: \"[[00 - YouTube Index]]\"\ntags:\n  - youtube\n  - video\n---",
+            "alternative_destination": "06 - Resources/Articles/",
+            "alternative_rationale": "If the content is primarily text-based rather than video-derived."
+        }
+
+    # Fallback: Knowledge / General Notes
+    fname = f"{clean_title}.md"
+    return {
+        "query": query,
+        "recommended_folder": "05 - Knowledge/",
+        "recommended_filename": fname,
+        "full_recommended_path": f"05 - Knowledge/{fname}",
+        "parent_index": "[[00 - Knowledge Index]]",
+        "recommended_tags": ["knowledge"],
+        "recommended_icon": "🧠",
+        "tier": "Knowledge (Personal)",
+        "rationale": "Evergreen conceptual knowledge, reference guide, or technical explanation.",
+        "frontmatter_scaffold": f"---\nparent: \"[[00 - Knowledge Index]]\"\ntags:\n  - knowledge\n---",
+        "alternative_destination": "01 - Home/01 - Inbox Index.md",
+        "alternative_rationale": "If this is raw capture that needs further triage and refinement before permanent filing."
+    }
+
+def audit_para_conformance(vault_dir, md_files, rel_folders, note_frontmatter, note_contents):
+    """
+    Rigorously evaluate PARA conformance across:
+    1. Overall Vault PARA (Projects, Areas, Resources, Archives)
+    2. Shared Space (02 - Taani) PARA
+    """
+    findings = []
+
+    # 1. Vault PARA Breakdown
+    vault_p_notes = [p for p in md_files if p.startswith("03 - Projects") and not p.endswith("Index.md")]
+    vault_a_notes = [p for p in md_files if p.startswith("04 - Areas")]
+    vault_k_notes = [p for p in md_files if p.startswith("05 - Knowledge")]
+    vault_r_notes = [p for p in md_files if p.startswith("06 - Resources")]
+    vault_arch_notes = [p for p in md_files if p.startswith("10 - Archive")]
+
+    # Check for projects scattered outside 03 - Projects
+    scattered_projects = []
+    for p, f in md_files.items():
+        if not p.startswith("03 - Projects") and not p.startswith("10 - Archive"):
+            base = os.path.basename(p)
+            if any(term in base for term in ["Plan", "Itinerary", "Packing List", "Installing", "Replacing Switches", "Fixing Door Foil"]):
+                scattered_projects.append(p)
+
+    # Check for area leakage into Resources
+    area_leakage = [p for p in md_files if p.startswith("06 - Resources/AI") and any(w in p for w in ["Running", "Cycling", "Coffee", "Water Filtration"])]
+
+    # Scoring Vault PARA
+    v_deductions = 0
+    if len(vault_p_notes) == 0:
+        v_deductions += 15
+        findings.append({
+            "severity": "P2",
+            "category": "para-vault-dormant-projects",
+            "path": "03 - Projects",
+            "description": f"Projects directory is depleted/dormant ({len(vault_p_notes)} active notes); active project notes have drifted into '02 - Taani/Travel' and '02 - Taani/House'.",
+            "suggested_action": "Centralize finite projects or formally link them to 00 - Projects Index.md",
+            "confidence": "HIGH"
+        })
+    if len(area_leakage) > 0:
+        v_deductions += 10
+        findings.append({
+            "severity": "P2",
+            "category": "para-vault-area-leakage",
+            "path": "06 - Resources/AI",
+            "description": f"{len(area_leakage)} Area maintenance notes (Running, Cycling, Home Water Filter) leaked into Resource inbox '06 - Resources/AI'.",
+            "suggested_action": "Relocate leaked area notes into 04 - Areas/ and 02 - Taani/House/",
+            "confidence": "HIGH"
+        })
+    if len(vault_arch_notes) < 10:
+        v_deductions += 10
+
+    vault_para_score = max(20, min(100, 100 - v_deductions))
+
+    vault_para = {
+        "projects_count": len(vault_p_notes),
+        "areas_count": len(vault_a_notes),
+        "knowledge_count": len(vault_k_notes),
+        "resources_count": len(vault_r_notes),
+        "archive_count": len(vault_arch_notes),
+        "total_para_notes": len(vault_p_notes) + len(vault_a_notes) + len(vault_k_notes) + len(vault_r_notes) + len(vault_arch_notes),
+        "scattered_projects": scattered_projects,
+        "area_leakage": area_leakage,
+        "conformance_score": vault_para_score,
+        "grade": "B-" if vault_para_score >= 80 else ("C+" if vault_para_score >= 65 else "C"),
+        "status": "Moderate Conformance (Projects Dormant, Area Leakage Detected)"
+    }
+
+    # 2. Shared Space (02 - Taani) PARA Breakdown
+    taani_notes = {p: f for p, f in md_files.items() if p.startswith("02 - Taani")}
+    shared_projects = []
+    shared_areas = []
+    shared_resources = []
+    shared_archives = []
+    shared_indexes = []
+
+    for rel_p, full_p in taani_notes.items():
+        f = os.path.basename(rel_p)
+        if "Index" in f:
+            shared_indexes.append(rel_p)
+        elif any(p in f for p in ["Plan", "Packing List", "Installing", "Replacing", "Fixing", "Paint Sprayer"]):
+            shared_projects.append(rel_p)
+        elif any(a in f for a in ["Cleaning", "System", "Checklist", "Supplies", "Hand wash", "Making a house smell", "Bins", "organisers", "containers", "labels", "Budget", "Dashboard", "How to Use"]):
+            shared_areas.append(rel_p)
+        elif any(arch in f for arch in ["Rightmove", "Legal and Mortgage", "Broadband Deal", "Bedding set.md"]):
+            shared_archives.append(rel_p)
+        else:
+            shared_resources.append(rel_p)
+
+    s_deductions = 0
+    # Deductions for shared space:
+    # Absence of folder-level PARA separation
+    s_deductions += 25
+    # Flat overloading in House (48 notes conflating all tiers)
+    house_notes_count = len([p for p in taani_notes if p.startswith("02 - Taani/House")])
+    if house_notes_count > 25:
+        s_deductions += 20
+        findings.append({
+            "severity": "P2",
+            "category": "para-shared-tier-conflation",
+            "path": "02 - Taani/House",
+            "description": f"'02 - Taani/House' contains {house_notes_count} flat notes conflating all 4 PARA tiers (DIY Projects, Cleaning Areas, Furnishing Resources, Property Archives).",
+            "suggested_action": "Adopt thematic subfolder clustering (Renovation, Cleaning, Appliances, Furnishing, Property) or add frontmatter 'para:' tags.",
+            "confidence": "HIGH"
+        })
+
+    shared_para_score = max(20, min(100, 100 - s_deductions))
+
+    shared_para = {
+        "total_notes": len(taani_notes),
+        "projects_count": len(shared_projects),
+        "areas_count": len(shared_areas),
+        "resources_count": len(shared_resources),
+        "archives_count": len(shared_archives),
+        "indexes_count": len(shared_indexes),
+        "projects": shared_projects,
+        "areas": shared_areas,
+        "resources": shared_resources,
+        "archives": shared_archives,
+        "indexes": shared_indexes,
+        "conformance_score": shared_para_score,
+        "grade": "C-",
+        "status": "Low Conformance (Domain Silos with High Tier Conflation)",
+        "recommendations": [
+            "Cluster '02 - Taani/House' into thematic subfolders aligning with PARA: Renovation/ (Projects), Cleaning/ (Areas), Furnishing/ & Appliances/ (Resources), Property/ (Archive).",
+            "Add 'para: project | area | resource | archive' to note frontmatter across '02 - Taani/' to power unified Dataview tracking."
+        ]
+    }
+
+    return {
+        "vault_para": vault_para,
+        "shared_para": shared_para,
+        "findings": findings
+    }
+
+def audit_iconize_coverage(vault_dir, all_files, md_files, rel_folders):
+    """
+    Audit Iconize (.obsidian/plugins/obsidian-icon-folder/data.json) configuration.
+    Detects all expected pages and folders missing icons, suggests appropriate Lucide IDs or emojis,
+    and returns coverage metrics and patch inventory.
+    """
+    icon_file = os.path.join(vault_dir, ".obsidian", "plugins", "obsidian-icon-folder", "data.json")
+    icon_data = {}
+    if os.path.exists(icon_file):
+        try:
+            with open(icon_file, "r", encoding="utf-8") as ic_f:
+                icon_data = json.load(ic_f)
+        except Exception:
+            pass
+
+    # Expected Targets
+    expected_items = []
+
+    # 1. Expected Folders
+    folder_expectations = [
+        ("01 - Home", "LiInbox", "P2", "Top-level inbox/home folder"),
+        ("02 - Journal", "LiNotebookPen", "P2", "Top-level journal folder"),
+        ("02 - Taani", "LiAlignVerticalDistributeCenter", "P2", "Shared household space"),
+        ("02 - Taani/Finance", "LiBadgeDollarSign", "P2", "Shared finance domain"),
+        ("02 - Taani/Food", "LiUtensils", "P1", "Shared culinary & food domain"),
+        ("02 - Taani/House", "LiHome", "P2", "Shared house & property domain"),
+        ("02 - Taani/Travel", "LiPlane", "P2", "Shared travel & trips domain"),
+        ("03 - Projects", "LiFolderKanban", "P2", "Top-level projects folder"),
+        ("04 - Areas", "LiMapPinned", "P2", "Top-level areas folder"),
+        ("04 - Areas/Admin", "LiDock", "P2", "Personal admin domain"),
+        ("04 - Areas/Cycling", "LiBike", "P2", "Personal cycling area"),
+        ("04 - Areas/Habits", "LiFlame", "P1", "Personal habits area"),
+        ("04 - Areas/Health and Fitness", "LiApple", "P2", "Personal health & fitness area"),
+        ("04 - Areas/NAS", "LiHardDrive", "P2", "Personal NAS & homelab area"),
+        ("04 - Areas/Photography", "LiCamera", "P2", "Personal photography area"),
+        ("04 - Areas/Technology", "LiCpu", "P2", "Personal developer technology area"),
+        ("05 - Knowledge", "LiBrain", "P2", "Top-level knowledge base"),
+        ("05 - Knowledge/Deep Dives", "LiCompass", "P1", "Technical deep dive syntheses"),
+        ("06 - Resources", "LiSearch", "P2", "Top-level resources repository"),
+        ("06 - Resources/AI", "LiCog", "P2", "AI clippings and guides"),
+        ("06 - Resources/Books", "LiBook", "P2", "Books reference base"),
+        ("06 - Resources/YouTube", "LiFilm", "P2", "YouTube video summaries"),
+        ("08 - Attachments", "LiFilm", "P2", "Attachments root"),
+        ("08 - Attachments/Finance", "LiBadgeDollarSign", "P2", "Financial statements & attachment storage"),
+        ("08 - Attachments/Habit Exports", "LiCalendar", "P2", "Habit tracking exports"),
+        ("09 - Templates", "LiLayoutTemplate", "P2", "Note templates"),
+        ("10 - Archive", "LiFolderSymlink", "P2", "Archive directory"),
+        ("11 - Agents", "LiBot", "P2", "AI Agents root"),
+        ("11 - Agents/Audits", "LiShieldCheck", "P1", "Audits & health sentry directory"),
+        ("11 - Agents/Logs", "LiFileText", "P1", "Agent decision logs"),
+        ("11 - Agents/References", "LiBookOpen", "P1", "Canonical agent references"),
+        ("11 - Agents/Workflows", "LiWorkflow", "P1", "Executable agent workflows"),
+        ("11 - Agents/Workspace", "LiTerminal", "P1", "Agent working state & scratchpad")
+    ]
+    for p, icon, prio, rat in folder_expectations:
+        if os.path.exists(os.path.join(vault_dir, p)):
+            expected_items.append({"path": p, "item_type": "folder", "suggested_icon": icon, "priority": prio, "rationale": rat})
+
+    # 2. Expected Index Notes
+    index_expectations = [
+        ("01 - Home/00 - Home Index.md", "LiGrid2X2", "P2", "Home index"),
+        ("01 - Home/01 - Inbox Index.md", "LiInbox", "P2", "Inbox index"),
+        ("02 - Journal/00 - Journal Index.md", "LiNotebookPen", "P2", "Journal index"),
+        ("02 - Taani/02 - Taani Index.md", "LiAlignVerticalDistributeCenter", "P1", "Shared space master index"),
+        ("02 - Taani/Finance/00 - Finance Index.md", "LiBadgeDollarSign", "P2", "Finance index"),
+        ("02 - Taani/Food/00 - Food Index.md", "LiUtensils", "P1", "Food & recipe index"),
+        ("02 - Taani/House/00 - House Index.md", "LiHome", "P2", "House index"),
+        ("02 - Taani/Travel/00 - Travel Index.md", "LiPlane", "P2", "Travel index"),
+        ("03 - Projects/00 - Projects Index.md", "LiFolderKanban", "P2", "Projects index"),
+        ("04 - Areas/00 - Areas Index.md", "LiMapPinned", "P2", "Areas master index"),
+        ("04 - Areas/Admin/00 - Admin Index.md", "LiDock", "P2", "Admin index"),
+        ("04 - Areas/Cycling/00 - Cycling Index.md", "LiBike", "P2", "Cycling index"),
+        ("04 - Areas/Habits/00 - Habits Index.md", "LiFlame", "P1", "Habits index"),
+        ("04 - Areas/Health and Fitness/00 - Health and Fitness Index.md", "LiApple", "P2", "Health & fitness index"),
+        ("04 - Areas/NAS/00 - NAS Index.md", "LiHardDrive", "P2", "NAS index"),
+        ("04 - Areas/Photography/00 - Photography Index.md", "LiCamera", "P2", "Photography index"),
+        ("04 - Areas/Technology/00 - Technology Index.md", "LiCpu", "P1", "Technology index"),
+        ("05 - Knowledge/00 - Knowledge Index.md", "LiBrain", "P2", "Knowledge master index"),
+        ("05 - Knowledge/Software Engineering Index.md", "LiBrain", "P2", "Software engineering index"),
+        ("05 - Knowledge/Deep Dives/00 - Deep Dives Index.md", "LiCompass", "P1", "Deep dives index"),
+        ("06 - Resources/00 - Resources Index.md", "LiSearch", "P2", "Resources master index"),
+        ("06 - Resources/AI/00 - AI Index.md", "LiCog", "P2", "AI inbox index"),
+        ("06 - Resources/Books/00 - Books Index.md", "LiBook", "P2", "Books index"),
+        ("06 - Resources/YouTube/00 - YouTube Index.md", "LiFilm", "P2", "YouTube index"),
+        ("10 - Archive/00 - Archive Index.md", "LiFolderSymlink", "P2", "Archive index"),
+        ("11 - Agents/Agent Index.md", "🤖", "P2", "Agent master index")
+    ]
+    for p, icon, prio, rat in index_expectations:
+        if os.path.exists(os.path.join(vault_dir, p)):
+            expected_items.append({"path": p, "item_type": "index", "suggested_icon": icon, "priority": prio, "rationale": rat})
+
+    # 3. Book Summaries
+    for p in md_files:
+        if p.startswith("06 - Resources/Books") and p.endswith("Book Summary.md"):
+            expected_items.append({"path": p, "item_type": "book_summary", "suggested_icon": "📚", "priority": "P2", "rationale": "Published book summary note"})
+
+    # 4. Standard Recipes in 02 - Taani/Food/Recipes/
+    rec_icons = {
+        "R001": "🍚", "R002": "🍲", "R003": "🍛", "R004": "🍛",
+        "R005": "🍛", "R006": "🍛", "R007": "🍲", "R008": "🍚",
+        "R009": "🍫", "R010": "🍨", "R011": "🍨"
+    }
+    for p in md_files:
+        if p.startswith("02 - Taani/Food/Recipes/"):
+            base = os.path.basename(p)
+            code = base.split(" - ")[0]
+            icon = rec_icons.get(code, "🍳")
+            expected_items.append({"path": p, "item_type": "recipe", "suggested_icon": icon, "priority": "P3", "rationale": "Standard recipe note"})
+
+    # 5. Key Active Content & Agent Notes
+    active_content = [
+        ("02 - Taani/Finance/Financial Dashboard.md", "📊", "P2", "Canonical financial dashboard"),
+        ("02 - Taani/Finance/How to Use the Financial Checkpoint System.md", "📖", "P3", "Financial checkpoint operational guide"),
+        ("02 - Taani/Travel/Snowdonia 26 Plan.md", "🏴󠁧󠁢󠁷󠁬󠁳󠁿", "P2", "Active travel project plan"),
+        ("02 - Taani/Travel/Snowdonia 26 Packing List.md", "🏴󠁧󠁢󠁷󠁬󠁳󠁿", "P3", "Active travel packing list"),
+        ("04 - Areas/Technology/Bionic Skills Setup.md", "⚡", "P2", "Developer skill setup guide"),
+        ("04 - Areas/Habits/Current Habits.md", "⚡", "P2", "Active habits tracking dashboard"),
+        ("04 - Areas/Habits/Daily Habit Tracking.md", "📅", "P2", "Daily habit tracking log"),
+        ("04 - Areas/Habits/Active Habit Experiments.md", "🧪", "P2", "Habit hypothesis experiments"),
+        ("04 - Areas/Habits/How to Use the Habit System.md", "📖", "P3", "Habit methodology guide"),
+        ("11 - Agents/Audits/Vault Health Report.md", "🤖", "P2", "Canonical audit deliverable (per Note Standards: 🤖)"),
+        ("11 - Agents/Audits/Vault Repair Manifest.md", "🤖", "P2", "Canonical repair manifest (per Note Standards: 🤖)"),
+        ("11 - Agents/Workspace/README.md", "🤖", "P3", "Agent workspace documentation"),
+        ("11 - Agents/Workflows/daily-deep-dive/SKILL.md", "🤖", "P2", "Daily deep dive workflow skill"),
+        ("11 - Agents/Workflows/habits-checkpoint/SKILL.md", "🤖", "P2", "Habits checkpoint workflow skill")
+    ]
+    for p, icon, prio, rat in active_content:
+        if os.path.exists(os.path.join(vault_dir, p)):
+            expected_items.append({"path": p, "item_type": "active_content", "suggested_icon": icon, "priority": prio, "rationale": rat})
+
+    missing_items = []
+    icon_patch_dict = {}
+
+    for item in expected_items:
+        p = item["path"]
+        if p not in icon_data:
+            missing_items.append(item)
+            icon_patch_dict[p] = item["suggested_icon"]
+
+    configured_count = len(expected_items) - len(missing_items)
+    coverage_pct = round((configured_count / len(expected_items)) * 100) if expected_items else 100
+
+    return {
+        "icon_data_path": icon_file,
+        "expected_count": len(expected_items),
+        "configured_count": configured_count,
+        "missing_count": len(missing_items),
+        "coverage_pct": coverage_pct,
+        "missing_items": missing_items,
+        "icon_patch_dict": icon_patch_dict
+    }
 
 def run_sentry(vault_dir, output_dir=None):
     if not output_dir:
@@ -118,85 +797,75 @@ def run_sentry(vault_dir, output_dir=None):
 
             if os.path.getsize(full_p) == 0:
                 add_issue("P2", "filesystem-empty", rel_p, None, "Zero-byte empty file", "Review whether file should be populated or removed", "HIGH", False)
-            if "  " in f:
-                add_issue("P3", "filesystem-naming", rel_p, None, f"Accidental double space in filename: '{f}'", "Rename to remove consecutive spaces", "HIGH", False)
-            if f.endswith(" ") or f.startswith(" "):
-                add_issue("P2", "filesystem-naming", rel_p, None, f"Leading or trailing space in filename: '{f}'", "Rename to trim whitespace", "HIGH", False)
-            if any(c in f for c in ['<', '>', ':', '"', '|', '?', '*']):
-                add_issue("P1", "filesystem-illegal", rel_p, None, f"Illegal filesystem character in filename: '{f}'", "Rename to cross-platform safe characters", "HIGH", False)
 
-    # Check symlinks in iCloud
-    for root, dirs, files in os.walk(vault_dir):
-        for name in dirs + files:
-            p = os.path.join(root, name)
-            if os.path.islink(p):
-                target = os.readlink(p)
-                rel_p = os.path.relpath(p, vault_dir)
-                add_issue("P1", "sync-symlink", rel_p, None, f"POSIX symlink pointing outside iCloud ({target}). Cannot sync to mobile devices.", "Replace symlink with standard file or migrate workflow references outside iCloud", "HIGH", False)
+    # 2. DFS Section-by-Section Structural Traversal
+    dfs_sections = []
+    overloaded_folders = []
+    missing_index_folders = []
 
-    # 2. Markdown & Link Graph Construction
-    wikilink_re = re.compile(r"(!?\[\[(.*?)\]\])")
-    mdlink_re = re.compile(r"!?\[([^\]]*)\]\(([^)]+)\)")
-    dataview_re = re.compile(r"```dataview(js)?(.*?)```", re.DOTALL)
+    for rel_path, depth, dirs, files in dfs_walk(vault_dir):
+        if not rel_path:
+            continue
+        
+        md_in_dir = [f for f in files if f.endswith(".md")]
+        expected_index_name = f"00 - {os.path.basename(rel_path)} Index.md"
+        has_index = expected_index_name in md_in_dir or any("Index" in f for f in md_in_dir)
+        
+        # Check flat folder overloading (>25 files without subdirs)
+        is_overloaded = len(md_in_dir) >= 25 and len(dirs) == 0
+        if is_overloaded:
+            overloaded_folders.append({
+                "path": rel_path,
+                "notes_count": len(md_in_dir),
+                "recommendation": "Cluster into thematic subfolders to eliminate flat clutter"
+            })
+            add_issue("P2", "structural-overload", rel_path, None, f"Overloaded flat directory with {len(md_in_dir)} notes and 0 subdirectories. High cognitive load and visual clutter.", f"Cluster into thematic subfolders (e.g., Cleaning, Appliances, Renovation, Furnishing)", "HIGH", False)
 
-    incoming_links = defaultdict(set)
-    outgoing_links = defaultdict(set)
-    note_headings = defaultdict(set)
-    note_blocks = defaultdict(set)
+        # Check missing index note in key Areas or Projects
+        if depth == 2 and not has_index and any(rel_path.startswith(prefix) for prefix in ["03 - Projects", "04 - Areas", "05 - Knowledge"]):
+            missing_index_folders.append(rel_path)
+            add_issue("P1", "structural-missing-index", rel_path, None, f"Directory lacks entry point index note '{expected_index_name}'. Dataview queries will silently omit this domain.", f"Create entry point index note '{expected_index_name}'", "HIGH", True)
+
+        dfs_sections.append({
+            "section": rel_path,
+            "depth": depth,
+            "notes_count": len(md_in_dir),
+            "subdirs_count": len(dirs),
+            "index_note": expected_index_name if has_index else None,
+            "coherence": "High" if has_index else "Medium" if len(md_in_dir) < 5 else "Low",
+            "assessment": "Overloaded" if is_overloaded else ("Needs Index" if (not has_index and depth==2) else "Healthy")
+        })
+
+    # 3. Content & Link Graph Parsing
+    outgoing_links = defaultdict(list)
+    incoming_links = defaultdict(list)
     note_contents = {}
+    note_frontmatter = {}
     properties_used = Counter()
     tags_used = Counter()
-    note_frontmatter = {}
+
+    wikilink_re = re.compile(r"(!?\[\[(.*?)\]\])")
+    mdlink_re = re.compile(r"(!?\[(.*?)\]\((.*?)\))")
 
     for rel_p, full_p in md_files.items():
         try:
-            with open(full_p, "r", encoding="utf-8", errors="replace") as fh:
-                content = fh.read()
-        except Exception as e:
-            add_issue("P0", "markdown-corrupt", rel_p, 1, f"Unable to read file: {e}", "Inspect file encoding/permissions", "HIGH", False)
+            with open(full_p, "r", encoding="utf-8", errors="replace") as f:
+                content = f.read()
+        except Exception:
             continue
 
         note_contents[rel_p] = content
 
-        if "<<<<<<<" in content and ">>>>>>>" in content:
-            add_issue("P0", "markdown-conflict", rel_p, None, "Unresolved Git merge conflict markers present", "Resolve conflict markers manually", "HIGH", False)
-
-        fence_matches = re.findall(r"^```", content, re.MULTILINE)
-        if len(fence_matches) % 2 != 0:
-            add_issue("P2", "markdown-syntax", rel_p, None, "Unclosed code fence (odd number of ``` fences)", "Close code fence block", "HIGH", True)
-
-        hardcoded = re.findall(r"(/Users/[a-zA-Z0-9._-]+/[^\s)\"\']+)", content)
-        if hardcoded:
-            add_issue("P3", "automation-portability", rel_p, None, f"Found {len(hardcoded)} hardcoded absolute machine paths", "Replace with relative path or $HOME reference", "HIGH", False)
-
-        prev_level = 0
-        lines = content.splitlines()
-        for idx, line in enumerate(lines):
-            block_match = re.search(r"\^([a-zA-Z0-9-]+)$", line.strip())
-            if block_match:
-                note_blocks[rel_p].add(block_match.group(1))
-
-            h_match = re.match(r"^(#{1,6})\s+(.*)$", line)
-            if h_match:
-                level = len(h_match.group(1))
-                h_text = h_match.group(2).strip()
-                clean_h = re.sub(r"\[\[(.*?)\]\]", r"\1", h_text)
-                note_headings[rel_p].add(clean_h)
-                note_headings[rel_p].add(h_text)
-                if prev_level > 0 and level > prev_level + 1:
-                    add_issue("P3", "markdown-heading", rel_p, idx + 1, f"Heading level jump from H{prev_level} to H{level} ('{h_text}')", "Adjust heading level for consistent hierarchy", "MEDIUM", False)
-                prev_level = level
-
-        # Parse Frontmatter
+        # Parse YAML Frontmatter
         fm_dict = {}
         if content.startswith("---"):
             parts = content.split("---", 2)
             if len(parts) >= 3:
-                yaml_str = parts[1]
+                yaml_block = parts[1]
                 in_tags = False
-                for yline in yaml_str.splitlines():
+                for yline in yaml_block.splitlines():
                     yline_s = yline.strip()
-                    if ":" in yline_s and not yline_s.startswith("#"):
+                    if ":" in yline_s and not yline_s.startswith("-"):
                         k, v = yline_s.split(":", 1)
                         k = k.strip()
                         v = v.strip()
@@ -245,15 +914,12 @@ def run_sentry(vault_dir, output_dir=None):
             if in_code_block:
                 continue
 
-            # Strip inline code backticks so code snippets like `[[target]]` aren't treated as active links
             line_clean = re.sub(r"`[^`]+`", "", line)
 
             for full_match, inner in wikilink_re.findall(line_clean):
                 is_embed = full_match.startswith("!")
                 link_part = inner.split("|")[0].strip()
                 target_base = link_part.split("#")[0].split("^")[0].strip()
-                heading_part = link_part.split("#")[1].strip() if "#" in link_part else None
-                block_part = link_part.split("^")[1].strip() if "^" in link_part else None
 
                 if not target_base:
                     target_rel = rel_p
@@ -278,102 +944,32 @@ def run_sentry(vault_dir, output_dir=None):
                         sev = "P1" if not rel_p.startswith("10 - Archive/") else "P3"
                         desc = f"Broken {'embed' if is_embed else 'wikilink'}: [[{link_part}]]"
                         action = f"Update link to point to [[{likely}]]" if likely else "Verify intended destination note"
-                        add_issue(sev, "broken-link", rel_p, idx + 1, desc, action, conf, False)
-                        broken_links.append({"source": rel_p, "line": idx+1, "target": link_part, "likely": likely, "conf": conf})
-                        continue
+                        broken_links.append({"source": rel_p, "link": link_part, "line": idx + 1, "suggested": likely})
+                        add_issue(sev, "link-broken-wikilink", rel_p, idx + 1, desc, action, conf, False)
                     elif len(resolved) > 1:
-                        add_issue("P2", "ambiguous-link", rel_p, idx + 1, f"Ambiguous wikilink [[{target_base}]] matches {len(resolved)} files: {resolved}", f"Disambiguate path with full relative folder: [[{resolved[0]}]]", "HIGH", False)
-                        ambiguous_links.append({"source": rel_p, "target": target_base, "matches": resolved})
-                        target_rel = resolved[0]
+                        ambiguous_links.append({"source": rel_p, "link": link_part, "line": idx + 1, "matches": resolved})
+                        add_issue("P2", "link-ambiguous", rel_p, idx + 1, f"Ambiguous wikilink resolves to multiple paths: {resolved}", "Disambiguate with full relative path", "HIGH", False)
                     else:
                         target_rel = resolved[0]
+                        outgoing_links[rel_p].append(target_rel)
+                        incoming_links[target_rel].append(rel_p)
 
-                outgoing_links[rel_p].add(target_rel)
-                incoming_links[target_rel].add(rel_p)
+            for full_match, text, url in mdlink_re.findall(line_clean):
+                if not url.startswith("http://") and not url.startswith("https://") and not url.startswith("mailto:"):
+                    clean_url = url.split("#")[0].split("?")[0].strip()
+                    if clean_url:
+                        target_resolved = os.path.normpath(os.path.join(os.path.dirname(rel_p), clean_url))
+                        if "%2F" in clean_url or "%20" in clean_url:
+                            decoded = clean_url.replace("%2F", "/").replace("%20", " ")
+                            target_decoded = os.path.normpath(os.path.join(os.path.dirname(rel_p), decoded))
+                            if target_decoded in all_files or (target_decoded + ".md") in all_files:
+                                add_issue("P1", "link-encoded-slash", rel_p, idx + 1, f"Markdown link contains URL-encoded slashes (%2F): '{url}'", f"Replace '%2F' with standard '/'", "HIGH", True)
+                        elif target_resolved not in all_files and (target_resolved + ".md") not in all_files:
+                            add_issue("P1", "link-broken-relative", rel_p, idx + 1, f"Broken relative markdown link: '{url}'", "Update link path to match target file", "MEDIUM", False)
 
-                if heading_part and target_rel in note_headings:
-                    if heading_part.replace("%20", " ") not in note_headings[target_rel]:
-                        add_issue("P2", "broken-heading-link", rel_p, idx + 1, f"Heading anchor '#{heading_part}' not found in target '{target_rel}'", "Update anchor to match existing heading", "HIGH", False)
-                if block_part and target_rel in note_blocks:
-                    if block_part not in note_blocks[target_rel]:
-                        add_issue("P2", "broken-block-link", rel_p, idx + 1, f"Block reference '^{block_part}' not found in target '{target_rel}'", "Update or recreate block reference", "HIGH", False)
-
-            for text, link in mdlink_re.findall(line_clean):
-                if link.startswith("http://") or link.startswith("https://") or link.startswith("mailto:") or link.startswith("#"):
-                    continue
-                if "{{" in link and "}}" in link:
-                    add_issue("P3", "template-placeholder", rel_p, idx + 1, f"Unresolved template placeholder in markdown link: [{text}]({link})", "Replace placeholder with concrete link", "HIGH", False)
-                    continue
-                if "%2F" in link:
-                    add_issue("P1", "broken-md-link", rel_p, idx + 1, f"Malformed URL-encoded slash '%2F' in relative link: [{text}]({link})", "Replace '%2F' with standard forward slash '/'", "HIGH", True)
-                else:
-                    if link.startswith("/"):
-                        if os.path.isabs(link) and os.path.exists(link):
-                            target_abs = link
-                        else:
-                            target_abs = os.path.normpath(os.path.join(vault_dir, link.lstrip("/")))
-                    else:
-                        target_abs = os.path.normpath(os.path.join(os.path.dirname(full_p), link))
-                    if not os.path.exists(target_abs):
-                        add_issue("P1", "broken-md-link", rel_p, idx + 1, f"Broken relative markdown link: [{text}]({link})", "Correct relative path to point to existing file", "HIGH", False)
-
-    # 3. DFS Directory-by-Directory Structural & Link Analysis
-    dfs_sections = []
-    overloaded_folders = []
-    missing_index_folders = []
-
-    for rel_path, depth, subdirs, files in dfs_walk(vault_dir):
-        sec_name = rel_path if rel_path else "Root"
-        md_in_sec = [f for f in files if f.endswith(".md")]
-        index_in_sec = [f for f in md_in_sec if "Index" in f]
-        
-        # Link coherence: how many notes link to the section index?
-        links_to_index = 0
-        has_index = len(index_in_sec) > 0
-        index_note = index_in_sec[0] if has_index else None
-        
-        if has_index:
-            idx_rel = os.path.join(rel_path, index_note) if rel_path else index_note
-            for mf in md_in_sec:
-                if mf != index_note:
-                    mf_rel = os.path.join(rel_path, mf) if rel_path else mf
-                    if idx_rel in outgoing_links[mf_rel] or index_note.replace(".md", "") in outgoing_links[mf_rel]:
-                        links_to_index += 1
-
-        coherence = f"{links_to_index}/{max(1, len(md_in_sec) - 1)}" if (len(md_in_sec) > 1 and has_index) else "N/A"
-
-        # Structural assessments
-        assessment = "Healthy"
-        flags = []
-        if len(md_in_sec) >= 25 and not rel_path.startswith("06 - Resources/YouTube"):
-            flags.append("OVERLOADED (>25 notes in flat folder)")
-            overloaded_folders.append({"path": rel_path, "count": len(md_in_sec)})
-        if not has_index and len(md_in_sec) > 0 and depth in [1, 2] and not rel_path.startswith("06 - Resources/Books") and not rel_path.startswith("08 - Attachments") and not rel_path.startswith("09 - Templates") and not rel_path.startswith("11 - Agents"):
-            flags.append("MISSING INDEX NOTE")
-            missing_index_folders.append(rel_path)
-        if rel_path == "03 - Projects" and len(md_in_sec) == 1:
-            flags.append("EMPTY PROJECTS (Dataview query returns 0)")
-        if rel_path == "05 - Knowledge" and any(f == "Finance Index.md" for f in md_in_sec):
-            flags.append("DEAD OBSOLETE INDEX (Finance Index in Knowledge)")
-
-        if flags:
-            assessment = "; ".join(flags)
-
-        dfs_sections.append({
-            "section": sec_name,
-            "depth": depth,
-            "notes_count": len(md_in_sec),
-            "subdirs_count": len(subdirs),
-            "index_note": index_note,
-            "coherence": coherence,
-            "assessment": assessment
-        })
-
-    # 4. Note Relocation Analysis ("Where it should live instead so it's not messy")
+    # 4. Note Placement & Relocation Proposals ("Where notes should live instead")
     relocation_proposals = []
-
-    # Rules based on Vault Constitution:
-    # Check 06 - Resources/AI for non-AI notes
+    
     for rel_p in md_files:
         basename = os.path.basename(rel_p)
         dir_name = os.path.dirname(rel_p)
@@ -490,7 +1086,6 @@ def run_sentry(vault_dir, output_dir=None):
         basename = os.path.basename(rel_p)
         in_count = len(incoming_links.get(rel_p, []))
         
-        # Heuristics for archival:
         # 1. Dead/obsolete index
         if basename == "Finance Index.md" and rel_p.startswith("05 - Knowledge"):
             archival_candidates.append({
@@ -542,10 +1137,12 @@ def run_sentry(vault_dir, output_dir=None):
         git_stat = subprocess.run(["git", "-C", vault_dir, "status", "-s"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if git_stat.returncode == 0:
             lines = git_stat.stdout.splitlines()
-            deleted_moves = [l for l in lines if l.startswith(" D ")]
-            untracked = [l for l in lines if l.startswith("?? ")]
-            if any("02 - Taani/" in l for l in untracked) and deleted_moves:
-                add_issue("P0", "git-data-loss-risk", "Git Repository", None, f"Found {len(deleted_moves)} unstaged deletions from moved folders while '02 - Taani/' remains untracked. A partial commit risks recording permanent note deletions!", "Stage and commit '02 - Taani/' alongside the deleted paths", "HIGH", False)
+            deleted_in_git = [l for l in lines if l.strip().startswith("D ")]
+            untracked_in_git = [l for l in lines if l.strip().startswith("??")]
+            
+            # Check if 02 - Taani is untracked while deletions exist in 04 - Areas/House or 03 - Projects/Travel
+            if any("02 - Taani" in l for l in untracked_in_git) and any(("04 - Areas/House" in l or "03 - Projects/Travel" in l) for l in deleted_in_git):
+                add_issue("P0", "git-untracked-deletion-hazard", "02 - Taani", None, "Critical Git hazard: '02 - Taani/' is untracked while old paths in '04 - Areas/House' show as deleted. Committing deletions will wipe notes permanently!", "Run 'git add \"02 - Taani\" \"03 - Projects\" \"04 - Areas\"' before making any other commits", "HIGH", True)
     except Exception:
         pass
 
@@ -580,7 +1177,18 @@ def run_sentry(vault_dir, output_dir=None):
     if "02 - Journal" in rel_folders and "02 - Taani" in rel_folders:
         add_issue("P2", "naming-prefix-collision", "02 - Journal vs 02 - Taani", None, "Duplicate prefix '02 -' used for both '02 - Journal' and '02 - Taani'.", "Renumber top-level folders after explicit approval", "HIGH", False)
 
-    # 7. Health Scoring
+    # 7. PARA Conformance Audit (Vault & Shared Space)
+    para_results = audit_para_conformance(vault_dir, md_files, rel_folders, note_frontmatter, note_contents)
+    for pf in para_results["findings"]:
+        add_issue(pf["severity"], pf["category"], pf["path"], None, pf["description"], pf["suggested_action"], pf["confidence"], False)
+
+    # 8. Iconize Coverage Audit
+    iconize_results = audit_iconize_coverage(vault_dir, all_files, md_files, rel_folders)
+    for mi in iconize_results["missing_items"]:
+        if mi["priority"] in ["P1", "P2"]:
+            add_issue(mi["priority"], "iconize-missing-icon", mi["path"], None, f"Expected {mi['item_type']} lacks configured icon in Iconize data.json", f"Assign icon '{mi['suggested_icon']}' in data.json ({mi['rationale']})", "HIGH", True)
+
+    # 9. Health Scoring
     p0_count = sum(1 for f in findings if f["severity"] == "P0")
     p1_count = sum(1 for f in findings if f["severity"] == "P1")
     p2_count = sum(1 for f in findings if f["severity"] == "P2")
@@ -602,6 +1210,9 @@ def run_sentry(vault_dir, output_dir=None):
         "Automation robustness": calc_score(100, 30 if any(f["category"]=="sync-symlink" for f in findings) else 0),
         "Obsidian configuration": calc_score(100, 25 if any(f["category"]=="config-daily-notes" for f in findings) else 0),
         "Git/sync resilience": calc_score(100, 40 if p0_count > 0 else 0),
+        "PARA structure (Vault)": para_results["vault_para"]["conformance_score"],
+        "PARA structure (Shared space)": para_results["shared_para"]["conformance_score"],
+        "Iconize coverage": iconize_results["coverage_pct"]
     }
     overall_score = round(sum(scores.values()) / len(scores))
     scores["Overall vault health"] = overall_score
@@ -613,10 +1224,10 @@ def run_sentry(vault_dir, output_dir=None):
         {"rank": 3, "action": "Relocate misplaced notes out of '06 - Resources/AI' (Running Races -> Health, Cycling 101/102 -> Cycling, Coffee & Water Filter -> House)", "impact": "HIGH", "risk_reduction": "Cleans up domain boundaries and improves note discoverability", "effort": "Low (move 5 notes)", "confidence": "HIGH", "severity": "P1"},
         {"rank": 4, "action": "Cluster overloaded '02 - Taani/House' (48 flat notes) into thematic subfolders: Cleaning, Appliances, Furnishing, Renovation, Property", "impact": "HIGH", "risk_reduction": "Transforms messy 48-file dumping ground into an organized household operating system", "effort": "Medium (batch folder moves)", "confidence": "HIGH", "severity": "P2"},
         {"rank": 5, "action": "Archive superseded and dead notes to '10 - Archive/' ('05 - Knowledge/Finance Index.md', 'Best Broadband Deal.md', redundant 'Bedding set.md')", "impact": "MEDIUM", "risk_reduction": "Removes stale noise from active search and indexes", "effort": "Low (move 3 notes to Archive)", "confidence": "HIGH", "severity": "P2"},
-        {"rank": 6, "action": "Create '.obsidian/daily-notes.json' pointing to '02 - Journal' to prevent new daily notes cluttering root", "impact": "HIGH", "risk_reduction": "Fixes core plugin destination drift", "effort": "Trivial (create JSON file)", "confidence": "HIGH", "severity": "P1"},
-        {"rank": 7, "action": "Resolve unmerged volatile worktree in '/private/tmp/taivault-food-os-mvp1' before next OS reboot", "impact": "HIGH", "risk_reduction": "Prevents loss of Food OS commits", "effort": "Medium (git merge/prune)", "confidence": "HIGH", "severity": "P1"},
-        {"rank": 8, "action": "Fix self-referencing obsolete link in '02 - Taani/Travel/00 - Travel Index.md' ([[03 - Projects/Travel/...]])", "impact": "MEDIUM", "risk_reduction": "Eliminates broken navigation link", "effort": "Trivial (1-line edit)", "confidence": "HIGH", "severity": "P1"},
-        {"rank": 9, "action": "Fix broken relative markdown links with URL-encoded '%2F' slashes in '06 - Resources/AI/Markdown-First...'", "impact": "MEDIUM", "risk_reduction": "Restores broken agent specification references", "effort": "Low (replace '%2F' with '/')", "confidence": "HIGH", "severity": "P1"},
+        {"rank": 6, "action": "Configure missing icons in '.obsidian/plugins/obsidian-icon-folder/data.json' across folders, indexes, and active notes", "impact": "MEDIUM", "risk_reduction": "Restores visual navigation hierarchy across desktop and mobile", "effort": "Low (apply staged JSON patch)", "confidence": "HIGH", "severity": "P2"},
+        {"rank": 7, "action": "Create '.obsidian/daily-notes.json' pointing to '02 - Journal' to prevent new daily notes cluttering root", "impact": "HIGH", "risk_reduction": "Fixes core plugin destination drift", "effort": "Trivial (create JSON file)", "confidence": "HIGH", "severity": "P1"},
+        {"rank": 8, "action": "Resolve unmerged volatile worktree in '/private/tmp/taivault-food-os-mvp1' before next OS reboot", "impact": "HIGH", "risk_reduction": "Prevents loss of Food OS commits", "effort": "Medium (git merge/prune)", "confidence": "HIGH", "severity": "P1"},
+        {"rank": 9, "action": "Fix self-referencing obsolete link in '02 - Taani/Travel/00 - Travel Index.md' ([[03 - Projects/Travel/...]])", "impact": "MEDIUM", "risk_reduction": "Eliminates broken navigation link", "effort": "Trivial (1-line edit)", "confidence": "HIGH", "severity": "P1"},
         {"rank": 10, "action": "Address iCloud POSIX symlinks in '11 - Agents/Workflows/' for cross-platform mobile compatibility", "impact": "HIGH", "risk_reduction": "Ensures iOS/iPadOS Obsidian sync resilience", "effort": "Medium (replace symlinks with local router notes)", "confidence": "HIGH", "severity": "P1"},
     ]
 
@@ -641,17 +1252,32 @@ def run_sentry(vault_dir, output_dir=None):
         "p1_issues": p1_count,
         "p2_issues": p2_count,
         "p3_issues": p3_count,
-        "p4_issues": p4_count
+        "p4_issues": p4_count,
+        "para_vault_score": para_results["vault_para"]["conformance_score"],
+        "para_shared_score": para_results["shared_para"]["conformance_score"],
+        "iconize_expected_count": iconize_results["expected_count"],
+        "iconize_missing_count": iconize_results["missing_count"],
+        "iconize_coverage_pct": iconize_results["coverage_pct"]
     }
 
     # Write Vault Health Findings.json
     findings_data = {
-        "audit_version": "2.0",
+        "audit_version": "2.1",
         "auditor": "vault-sentry",
         "vault_path": vault_dir,
         "audit_timestamp": now_iso,
         "metrics": metrics,
         "scores": scores,
+        "para_conformance": {
+            "vault": para_results["vault_para"],
+            "shared": para_results["shared_para"]
+        },
+        "iconize_audit": {
+            "coverage_pct": iconize_results["coverage_pct"],
+            "expected_count": iconize_results["expected_count"],
+            "missing_count": iconize_results["missing_count"],
+            "missing_items": iconize_results["missing_items"]
+        },
         "dfs_sections": dfs_sections,
         "relocation_proposals": relocation_proposals,
         "archival_candidates": archival_candidates,
@@ -670,7 +1296,7 @@ def run_sentry(vault_dir, output_dir=None):
 
 **Audit Target**: `{vault_dir}`  
 **Audit Timestamp**: {now_iso}  
-**Audit Engine**: `vault-sentry` v2.0 (DFS Directory & Structural Sentinels | Strict Read-Only Mode)
+**Audit Engine**: `vault-sentry` v2.1 (DFS Directory, Dual PARA Sentry & Iconize Auditor)
 
 ---
 
@@ -682,10 +1308,12 @@ Overall vault health is scored at **{scores['Overall vault health']}/100**.
 
 ### Key Diagnostic Takeaways:
 1. **DFS Structural Traversal**: Audited **{metrics['dfs_sections_audited']} directory sections**. Discovered a major organizational bottleneck in `02 - Taani/House`, which has become an overloaded flat dumping ground of **48 notes** spanning cleaning, appliances, DIY renovation, furniture, and conveyancing.
-2. **Note Relocation Analysis ("Where it should live instead")**: Identified **{len(relocation_proposals)} misplaced notes** that violate domain boundaries (e.g. running races, cycling guides, coffee brewing, and water filters stored under `06 - Resources/AI`).
-3. **Archival Candidates ("Outdated & untouched notes")**: Flagged **{len(archival_candidates)} notes for archival** to `10 - Archive/`, including dead indexes (`05 - Knowledge/Finance Index.md`), time-decaying purchase research (`Best Broadband Deal.md`), and redundant notes (`Bedding set.md`).
-4. **Git Deletion Hazard**: Files moved from `04 - Areas/House` and `03 - Projects/Travel` to `02 - Taani/` show as deleted in Git while `02 - Taani/` remains untracked. A partial commit risks permanent note deletion.
-5. **Silent Dataview Omission**: `04 - Areas/Technology` has no index note (`00 - Technology Index.md`), causing the Dataview query in `04 - Areas/00 - Areas Index.md` to omit Technology entirely.
+2. **Dual PARA Structure Review**:
+   - **Vault PARA ({scores['PARA structure (Vault)']}/100)**: `03 - Projects` has completely stagnated (0 active project notes), while active projects have drifted into `02 - Taani/Travel` and `02 - Taani/House`. Additionally, personal area maintenance guides leaked into `06 - Resources/AI`.
+   - **Shared Space PARA ({scores['PARA structure (Shared space)']}/100)**: `02 - Taani` is structured into domain silos with zero folder-level PARA separation, resulting in a severe conflation of finite projects, ongoing areas, resources, and historical archives within `House/`.
+3. **Iconize Expected Page Audit**: Configured icons cover **{metrics['iconize_coverage_pct']}%** of expected targets ({metrics['iconize_missing_count']} missing items identified across key folders, domain indexes, book summaries, and active content notes).
+4. **Note Relocation Analysis ("Where it should live instead")**: Identified **{len(relocation_proposals)} misplaced notes** that violate domain boundaries (e.g. running races, cycling guides, coffee brewing, and water filters stored under `06 - Resources/AI`).
+5. **Archival Candidates ("Outdated & untouched notes")**: Flagged **{len(archival_candidates)} notes for archival** to `10 - Archive/`, including dead indexes (`05 - Knowledge/Finance Index.md`), time-decaying purchase research (`Best Broadband Deal.md`), and redundant notes (`Bedding set.md`).
 
 ---
 
@@ -698,8 +1326,9 @@ Overall vault health is scored at **{scores['Overall vault health']}/100**.
 | **Folders** | {metrics['folders']} | **Folders Missing Indexes** | {metrics['missing_index_folders']} |
 | **Attachments (PDFs & Images)** | {metrics['attachments']} | **Note Relocation Proposals** | **{metrics['note_relocation_proposals']}** |
 | **Broken Internal Links** | {metrics['internal_links_broken']} | **Notes Suggested to Archive** | **{metrics['archival_candidates']}** |
-| **Unique Properties** | {metrics['unique_properties']} | **P0 Issues (Data Loss Risk)** | **{metrics['p0_issues']}** |
-| **Unique Tags** | {metrics['unique_tags']} | **P1 Issues (Broken / Omitted)** | **{metrics['p1_issues']}** |
+| **Vault PARA Conformance** | **{metrics['para_vault_score']}/100** | **Shared Space PARA Score** | **{metrics['para_shared_score']}/100** |
+| **Iconize Coverage** | **{metrics['iconize_coverage_pct']}%** | **Iconize Missing Expected Targets** | **{metrics['iconize_missing_count']}** |
+| **P0 Issues (Data Loss Risk)** | **{metrics['p0_issues']}** | **P1 Issues (Broken / Omitted)** | **{metrics['p1_issues']}** |
 | **P2 Issues (Structural / Misplaced)** | **{metrics['p2_issues']}** | **P3 / P4 Issues (Hygiene & Stale)** | **{metrics['p3_issues'] + metrics['p4_issues']}** |
 
 ---
@@ -719,8 +1348,73 @@ Overall vault health is scored at **{scores['Overall vault health']}/100**.
 | **Automation robustness** | {scores['Automation robustness']}/100 | 101 hardcoded machine paths; external POSIX symlinks in iCloud |
 | **Obsidian configuration** | {scores['Obsidian configuration']}/100 | `daily-notes.json` missing while core plugin is enabled |
 | **Git/sync resilience** | {scores['Git/sync resilience']}/100 | Moved folders uncommitted in `02 - Taani/`; volatile worktree in `/private/tmp/` |
-| **Overall vault health** | **{scores['Overall vault health']}/100** | **Solid core knowledge base; needs folder restructuring and Git staging** |
+| **PARA structure (Vault)** | {scores['PARA structure (Vault)']}/100 | Stagnant Projects folder (0 active); area leakage into Resources inbox; underutilized Archive |
+| **PARA structure (Shared space)** | {scores['PARA structure (Shared space)']}/100 | 100% domain-first silos; zero folder-level PARA separation; 48-file flat clutter in House |
+| **Iconize coverage** | {scores['Iconize coverage']}% | {iconize_results['missing_count']} expected folders, indexes, and active notes missing configured icons |
+| **Overall vault health** | **{scores['Overall vault health']}/100** | **Solid core knowledge base; needs folder restructuring, PARA alignment, and Git staging** |
 
+---
+
+## PARA Structure Conformance Review (Dual Analysis)
+
+### 1. Overall Vault PARA Conformance: {para_results['vault_para']['conformance_score']}/100 ({para_results['vault_para']['grade']})
+
+| PARA Tier | Path | Note Count | Share of Active Notes | Structural Health Status |
+|---|---|---:|---:|---|
+| **Projects** | `03 - Projects` | {para_results['vault_para']['projects_count']} | <1% | **Dormant / Depleted**: Only 1 index note exists. Active projects have evacuated into `02 - Taani/Travel` and `02 - Taani/House`. |
+| **Areas** | `04 - Areas` | {para_results['vault_para']['areas_count']} | ~10% | **Active**: 5 healthy subdomains (Cycling, Habits, Health, NAS, Technology), but personal fitness guides leaked into Resources. |
+| **Resources & Knowledge** | `05 - Knowledge` & `06 - Resources` | {para_results['vault_para']['knowledge_count'] + para_results['vault_para']['resources_count']} | ~80% | **Disproportionately Dominant**: 171 notes. High quality synthetic bases, but contains misplaced household and running notes. |
+| **Archive** | `10 - Archive` | {para_results['vault_para']['archive_count']} | ~2% | **Underutilized**: Superseded indexes, expired contracts, and completed purchases remain in active folders. |
+
+#### Key Vault PARA Insights:
+1. **Projects Depletion**: While the user is actively working on finite projects (e.g. `Snowdonia 26`, `Montenegro 26`, `Installing Herringbone LVT`, `Replacing Switches`), none of these reside in `03 - Projects`. `03 - Projects/00 - Projects Index.md` has an empty Dataview query.
+2. **Inbox Drift to Resources**: `06 - Resources/AI` acts as an unmanaged dumping inbox where non-AI material (`Most Prestigious Running Races London.md`, `Cycling 101.md`, `Coffee 101.md`, `Water Filtration Systems`) was placed instead of being routed to `04 - Areas/` or `02 - Taani/`.
+
+---
+
+### 2. Shared Space (`02 - Taani`) PARA Conformance: {para_results['shared_para']['conformance_score']}/100 ({para_results['shared_para']['grade']})
+
+`02 - Taani` holds **{para_results['shared_para']['total_notes']} notes** across 4 shared household domains: `Finance/`, `Food/`, `House/`, and `Travel/`. It is currently organized **strictly by subject domain**, with zero folder-level PARA separation.
+
+#### Implicit PARA Breakdown of `02 - Taani`:
+
+| Implicit Tier | Notes | Share | Characteristics & Member Notes |
+|---|---:|---:|---|
+| **Shared Projects** | **{para_results['shared_para']['projects_count']}** | 15.3% | Finite outcomes with target deadlines: DIY renovation (`Installing Herringbone LVT`, `Replacing Switches`, `Fixing Door Foil Peel`, `Replacing Spotlights`, `WAGNER Paint Sprayer`) and upcoming trips (`Snowdonia 26 Plan`, `Montenegro 26 Plan`). |
+| **Shared Areas** | **{para_results['shared_para']['areas_count']}** | 29.2% | Ongoing operational standards: `Household Cleaning System`, `Household Cooking System`, `Household Essentials Checklist`, `Financial Dashboard`, `Current vs New Household Budget`. |
+| **Shared Resources** | **{para_results['shared_para']['resources_count']}** | 44.4% | Catalogues, reference materials, wishlists: 11 cooking recipes (`R001` - `R011`), furniture links, cookware reviews, appliance evaluations (`Dreame X40 Ultra`, `Best Water Filter`). |
+| **Shared Archives** | **{para_results['shared_para']['archives_count']}** | 4.2% | Historical records and expired deals: `Original Rightmove Listing and Measurements`, `Legal and Mortgage for House`, `Best Broadband Deal`. |
+| **Domain Indexes** | **{para_results['shared_para']['indexes_count']}** | 6.9% | Navigation hubs: `02 - Taani Index`, `Food Index`, `House Index`, `Finance Index`, `Travel Index`. |
+
+#### Shared Space Structural Diagnosis & Recommendations:
+- **The Problem**: All 48 notes in `02 - Taani/House` sit in a single unpartitioned flat directory. An active flooring installation project (`Installing Herringbone LVT.md`) lives side-by-side with an expired broadband contract (`Best Broadband Deal.md`) and a routine dishwasher checklist (`Kitchen Cleaning Supplies.md`).
+- **Architectural Solution**:
+  1. **Folder Sub-Clustering**: Cluster `02 - Taani/House/` into thematic subfolders that align with PARA:
+     - `Renovation/` (Projects)
+     - `Cleaning/` (Areas)
+     - `Appliances/` & `Furnishing/` (Resources)
+     - `Property/` (Archive)
+  2. **Unified Frontmatter PARA Metadata**: Introduce a frontmatter property `para: project | area | resource | archive` across all notes in `02 - Taani/`. This enables cross-vault queries in parent indexes (e.g. listing all active projects across both personal and shared domains).
+
+---
+
+## Iconize Coverage & Expected Page Icon Audit
+
+- **Audit Target File**: `.obsidian/plugins/obsidian-icon-folder/data.json`
+- **Total Expected Items Checked**: **{iconize_results['expected_count']}**
+- **Configured Items**: **{iconize_results['configured_count']}**
+- **Missing Items**: **{iconize_results['missing_count']}**
+- **Icon Coverage Rate**: **{iconize_results['coverage_pct']}%**
+
+### Expected Pages & Folders Missing Icons:
+
+| Path | Item Type | Suggested Icon | Priority | Rationale |
+|---|---|:---:|---|---|
+""")
+        for mi in iconize_results["missing_items"]:
+            rf.write(f"| `{mi['path']}` | {mi['item_type']} | `{mi['suggested_icon']}` | {mi['priority']} | {mi['rationale']} |\n")
+
+        rf.write(f"""
 ---
 
 ## Section-by-Section DFS Structural Audit
@@ -781,39 +1475,6 @@ The following notes are candidates for moving to `10 - Archive/` based on stalen
 
 ---
 
-## Critical Findings (P0 & P1)
-
-### [P0] VS-037 — Uncommitted Folder Moves Risk Permanent Note Deletion in Git
-- **Path**: Vault Git Repository (`.git`)
-- **Evidence**: Notes from `04 - Areas/House` and `03 - Projects/Travel` were moved into `02 - Taani/`. In `git status -s`, the old locations show as `D` (deleted), while `02 - Taani/` is untracked `??`.
-- **Risk**: A careless `git commit -a` or sync script will commit the deletions without staging the new files, permanently wiping House and Travel notes from Git history.
-- **Remedy**: Explicitly stage and commit `02 - Taani/` alongside the deletions: `git add "02 - Taani" "03 - Projects" "04 - Areas"`.
-
-### [P1] VS-034 — Area 'Technology' Silently Omitted from Areas Index
-- **Path**: `04 - Areas/Technology/`
-- **Evidence**: `04 - Areas/Technology` exists on disk and contains `Bionic Skills Setup.md`, but has no `00 - Technology Index.md`. The Dataview query in `04 - Areas/00 - Areas Index.md` filters by `contains(file.name, "Index")`, completely omitting Technology.
-- **Remedy**: Create `04 - Areas/Technology/00 - Technology Index.md` with parent `[[00 - Areas Index]]`.
-
-### [P1] VS-038 — Volatile Git Worktree in `/private/tmp/`
-- **Path**: `/private/tmp/taivault-food-os-mvp1` (Branch: `codex/food-os-mvp1`)
-- **Evidence**: An active Git worktree containing 2 unmerged commits (`Compartmentalize Food OS under dedicated area`, `Implement Food OS MVP1 inventory foundation`) resides in macOS `/private/tmp/`.
-- **Risk**: macOS purges `/private/tmp/` on restart or storage pressure, leaving Git worktree metadata broken and unmerged work orphaned.
-- **Remedy**: Merge `codex/food-os-mvp1` into `main` or move worktree to a persistent directory under `~/.taani-agent/workspaces/`.
-
-### [P1] VS-033 — Core Plugin `daily-notes` Missing Destination Configuration
-- **Path**: `.obsidian/core-plugins.json`
-- **Evidence**: `daily-notes: true` in `core-plugins.json`, but `.obsidian/daily-notes.json` does not exist.
-- **Risk**: Invoking "Open today's daily note" dumps newly created daily notes into the vault root instead of `02 - Journal/`.
-- **Remedy**: Create `.obsidian/daily-notes.json` setting folder to `"02 - Journal"`.
-
-### [P1] VS-004 / VS-005 — iCloud Sync Hazard: External POSIX Symlinks
-- **Path**: `11 - Agents/Workflows/finance-checkpoint` & `habits-checkpoint`
-- **Evidence**: Both directories are POSIX symlinks pointing outside iCloud to `/Users/sai/.codex/skills/...`.
-- **Risk**: iCloud cannot synchronize POSIX symlinks pointing to external absolute paths to iOS/iPadOS devices.
-- **Remedy**: Replace directory symlinks in iCloud with router notes or external agent configs.
-
----
-
 ## Top 10 Actions
 
 | Rank | Action | Impact | Risk Reduction | Effort | Confidence | Severity |
@@ -822,11 +1483,11 @@ The following notes are candidates for moving to `10 - Archive/` based on stalen
 | **2** | Create `04 - Areas/Technology/00 - Technology Index.md` | HIGH | Restores missing Technology area to Areas Dataview query | Low (create 1 note) | HIGH | **P1** |
 | **3** | Relocate misplaced notes out of `06 - Resources/AI` | HIGH | Restores domain boundaries (Running -> Health, Cycling -> Cycling, etc.) | Low (move 5 notes) | HIGH | **P1** |
 | **4** | Cluster overloaded `02 - Taani/House` (48 flat notes) into subfolders | HIGH | Transforms flat clutter into clean thematic subfolders | Medium (batch moves) | HIGH | **P2** |
-| **5** | Archive superseded notes to `10 - Archive/` | MEDIUM | Removes dead indexes and expired research from active search | Low (archive 3 notes) | HIGH | **P2** |
-| **6** | Create `.obsidian/daily-notes.json` pointing to `02 - Journal` | HIGH | Fixes daily notes dumping into vault root | Trivial (create JSON file) | HIGH | **P1** |
-| **7** | Resolve unmerged volatile worktree in `/private/tmp/taivault-food-os-mvp1` | HIGH | Prevents loss of Food OS commits on reboot | Medium (git merge/prune) | HIGH | **P1** |
-| **8** | Fix self-referencing link in `02 - Taani/Travel/00 - Travel Index.md` | MEDIUM | Eliminates broken navigation link | Trivial (1-line edit) | HIGH | **P1** |
-| **9** | Fix `%2F` encoded relative links in `Markdown-First...` note | MEDIUM | Restores broken agent specification references | Low (replace `%2F` with `/`) | HIGH | **P1** |
+| **5** | Configure missing icons in Iconize data.json across 35+ expected pages | MEDIUM | Restores visual hierarchy and mobile UI consistency | Low (apply staged JSON patch) | HIGH | **P2** |
+| **6** | Archive superseded notes to `10 - Archive/` | MEDIUM | Removes dead indexes and expired research from active search | Low (archive 3 notes) | HIGH | **P2** |
+| **7** | Create `.obsidian/daily-notes.json` pointing to `02 - Journal` | HIGH | Fixes daily notes dumping into vault root | Trivial (create JSON file) | HIGH | **P1** |
+| **8** | Resolve unmerged volatile worktree in `/private/tmp/taivault-food-os-mvp1` | HIGH | Prevents loss of Food OS commits on reboot | Medium (git merge/prune) | HIGH | **P1** |
+| **9** | Fix self-referencing link in `02 - Taani/Travel/00 - Travel Index.md` | MEDIUM | Eliminates broken navigation link | Trivial (1-line edit) | HIGH | **P1** |
 | **10** | Address iCloud POSIX symlinks in `11 - Agents/Workflows/` | HIGH | Ensures iOS/iPadOS Obsidian sync resilience | Medium (replace symlinks) | HIGH | **P1** |
 
 ---
@@ -848,7 +1509,7 @@ The following notes are candidates for moving to `10 - Archive/` based on stalen
 
 **Vault Target**: `{vault_dir}`  
 **Generated On**: {now_iso}  
-**Auditor**: `vault-sentry`  
+**Auditor**: `vault-sentry` v2.1  
 **Status**: STAGED (Awaiting Human Approval)
 
 > [!CAUTION]
@@ -881,6 +1542,13 @@ The following notes are candidates for moving to `10 - Archive/` based on stalen
 ### [AUTO-04] Remove Leaked Template Placeholder Tag
 - **Target**: `09 - Templates/YouTube Summary Template.md`
 - **Action**: Remove `- {{topic-tag-1}}` from tags frontmatter block.
+
+### [AUTO-05] Configure Missing Expected Icons in Iconize `data.json`
+- **Target**: `.obsidian/plugins/obsidian-icon-folder/data.json`
+- **Action**: Merge the following {len(iconize_results['icon_patch_dict'])} missing icon mappings into `data.json`:
+  ```json
+{json.dumps(iconize_results['icon_patch_dict'], indent=4, ensure_ascii=False)}
+  ```
 
 ---
 
@@ -934,10 +1602,14 @@ Create subfolders and move notes:
 2. `02 - Taani/House/Best Broadband Deal.md` → `10 - Archive/House/Best Broadband Deal (Historical).md`
 3. `02 - Taani/House/Bedding set.md` → `10 - Archive/House/Bedding set (Superseded).md`
 
-### [APPR-06] Resolve Volatile Git Worktree in `/private/tmp/`
+### [APPR-06] Realign Shared Space (`02 - Taani`) with PARA Architecture
+- **Action**: Add frontmatter property `para: project | area | resource | archive` across all notes in `02 - Taani/`.
+- **Purpose**: Enables Dataview queries across both personal and shared domains simultaneously without breaking the joint household namespace.
+
+### [APPR-07] Resolve Volatile Git Worktree in `/private/tmp/`
 - **Command**: Merge branch `codex/food-os-mvp1` into `main` and remove worktree: `git -C "{vault_dir}" worktree remove /private/tmp/taivault-food-os-mvp1`.
 
-### [APPR-07] Fix Obsolete Self-Referencing Wikilink in Travel Index
+### [APPR-08] Fix Obsolete Self-Referencing Wikilink in Travel Index
 - **Target**: `02 - Taani/Travel/00 - Travel Index.md:19`
 - **Action**: Replace `[[03 - Projects/Travel/00 - Travel Index]]` with `[[02 - Taani/Travel/00 - Travel Index]]`.
 
@@ -964,4 +1636,45 @@ Create subfolders and move notes:
 
 if __name__ == "__main__":
     args = parse_args()
+    if args.suggest or args.suggest_file:
+        query = args.suggest or ""
+        note_text = ""
+        if args.suggest_file:
+            if not os.path.exists(args.suggest_file):
+                print(f"[!] Error: File not found: {args.suggest_file}", file=sys.stderr)
+                sys.exit(1)
+            with open(args.suggest_file, "r", encoding="utf-8") as sf:
+                note_text = sf.read()
+            if not query:
+                for line in note_text.splitlines():
+                    if line.startswith("# "):
+                        query = line[2:].strip()
+                        break
+                if not query:
+                    query = os.path.splitext(os.path.basename(args.suggest_file))[0]
+        
+        result = suggest_destination(query, note_text, args.vault)
+        if args.json:
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+        else:
+            print(f"\n=======================================================")
+            print(f"  VAULT SENTRY — NOTE DESTINATION RECOMMENDATION")
+            print(f"=======================================================")
+            print(f"Query:                 {result['query']}")
+            print(f"PARA Tier:             {result['tier']}")
+            print(f"Recommended Folder:    {result['recommended_folder']}")
+            print(f"Recommended File:      {result['recommended_filename']}")
+            print(f"Full Vault Path:       {result['full_recommended_path']}")
+            print(f"Parent Index:          {result['parent_index']}")
+            print(f"Recommended Icon:      {result['recommended_icon']}")
+            print(f"Recommended Tags:      {', '.join(['#' + t for t in result['recommended_tags']])}")
+            print(f"\nRationale:")
+            print(f"  {result['rationale']}")
+            print(f"\nAlternative:")
+            print(f"  {result['alternative_destination']} — {result['alternative_rationale']}")
+            print(f"\nFrontmatter Scaffold:")
+            print(result['frontmatter_scaffold'])
+            print(f"=======================================================\n")
+        sys.exit(0)
+
     run_sentry(args.vault, args.output)

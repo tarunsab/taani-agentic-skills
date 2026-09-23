@@ -1,15 +1,18 @@
 ---
 name: vault-sentry
-description: Deep DFS directory-by-directory structural audit, link graph verification, note relocation recommendations, and staleness/archival diagnosis for Obsidian vaults. Strictly read-only by default, producing Vault Health Report.md, Vault Health Findings.json, and Vault Repair Manifest.md.
+description: Deep DFS directory-by-directory structural audit, link graph verification, note relocation recommendations, staleness/archival diagnosis, dual PARA conformance review, Iconize expected page icon auditing, and note destination suggestion routing for Obsidian vaults. Strictly read-only by default, producing Vault Health Report.md, Vault Health Findings.json, and Vault Repair Manifest.md.
 ---
 
 # Vault Sentry
 
-Perform an exhaustive, deep Depth-First Search (DFS) directory-by-directory structural audit, link graph verification, note relocation recommendation, and staleness/archival diagnosis across an Obsidian vault.
+Perform an exhaustive, deep Depth-First Search (DFS) directory-by-directory structural audit, link graph verification, note relocation recommendation, staleness/archival diagnosis, dual PARA conformance review, Iconize coverage analysis, and note destination routing across an Obsidian vault.
 
 `vault-sentry` acts as an automated knowledge architect and filesystem maintainer:
 - **DFS Section-by-Section Structural Audit**: Traverses the vault directory tree in DFS order, evaluating folder health, index note presence, coherence of internal links, and flat folder overloading.
+- **Dual PARA Conformance Review**: Rigorously assesses adherence to Tiago Forte's PARA framework at both the overall vault level (Projects, Areas, Resources, Archive) and within the shared household space (`02 - Taani`).
+- **Iconize Coverage & Expected Page Icon Audit**: Verifies `.obsidian/plugins/obsidian-icon-folder/data.json` against all expected vault folders, indexes, book summaries, agent notes, and active content leaves, generating concrete icon suggestions (Lucide IDs and emojis).
 - **Note Placement & Relocation ("Where it should live instead")**: Evaluates note contents against the Vault Constitution classification rules to identify misplaced notes and suggest clean, un-cluttered destinations.
+- **Note Destination Routing Engine (`--suggest`)**: Suggests the optimal destination folder, clean filename, parent index wikilink, tags, icon, rationale, and frontmatter scaffold for any proposed new note or draft markdown file.
 - **Staleness & Archival Sentry ("Suggest notes to archive")**: Detects outdated, untouched, superseded, or completed notes and proposes structured archival destinations under `10 - Archive/`.
 - **Integrity & Safety**: Strictly read-only by default. Identifies broken links, sync collisions, Git hazards, and core plugin drift without mutating files until explicitly approved.
 
@@ -66,7 +69,68 @@ TIER 4: REUSABLE METHODOLOGY & TOOLING
 
 ---
 
-## 3. Note Placement & Relocation ("Where It Should Live Instead")
+## 3. Dual PARA Conformance Review
+
+`vault-sentry` conducts a rigorous dual-layer analysis of PARA (Projects, Areas, Resources, Archive):
+
+### Layer 1: Vault-Level PARA Conformance
+- **Projects (`03 - Projects`)**: Must represent active, finite efforts with target completion conditions. Sentry audits whether `03 - Projects` has become depleted/dormant while active projects leak into other domains (e.g. trips in Travel, home improvements in House).
+- **Areas (`04 - Areas`)**: Must represent ongoing spheres of activity with standards to maintain (e.g. Cycling, Habits, Health, NAS, Technology). Sentry checks that personal maintenance guides have not leaked into resource inboxes.
+- **Resources (`05 - Knowledge` & `06 - Resources`)**: Distinguishes durable synthetic explanations and prompt libraries (`05 - Knowledge`) from external source captures, book notes, and video digests (`06 - Resources`).
+- **Archive (`10 - Archive`)**: Evaluates whether completed projects, superseded indexes, and time-decaying contract research are actively moved to cold storage.
+
+### Layer 2: Shared Space (`02 - Taani`) PARA Conformance
+Shared household spaces typically organize by subject domain (`Finance/`, `Food/`, `House/`, `Travel/`). `vault-sentry` audits the implicit PARA health inside these shared domains:
+- **Shared Projects**: Finite household DIY tasks, renovation projects, and trip itineraries.
+- **Shared Areas**: Operational systems, recurring cleaning routines, cooking systems, and financial checkpoints.
+- **Shared Resources**: Recipe collections (`Rxxx`), appliance manuals, homeware wishlists, and travel inspiration.
+- **Shared Archives**: Historical conveyancing, old property listings, and expired broadband deals.
+- **Structural Conflation Diagnosis**: Flags unpartitioned flat folders (e.g. `House/`) that conflate all four tiers into a single directory, proposing either thematic subfolder clusters (`Renovation/`, `Cleaning/`, `Appliances/`, `Property/`) or unified frontmatter metadata (`para: project | area | resource | archive`).
+
+---
+
+## 4. Iconize Expected Page Icon Audit
+
+Obsidian Iconize configuration is audited via `.obsidian/plugins/obsidian-icon-folder/data.json`:
+- **Folder Icons**: Verified for Lucide icons (`Li...`) matching the domain purpose (e.g. `02 - Taani/Food` $\rightarrow$ `LiUtensils`, `04 - Areas/Habits` $\rightarrow$ `LiFlame`, `11 - Agents/Audits` $\rightarrow$ `LiShieldCheck`).
+- **Index Notes**: Verified for consistent Lucide icons matching their parent directory or domain concept.
+- **Book Summaries**: Verified for literature emoji (`📚`).
+- **Agent Notes**: Verified against the Vault Constitution and Note Standards requiring `🤖` for all notes under `11 - Agents/`.
+- **Content Leaves**: Verified for topical emojis (e.g. `🍳` for recipes, `🚲` for cycling, `🏃` for running, `📊` for financial dashboards).
+
+The audit outputs coverage percentages, an inventory of missing expected icons, and a staged JSON patch ready to merge safely into `data.json`.
+
+---
+
+## 5. Note Destination Routing Engine (`--suggest`)
+
+When creating a new note or triaging an incoming draft, `vault-sentry` determines the canonical destination based on the Vault Constitution:
+
+```bash
+# Suggest destination from note title or concept
+python3 scripts/vault-sentry.py --suggest "Air Fryer Sourdough Pizza Recipe"
+
+# Suggest destination from a draft file
+python3 scripts/vault-sentry.py --suggest-file /path/to/draft.md
+
+# Machine-readable JSON output
+python3 scripts/vault-sentry.py --suggest "Running my first Half Marathon" --json
+```
+
+### Routing Output Schema:
+1. **Recommended Folder**: Canonical vault directory path.
+2. **Recommended File Name**: Standardized, clean filename (e.g. `R012 - Sourdough Pizza.md` for recipes).
+3. **Parent Index Note**: Wikilink to parent index for immediate integration into the navigation graph.
+4. **Recommended Tags**: 2–4 lowercase taxonomy tags.
+5. **Recommended Icon**: Lucide ID (`Li...`) or topical emoji.
+6. **PARA Tier**: `Project (Shared/Personal)`, `Area (Shared/Personal)`, `Resource`, `Knowledge`, or `Archive`.
+7. **Classification Rationale**: Exact constitutional rules explaining why it belongs here.
+8. **Frontmatter Scaffold**: Copy-paste ready YAML header with `parent` and `tags`.
+9. **Alternative Destination**: Second-best destination and explicit trade-off rationale.
+
+---
+
+## 6. Note Placement & Relocation ("Where It Should Live Instead")
 
 Notes frequently suffer from domain drift or accidental dumping into generic folders. `vault-sentry` enforces the **Vault Constitution classification rules**:
 - **Project**: Finite outcome with a completion condition or target date.
@@ -87,7 +151,7 @@ Notes frequently suffer from domain drift or accidental dumping into generic fol
 
 ---
 
-## 4. Staleness & Archival Heuristics ("Suggest Notes to Archive")
+## 7. Staleness & Archival Heuristics ("Suggest Notes to Archive")
 
 `vault-sentry` identifies candidates for moving to `10 - Archive/` using four signals:
 
@@ -102,7 +166,7 @@ Notes frequently suffer from domain drift or accidental dumping into generic fol
 
 ---
 
-## 5. The 36 Diagnostic Dimensions
+## 8. The 36 Diagnostic Dimensions
 
 `vault-sentry` evaluates the vault across all 36 dimensions:
 1. Safety Enforcement (Read-Only Default)
@@ -131,7 +195,7 @@ Notes frequently suffer from domain drift or accidental dumping into generic fol
 24. Sync Health (iCloud POSIX symlink limitations)
 25. Empty & Stale Areas
 26. Data Loss Risks
-27. Health Scoring (12 categories, 0–100)
+27. Health Scoring (14 categories, 0–100)
 28. Severity Classification (P0 to P4)
 29. Confidence Scoring (HIGH, MEDIUM, LOW)
 30. Vault Health Report Generation
@@ -144,10 +208,22 @@ Notes frequently suffer from domain drift or accidental dumping into generic fol
 
 ---
 
-## 6. Running Vault Sentry
+## 9. Running Vault Sentry
 
 ```bash
-# Output defaults to "11 - Agents/Audits" inside the vault
+# Full Vault Audit (Output defaults to "11 - Agents/Audits" inside the vault)
 python3 ~/.codex/skills/planning/vault-sentry/scripts/vault-sentry.py \
   --vault "/path/to/vault"
+
+# Note Destination Suggestion from title or topic
+python3 ~/.codex/skills/planning/vault-sentry/scripts/vault-sentry.py \
+  --suggest "Air Fryer Sourdough Pizza Recipe"
+
+# Note Destination Suggestion from draft file
+python3 ~/.codex/skills/planning/vault-sentry/scripts/vault-sentry.py \
+  --suggest-file "/path/to/draft.md"
+
+# Output Destination Suggestion as JSON
+python3 ~/.codex/skills/planning/vault-sentry/scripts/vault-sentry.py \
+  --suggest "Replacing Bathroom Spotlights" --json
 ```
