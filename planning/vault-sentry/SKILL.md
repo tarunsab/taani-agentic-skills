@@ -43,8 +43,8 @@ TIER 2: PERSISTENT AI WORKING KNOWLEDGE
 → Durable, human-readable non-canonical AI analysis and reasoning.
 
 TIER 3: CANONICAL VAULT TRUTH & AUDIT DELIVERABLES
-11 - Agents/Audits/ (or Vault Root if unconfigured)
-→ Vault Health Report.md, Vault Health Findings.json, Vault Repair Manifest.md.
+11 - Agents/ (or Vault Root if unconfigured)
+→ Vault Health Report.md, Vault Health Findings.json, Vault Repair Manifest.md, PARA Conformance Review.md, Iconize Coverage Audit.md.
 → Requires explicit human approval before applying any repairs.
 
 TIER 4: REUSABLE METHODOLOGY & TOOLING
@@ -211,7 +211,7 @@ Notes frequently suffer from domain drift or accidental dumping into generic fol
 ## 9. Running Vault Sentry
 
 ```bash
-# Full Vault Audit (Output defaults to "11 - Agents/Audits" inside the vault)
+# Full Vault Audit (Output defaults to "11 - Agents" inside the vault)
 python3 ~/.codex/skills/planning/vault-sentry/scripts/vault-sentry.py \
   --vault "/path/to/vault"
 

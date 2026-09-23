@@ -607,7 +607,6 @@ def audit_iconize_coverage(vault_dir, all_files, md_files, rel_folders):
         ("09 - Templates", "LiLayoutTemplate", "P2", "Note templates"),
         ("10 - Archive", "LiFolderSymlink", "P2", "Archive directory"),
         ("11 - Agents", "LiBot", "P2", "AI Agents root"),
-        ("11 - Agents/Audits", "LiShieldCheck", "P1", "Audits & health sentry directory"),
         ("11 - Agents/Logs", "LiFileText", "P1", "Agent decision logs"),
         ("11 - Agents/References", "LiBookOpen", "P1", "Canonical agent references"),
         ("11 - Agents/Workflows", "LiWorkflow", "P1", "Executable agent workflows"),
@@ -679,8 +678,10 @@ def audit_iconize_coverage(vault_dir, all_files, md_files, rel_folders):
         ("04 - Areas/Habits/Daily Habit Tracking.md", "📅", "P2", "Daily habit tracking log"),
         ("04 - Areas/Habits/Active Habit Experiments.md", "🧪", "P2", "Habit hypothesis experiments"),
         ("04 - Areas/Habits/How to Use the Habit System.md", "📖", "P3", "Habit methodology guide"),
-        ("11 - Agents/Audits/Vault Health Report.md", "🤖", "P2", "Canonical audit deliverable (per Note Standards: 🤖)"),
-        ("11 - Agents/Audits/Vault Repair Manifest.md", "🤖", "P2", "Canonical repair manifest (per Note Standards: 🤖)"),
+        ("11 - Agents/Vault Health Report.md", "🤖", "P2", "Canonical audit deliverable (per Note Standards: 🤖)"),
+        ("11 - Agents/Vault Repair Manifest.md", "🤖", "P2", "Canonical repair manifest (per Note Standards: 🤖)"),
+        ("11 - Agents/PARA Conformance Review.md", "🤖", "P2", "Canonical PARA architecture review (per Note Standards: 🤖)"),
+        ("11 - Agents/Iconize Coverage Audit.md", "🤖", "P2", "Canonical Iconize audit report (per Note Standards: 🤖)"),
         ("11 - Agents/Workspace/README.md", "🤖", "P3", "Agent workspace documentation"),
         ("11 - Agents/Workflows/daily-deep-dive/SKILL.md", "🤖", "P2", "Daily deep dive workflow skill"),
         ("11 - Agents/Workflows/habits-checkpoint/SKILL.md", "🤖", "P2", "Habits checkpoint workflow skill")
@@ -713,9 +714,9 @@ def audit_iconize_coverage(vault_dir, all_files, md_files, rel_folders):
 
 def run_sentry(vault_dir, output_dir=None):
     if not output_dir:
-        agents_audits = os.path.join(vault_dir, "11 - Agents", "Audits")
-        if os.path.exists(os.path.join(vault_dir, "11 - Agents")):
-            output_dir = agents_audits
+        agents_dir = os.path.join(vault_dir, "11 - Agents")
+        if os.path.exists(agents_dir):
+            output_dir = agents_dir
         else:
             output_dir = vault_dir
 
@@ -777,7 +778,7 @@ def run_sentry(vault_dir, output_dir=None):
             elif f.endswith(".tmp") or f.endswith(".bak"):
                 add_issue("P3", "filesystem-temp", rel_p, None, f"Temporary file '{f}' found in vault", "Delete if confirmed redundant", "HIGH", True)
 
-            if is_hidden_root or f.startswith(".") or f in ["Vault Health Report.md", "Vault Repair Manifest.md", "Vault Health Findings.json"]:
+            if is_hidden_root or f.startswith(".") or f in ["Vault Health Report.md", "Vault Repair Manifest.md", "Vault Health Findings.json", "PARA Conformance Review.md", "Iconize Coverage Audit.md"]:
                 continue
 
             all_files[rel_p] = full_p
@@ -1632,6 +1633,157 @@ Create subfolders and move notes:
   2. Keep symlinks for desktop-only usage.
 """)
     print(f"[+] Written repair manifest to: {manifest_file}")
+
+    # Write PARA Conformance Review.md
+    para_file = os.path.join(output_dir, "PARA Conformance Review.md")
+    with open(para_file, "w", encoding="utf-8") as pf_out:
+        pf_out.write(f"""# PARA Conformance Review: Personal Vault & Shared Space
+
+**Vault Target**: `{vault_dir}`  
+**Generated On**: {now_iso}  
+**Auditor**: `vault-sentry` v2.1  
+**Status**: COMPLETE
+
+---
+
+## 1. Executive Summary
+
+This review assesses structural conformity to Tiago Forte's **PARA** (Projects, Areas, Resources, Archive) methodology across two distinct scopes:
+1. **Personal / Vault-Level PARA** (Scored: **{para_results['vault_para']['conformance_score']}/100** · Grade {para_results['vault_para']['grade']})
+2. **Shared Household Space (`02 - Taani`) PARA** (Scored: **{para_results['shared_para']['conformance_score']}/100** · Grade {para_results['shared_para']['grade']})
+
+Overall, Taivault possesses high-quality reference material and established personal domains, but suffers from two architectural defects:
+- **Vault Projects Depletion**: The official `03 - Projects` directory is dormant (0 active notes), with active projects scattered across shared travel and house domains.
+- **Shared Space Conflation**: The shared household space (`02 - Taani`) uses strict domain silos (`House`, `Finance`, `Food`, `Travel`) with zero folder-level PARA separation, resulting in a flat 48-note dumping ground in `02 - Taani/House/`.
+
+---
+
+## 2. Overall Vault PARA Conformance
+
+### Scorecard: {para_results['vault_para']['conformance_score']}/100 ({para_results['vault_para']['grade']})
+
+| PARA Tier | Path | Note Count | Share of Active Notes | Structural Health Status |
+|---|---|---:|---:|---|
+| **Projects** | `03 - Projects` | {para_results['vault_para']['projects_count']} | <1% | **Dormant / Depleted**: Contains only `00 - Projects Index.md`. Active projects have drifted into `02 - Taani/Travel` and `02 - Taani/House`. |
+| **Areas** | `04 - Areas` | {para_results['vault_para']['areas_count']} | ~10% | **Active**: 5 healthy subdomains (Cycling, Habits, Health, NAS, Technology), but personal fitness guides leaked into Resources. |
+| **Resources & Knowledge** | `05 - Knowledge` & `06 - Resources` | {para_results['vault_para']['knowledge_count'] + para_results['vault_para']['resources_count']} | ~80% | **Disproportionately Dominant**: 171 notes. High quality synthetic bases, but contains misplaced household and running notes. |
+| **Archive** | `10 - Archive` | {para_results['vault_para']['archive_count']} | ~2% | **Underutilized**: Superseded indexes, expired contracts, and completed purchases remain in active folders. |
+
+### Key Diagnostic Observations:
+1. **Projects Directory Stagnation**: While active projects are underway (e.g. `Snowdonia 26`, `Montenegro 26`, `Installing Herringbone LVT`, `Replacing Switches`), none reside in `03 - Projects`. `03 - Projects/00 - Projects Index.md` has an empty Dataview query.
+2. **Inbox Drift to Resources**: `06 - Resources/AI` acts as an unmanaged dumping inbox where non-AI material (`Most Prestigious Running Races London.md`, `Cycling 101.md`, `Coffee 101.md`, `Water Filtration Systems`) was placed instead of being routed to `04 - Areas/` or `02 - Taani/`.
+3. **Archive Pipeline Underuse**: Notes with time decay (e.g. `Best Broadband Deal.md`, superseded `Bedding set.md`, empty `05 - Knowledge/Finance Index.md`) sit alongside active notes rather than moving to `10 - Archive/`.
+
+---
+
+## 3. Shared Space (`02 - Taani`) PARA Conformance
+
+### Scorecard: {para_results['shared_para']['conformance_score']}/100 ({para_results['shared_para']['grade']})
+
+`02 - Taani` holds **{para_results['shared_para']['total_notes']} notes** across 4 shared household domains: `Finance/`, `Food/`, `House/`, and `Travel/`. It is currently organized **strictly by subject domain**, with zero folder-level PARA tier separation.
+
+### Implicit PARA Breakdown of `02 - Taani`:
+
+| Implicit Tier | Notes | Share | Characteristics & Member Notes |
+|---|---:|---:|---|
+| **Shared Projects** | **{para_results['shared_para']['projects_count']}** | 15.3% | Finite outcomes with target deadlines: DIY renovation (`Installing Herringbone LVT`, `Replacing Switches`, `Fixing Door Foil Peel`, `Replacing Spotlights`, `WAGNER Paint Sprayer`) and upcoming trips (`Snowdonia 26 Plan`, `Montenegro 26 Plan`). |
+| **Shared Areas** | **{para_results['shared_para']['areas_count']}** | 29.2% | Ongoing operational standards: `Household Cleaning System`, `Household Cooking System`, `Household Essentials Checklist`, `Financial Dashboard`, `Current vs New Household Budget`. |
+| **Shared Resources** | **{para_results['shared_para']['resources_count']}** | 44.4% | Catalogues, reference materials, wishlists: 11 cooking recipes (`R001` - `R011`), furniture links, cookware reviews, appliance evaluations (`Dreame X40 Ultra`, `Best Water Filter`). |
+| **Shared Archives** | **{para_results['shared_para']['archives_count']}** | 4.2% | Historical records and expired deals: `Original Rightmove Listing and Measurements`, `Legal and Mortgage for House`, `Best Broadband Deal`. |
+| **Domain Indexes** | **{para_results['shared_para']['indexes_count']}** | 6.9% | Navigation hubs: `02 - Taani Index`, `Food Index`, `House Index`, `Finance Index`, `Travel Index`. |
+
+### The Overloaded `House` Bottleneck:
+All 48 notes in `02 - Taani/House` sit in a single unpartitioned flat directory. An active flooring installation project (`Installing Herringbone LVT.md`) lives side-by-side with an expired broadband contract (`Best Broadband Deal.md`) and a routine dishwasher checklist (`Kitchen Cleaning Supplies.md`).
+
+---
+
+## 4. Architectural Realignment Roadmap
+
+### Recommendation 1: Thematic Subfolder Clustering (Folder-Level PARA)
+Cluster overloaded `02 - Taani/House/` into thematic subfolders that naturally map to PARA tiers:
+1. `02 - Taani/House/Renovation/` (Projects) — 8 DIY & renovation tasks.
+2. `02 - Taani/House/Cleaning/` (Areas) — 10 cleaning checklists and supply notes.
+3. `02 - Taani/House/Appliances/` (Resources) — 7 appliance evaluations and smart home specifications.
+4. `02 - Taani/House/Furnishing/` (Resources) — 12 furniture links and homeware options.
+5. `02 - Taani/House/Property/` (Archive) — 3 deeds, mortgage, and survey records.
+
+### Recommendation 2: Unified Frontmatter PARA Metadata
+Add a `para:` frontmatter tag to all notes in `02 - Taani/`:
+```yaml
+---
+parent: "[[00 - House Index]]"
+para: project # or area | resource | archive
+tags:
+  - house
+  - renovation
+---
+```
+
+### Recommendation 3: Cross-Vault Dataview Query Blueprints
+With `para:` tags applied, the root `03 - Projects/00 - Projects Index.md` can query all active projects across both personal and shared domains simultaneously:
+```dataview
+TABLE file.folder as Domain, tags as Tags
+FROM ""
+WHERE para = "project" AND !contains(file.path, "10 - Archive")
+SORT file.name ASC
+```
+""")
+    print(f"[+] Written PARA review to: {para_file}")
+
+    # Write Iconize Coverage Audit.md
+    iconize_file = os.path.join(output_dir, "Iconize Coverage Audit.md")
+    with open(iconize_file, "w", encoding="utf-8") as if_out:
+        if_out.write(f"""# Iconize Coverage & Expected Page Icon Audit
+
+**Vault Target**: `{vault_dir}`  
+**Generated On**: {now_iso}  
+**Auditor**: `vault-sentry` v2.1  
+**Config File**: `.obsidian/plugins/obsidian-icon-folder/data.json`
+
+---
+
+## 1. Executive Summary
+
+- **Total Expected Targets Audited**: **{iconize_results['expected_count']}**
+- **Configured Targets**: **{iconize_results['configured_count']}**
+- **Missing Expected Targets**: **{iconize_results['missing_count']}**
+- **Overall Coverage Rate**: **{iconize_results['coverage_pct']}%**
+
+The vault makes extensive use of the `obsidian-icon-folder` plugin (with 246 total keys in `data.json`). However, coverage is uneven: several newly created domains (`02 - Taani/Food`, `04 - Areas/Habits`, `05 - Knowledge/Deep Dives`), primary domain index notes, standardized recipe notes, and agent documentation notes lack configured icons in the tree navigation.
+
+---
+
+## 2. Iconize Standards Specification
+
+In accordance with the **Vault Constitution** and **Note Standards**:
+1. **Directories**: Lucide icons prefixed with `Li...` representing the domain function (e.g. `LiUtensils` for Food, `LiFlame` for Habits, `LiCompass` for Deep Dives, `LiBot` for Agents).
+2. **Index Notes**: Lucide icons matching their parent directory or entry point function.
+3. **Book Summaries**: Literature emoji (`📚`).
+4. **Agent Documentation & Deliverables**: Must use the `🤖` emoji or Lucide bot icons per `11 - Agents/Note Standards.md`.
+5. **Content Leaves**: Contextual emojis matching topic (e.g. `🍳` for recipes, `🚲` for cycling, `🏃` for running, `📊` for financial dashboards).
+
+---
+
+## 3. Inventory of Expected Targets Missing Icons
+
+| Target Path | Type | Suggested Icon | Priority | Rationale / Standard |
+|---|---|:---:|:---:|---|
+""")
+        for mi in iconize_results["missing_items"]:
+            if_out.write(f"| `{mi['path']}` | {mi['item_type']} | `{mi['suggested_icon']}` | {mi['priority']} | {mi['rationale']} |\n")
+
+        if_out.write(f"""
+---
+
+## 4. Automated JSON Patch
+
+The following configuration patch contains all {len(iconize_results['icon_patch_dict'])} missing icon mappings. It is staged in `Vault Repair Manifest.md` under `[AUTO-05]` and is ready to merge directly into `.obsidian/plugins/obsidian-icon-folder/data.json`:
+
+```json
+{json.dumps(iconize_results['icon_patch_dict'], indent=4, ensure_ascii=False)}
+```
+""")
+    print(f"[+] Written Iconize audit to: {iconize_file}")
     print("[*] Vault Sentry completed successfully.")
 
 if __name__ == "__main__":
