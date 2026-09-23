@@ -17,7 +17,7 @@ from datetime import datetime
 def parse_args():
     parser = argparse.ArgumentParser(description="Vault Sentry: Deep DFS Directory, Link & Archival Auditor")
     parser.add_argument("--vault", default="/Users/sai/Library/Mobile Documents/iCloud~md~obsidian/Documents/Taivault", help="Path to Obsidian vault")
-    parser.add_argument("--output", help="Directory to output reports (defaults to vault root)")
+    parser.add_argument("--output", help="Directory to output reports (defaults to '11 - Agents/Audits' or vault root)")
     return parser.parse_args()
 
 def dfs_walk(current_dir, rel_path="", depth=0):
@@ -34,7 +34,13 @@ def dfs_walk(current_dir, rel_path="", depth=0):
 
 def run_sentry(vault_dir, output_dir=None):
     if not output_dir:
-        output_dir = vault_dir
+        agents_audits = os.path.join(vault_dir, "11 - Agents", "Audits")
+        if os.path.exists(os.path.join(vault_dir, "11 - Agents")):
+            output_dir = agents_audits
+        else:
+            output_dir = vault_dir
+
+    os.makedirs(output_dir, exist_ok=True)
 
     print(f"[*] Starting Vault Sentry DFS Audit on: {vault_dir}")
     now_ts = time.time()
@@ -301,7 +307,13 @@ def run_sentry(vault_dir, output_dir=None):
                 if "%2F" in link:
                     add_issue("P1", "broken-md-link", rel_p, idx + 1, f"Malformed URL-encoded slash '%2F' in relative link: [{text}]({link})", "Replace '%2F' with standard forward slash '/'", "HIGH", True)
                 else:
-                    target_abs = os.path.normpath(os.path.join(os.path.dirname(full_p), link))
+                    if link.startswith("/"):
+                        if os.path.isabs(link) and os.path.exists(link):
+                            target_abs = link
+                        else:
+                            target_abs = os.path.normpath(os.path.join(vault_dir, link.lstrip("/")))
+                    else:
+                        target_abs = os.path.normpath(os.path.join(os.path.dirname(full_p), link))
                     if not os.path.exists(target_abs):
                         add_issue("P1", "broken-md-link", rel_p, idx + 1, f"Broken relative markdown link: [{text}]({link})", "Correct relative path to point to existing file", "HIGH", False)
 
